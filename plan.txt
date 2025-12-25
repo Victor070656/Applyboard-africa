@@ -1,0 +1,169 @@
+APPLYBOARD AFRICA LTD
+DEVELOPER-READY WEBSITE BUILD & PROJECT PLAN DOCUMENT
+PREPARED BY DIGITIDE SYSTEMS TECHNOLOGIES LTD
+
+
+PROJECT OVERVIEW
+This document defines the full developer-ready build specification for the ApplyBoard Africa Ltd website and digital platform. 
+The system supports public marketing pages, student/client portals, agent dashboards, and an admin operations backend. 
+The platform is built using PHP and is designed for scalability, security, and operational clarity.
+
+1. GOALS AND SCOPE
+Business Goals:
+- Provide a modern education and travel consulting website.
+- Capture qualified leads for study abroad, visa, and travel services.
+- Enable a digital platform for application tracking and future integrations.
+- Support verified agents, referral tracking, performance ratings, and commissions.
+
+Project Phases:
+Phase 1: Marketing website + inquiry capture.
+Phase 2: Student, Agent, and Admin portals.
+Phase 3: Automation, reporting, commissions, and integrations.
+
+
+2. BRAND AND UI REQUIREMENTS
+Brand Colors:
+- Sky Blue
+- Dark Yellow
+- White
+- Black
+
+UI Standards:
+- Clean education + travel aesthetic.
+- Sticky CTAs: Book Consultation, Start Application, WhatsApp.
+- Trust sections: verified agents, team, office address.
+
+3. CORE FEATURES
+Services:
+- Study Abroad Consulting
+- Admissions Support & Partner Processing
+- Student & Tourist Visa Assistance
+- Flights & Hotel Reservations
+- Travel Planning & Relocation Guidance
+- Agent Referral System
+- Digital Application Tracking Platform
+
+
+
+
+5. USER ROLES
+
+- Visitor
+- Student/Client
+- Agent
+- Staff
+- Admin
+
+6. DATABASE STRUCTURE (SUMMARY)
+
+Tables:
+- users
+- agents
+- clients
+- inquiries
+- cases
+- documents
+- commissions
+- activity_logs
+
+Key Rule:
+Once a client is linked to an agent, the relationship is permanently locked unless overridden by admin.
+
+7. AGENT WORKFLOW
+
+1. Agent registers.
+2. Submits verification documents.
+3. Admin reviews and verifies.
+4. System generates agent ID and referral link.
+5. Agent can submit or register clients.
+6. Client remains permanently linked to agent.
+7. Agent performance is rated (activity, quality, outcomes).
+
+8. REFERRAL TRACKING LOGIC
+
+- Referral link: https://domain.com/register?ref=AGENTSLUG
+- Manual agent code allowed.
+- Middleware captures referral.
+- Referral applied on inquiry or registration.
+- Permanent agent-client linkage enforced.
+
+9. CASE TYPES AND STAGES
+
+Study Abroad:
+Assessment → Options → Application → Submission → Offer → Visa → Travel → Closed
+
+Visa:
+Assessment → Documents → Submission → Decision → Closed
+
+Travel:
+Requirements → Booking → Completed → Closed
+
+
+10. PORTALS
+
+Student Portal:
+- Profile
+- Applications
+- Status tracking
+- Document upload
+
+Agent Dashboard:
+- Verification status
+- Referral link
+- Clients and cases
+- Commission view
+
+Admin Dashboard:
+- Agent approvals
+- Lead pipeline
+- Case management
+- Reporting and commissions
+
+11. ROUTES OVERVIEW
+
+Public:
+/, /about, /services, /agents, /platform, /contact
+
+Auth:
+/register, /login, /logout
+
+Student:
+/portal, /portal/cases
+
+Agent:
+/agent, /agent/clients
+
+Admin:
+/admin, /admin/agents, /admin/cases, /admin/commissions
+
+12. NOTIFICATIONS
+
+- Inquiry confirmation emails
+- Agent approval emails
+- Case status updates (phase 3)
+- WhatsApp CTA links
+
+13. ACCEPTANCE CRITERIA
+
+Phase 1:
+- Public pages live
+- Inquiry capture working
+
+Phase 2:
+- Agent verification works
+- Referral tracking enforced
+- Portals functional
+
+Phase 3:
+- Ratings and commissions operational
+- Reports exportable
+
+14. IMPLEMENTATION PLAN
+
+Sprint 0: Setup & scaffolding
+Sprint 1: Public site + inquiries
+Sprint 2: Admin dashboard
+Sprint 3: Agent onboarding + referrals
+Sprint 4: Student portal + documents
+Sprint 5: Reporting + commissions
+
