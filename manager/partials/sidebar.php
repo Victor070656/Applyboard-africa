@@ -63,6 +63,55 @@
                 </a>
             </li>
 
+            <li class="menu-title">Management...</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="clients.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:users-rounded-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Clients </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="reports.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:chart-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Reports </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="notifications.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:bell-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Notifications </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="activity-logs.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:document-text-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Activity Logs </span>
+                </a>
+            </li>
+
+            <li class="menu-title">System...</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="settings.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:settings-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Settings </span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link" href="profile.php">
                     <span class="nav-icon">

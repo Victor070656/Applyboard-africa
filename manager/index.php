@@ -46,6 +46,8 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
 
      <!-- Theme Config js -->
      <script src="assets/js/config.js"></script>
+     <!-- Iconify -->
+     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
      <link rel="stylesheet" href="assets/vendor/jsvectormap/css/jsvectormap.min.css">
      <link rel="stylesheet" href="assets/css/datatables.min.css">
 </head>

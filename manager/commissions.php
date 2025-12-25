@@ -1,8 +1,9 @@
 <?php
 include "../config/config.php";
+if (!isset($_SESSION['sdtravels_manager'])) {
+     echo "<script>alert('Please Login First'); location.href = 'login.php'</script>";
+}
 include "../config/case_helper.php";
-include "partials/header.php";
-include "partials/sidebar.php";
 
 $manager = auth('admin');
 
@@ -55,9 +56,30 @@ if ($agentFilter) {
 
 $whereClause = implode(' AND ', $where);
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="utf-8" />
+     <title>ApplyBoard Africa Ltd || Commissions</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <link rel="shortcut icon" href="../images/favicon.png">
+     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+     <script src="assets/js/config.js"></script>
+     <!-- Iconify -->
+     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
 
-<div class="page-content">
-    <div class="container-fluid">
+<body>
+     <div class="app-wrapper">
+          <?php include "partials/header.php"; ?>
+          <?php include "partials/sidebar.php"; ?>
+
+          <div class="page-content">
+               <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box">

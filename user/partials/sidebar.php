@@ -28,6 +28,15 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="new_application.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:add-circle-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> New Application </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="cases.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
@@ -42,6 +51,15 @@
                         <iconify-icon icon="solar:document-text-outline"></iconify-icon>
                     </span>
                     <span class="nav-text"> Documents </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="notifications.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:bell-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Notifications </span>
                 </a>
             </li>
 

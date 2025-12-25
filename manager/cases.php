@@ -1,8 +1,9 @@
 <?php
 include "../config/config.php";
+if (!isset($_SESSION['sdtravels_manager'])) {
+     echo "<script>alert('Please Login First'); location.href = 'login.php'</script>";
+}
 include "../config/case_helper.php";
-include "partials/header.php";
-include "partials/sidebar.php";
 
 $manager = auth('admin');
 $view = isset($_GET['view']) ? intval($_GET['view']) : null;
@@ -83,43 +84,31 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
     }
 }
 
-// Get stage labels
-function getStageBadge($stage) {
-    $badges = [
-        'assessment' => 'bg-primary',
-        'options' => 'bg-info',
-        'application' => 'bg-secondary',
-        'submission' => 'bg-warning',
-        'offer' => 'bg-success',
-        'visa' => 'bg-danger',
-        'travel' => 'bg-purple',
-        'booking' => 'bg-orange',
-        'completed' => 'bg-green',
-        'closed' => 'bg-dark',
-        'requirements' => 'bg-primary',
-        'processing' => 'bg-info',
-        'decision' => 'bg-warning'
-    ];
-    return isset($badges[$stage]) ? $badges[$stage] : 'bg-secondary';
-}
-
-// Get case type label
-function getCaseTypeLabel($type) {
-    $labels = [
-        'study_abroad' => 'Study Abroad',
-        'visa_student' => 'Student Visa',
-        'visa_tourist' => 'Tourist Visa',
-        'visa_family' => 'Family Visa',
-        'travel_booking' => 'Travel Booking',
-        'pilgrimage' => 'Pilgrimage',
-        'other' => 'Other'
-    ];
-    return isset($labels[$type]) ? $labels[$type] : ucfirst(str_replace('_', ' ', $type));
-}
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="utf-8" />
+     <title>ApplyBoard Africa Ltd || Cases</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <link rel="shortcut icon" href="../images/favicon.png">
+     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+     <script src="assets/js/config.js"></script>
+     <!-- Iconify -->
+     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+
+<body>
+     <div class="app-wrapper">
+          <?php include "partials/header.php"; ?>
+          <?php include "partials/sidebar.php"; ?>
 
 <div class="page-content">
-    <div class="container-fluid">
+     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-flex justify-content-between align-items-center">

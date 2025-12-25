@@ -42,6 +42,8 @@ if (!isset($_SESSION['sdtravels_manager'])) {
 
      <!-- Theme Config js -->
      <script src="assets/js/config.js"></script>
+     <!-- Iconify -->
+     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 
 <body>

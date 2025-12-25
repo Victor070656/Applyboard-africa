@@ -1,9 +1,9 @@
 <?php
 include "../config/config.php";
 include "../config/case_helper.php";
-include "partials/header.php";
-include "partials/sidebar.php";
-
+if (!isLoggedIn('user')) {
+     echo "<script>alert('Please Login First'); location.href = 'login.php'</script>";
+}
 $user = auth('user');
 
 // Handle document upload
@@ -43,17 +43,69 @@ foreach ($cases as $case) {
     }
 }
 ?>
+<!DOCTYPE html>
+<html lang="en">
 
-<div class="page-content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="page-title-box d-flex justify-content-between align-items-center">
-                    <h4 class="mb-0">My Documents</h4>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadDocModal">Upload Document</button>
-                </div>
-            </div>
-        </div>
+<head>
+     <!-- Title Meta -->
+     <meta charset="utf-8" />
+     <title>ApplyBoard Africa Ltd User || My Documents</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <meta name="robots" content="index, follow" />
+     <meta name="theme-color" content="#ffffff">
+
+     <!-- App favicon -->
+     <link rel="shortcut icon" href="../images/favicon.png">
+
+     <!-- Google Font Family link -->
+     <link rel="preconnect" href="https://fonts.googleapis.com/index.html">
+     <link rel="preconnect" href="https://fonts.gstatic.com/index.html" crossorigin>
+     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+
+     <!-- Vendor css -->
+     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Icons css -->
+     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- App css -->
+     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Theme Config js -->
+     <script src="assets/js/config.js"></script>
+     <!-- Iconify -->
+     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
+</head>
+
+<body>
+
+     <!-- START Wrapper -->
+     <div class="app-wrapper">
+
+          <!-- Topbar Start -->
+          <?php include "partials/header.php"; ?>
+          <!-- Topbar End -->
+
+          <!-- App Menu Start -->
+          <?php include "partials/sidebar.php"; ?>
+          <!-- App Menu End -->
+
+          <!-- Start right Content here -->
+          <div class="page-content">
+               <!-- Start Container Fluid -->
+               <div class="container-fluid">
+
+                    <!-- ========== Page Title Start ========== -->
+                    <div class="row">
+                         <div class="col-12">
+                              <div class="page-title-box d-flex justify-content-between align-items-center">
+                                   <h4 class="mb-0">My Documents</h4>
+                                   <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#uploadDocModal">Upload Document</button>
+                              </div>
+                         </div>
+                    </div>
+                    <!-- ========== Page Title End ========== -->
 
         <div class="row">
             <div class="col-12">
@@ -106,20 +158,29 @@ foreach ($cases as $case) {
                 </div>
             </div>
         </div>
-    </div>
 
-    <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
-        <div class="container-fluid">
-             <div class="row">
-                  <div class="col-12 text-center">
-                       <p class="mb-0">
-                            <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard Africa Ltd.
-                       </p>
-                  </div>
-             </div>
-        </div>
-   </footer>
-</div>
+               </div>
+               <!-- End Container Fluid -->
+
+               <!-- Footer Start -->
+               <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+                    <div class="container-fluid">
+                         <div class="row">
+                              <div class="col-12 text-center">
+                                   <p class="mb-0">
+                                        <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard Africa Ltd.
+                                   </p>
+                              </div>
+                         </div>
+                    </div>
+               </footer>
+               <!-- Footer End -->
+
+          </div>
+          <!-- End Page Content -->
+
+     </div>
+     <!-- END Wrapper -->
 
 <!-- Upload Document Modal -->
 <div class="modal fade" id="uploadDocModal" tabindex="-1">
@@ -169,7 +230,12 @@ foreach ($cases as $case) {
     </div>
 </div>
 
-<script src="assets/js/vendor.min.js"></script>
-<script src="assets/js/app.js"></script>
+     <!-- Vendor Javascript -->
+     <script src="assets/js/vendor.min.js"></script>
+
+     <!-- App Javascript -->
+     <script src="assets/js/app.js"></script>
+
 </body>
+
 </html>
