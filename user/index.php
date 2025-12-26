@@ -24,6 +24,26 @@ $unreadCount = getUnreadNotificationCount($userId, 'client');
 // Get unread notifications for display
 $recentNotifications = array_slice($notifications, 0, 3);
 
+// Helper function for stage badge color
+function getStageBadge($stage) {
+    $badges = [
+        'assessment' => 'bg-primary',
+        'options' => 'bg-info',
+        'application' => 'bg-secondary',
+        'submission' => 'bg-warning',
+        'offer' => 'bg-success',
+        'visa' => 'bg-danger',
+        'travel' => 'bg-purple',
+        'booking' => 'bg-orange',
+        'completed' => 'bg-success',
+        'closed' => 'bg-dark',
+        'requirements' => 'bg-primary',
+        'processing' => 'bg-info',
+        'decision' => 'bg-warning'
+    ];
+    return isset($badges[$stage]) ? $badges[$stage] : 'bg-secondary';
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,7 +90,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
         .quick-action-card {
             border: 2px dashed #e0e0e0;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
@@ -84,14 +104,25 @@ $recentNotifications = array_slice($notifications, 0, 3);
             color: inherit;
         }
         .quick-action-icon {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 24px;
+            margin: 0 auto 10px;
+            font-size: 22px;
+        }
+        @media (max-width: 576px) {
+            .quick-action-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                margin-bottom: 8px;
+            }
+            .quick-action-card {
+                padding: 10px;
+            }
         }
      </style>
 </head>
@@ -140,7 +171,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                         <div class="col-12">
                             <div class="card bg-primary bg-opacity-10 border-primary">
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center flex-wrap gap-2">
                                         <div class="flex-shrink-0">
                                             <div class="quick-action-icon bg-primary text-white">
                                                 <iconify-icon icon="solar:waving-hand-outline"></iconify-icon>
@@ -148,11 +179,11 @@ $recentNotifications = array_slice($notifications, 0, 3);
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h5 class="mb-1">Welcome back, <?= htmlspecialchars($user['fullname'] ?? 'Student') ?>!</h5>
-                                            <p class="mb-0 text-muted">Track your applications, upload documents, and stay updated with your progress.</p>
+                                            <p class="mb-0 text-muted d-none d-sm-block">Track your applications, upload documents, and stay updated with your progress.</p>
                                         </div>
                                         <div class="flex-shrink-0">
-                                            <a href="new_application.php" class="btn btn-primary">
-                                                <iconify-icon icon="solar:add-circle-outline"></iconify-icon> New Application
+                                            <a href="new_application.php" class="btn btn-primary btn-sm">
+                                                <iconify-icon icon="solar:add-circle-outline"></iconify-icon> <span class="d-none d-md-inline">New Application</span><span class="d-md-none">New</span>
                                             </a>
                                         </div>
                                     </div>
@@ -163,69 +194,69 @@ $recentNotifications = array_slice($notifications, 0, 3);
 
                     <!-- Statistics Cards -->
                     <div class="row mt-3">
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card stat-card h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="quick-action-icon bg-primary bg-opacity-10 text-primary" style="width: 50px; height: 50px; font-size: 20px; margin: 0;">
+                                            <div class="quick-action-icon bg-primary bg-opacity-10 text-primary" style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
                                                 <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="text-muted mb-1">Total Applications</h6>
-                                            <h3 class="mb-0"><?= $totalCases ?></h3>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="text-muted mb-0 small">Total</h6>
+                                            <h4 class="mb-0"><?= $totalCases ?></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card stat-card h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="quick-action-icon bg-warning bg-opacity-10 text-warning" style="width: 50px; height: 50px; font-size: 20px; margin: 0;">
+                                            <div class="quick-action-icon bg-warning bg-opacity-10 text-warning" style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
                                                 <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="text-muted mb-1">Active Cases</h6>
-                                            <h3 class="mb-0"><?= $activeCases ?></h3>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="text-muted mb-0 small">Active</h6>
+                                            <h4 class="mb-0"><?= $activeCases ?></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mt-2 mt-md-0">
                             <div class="card stat-card h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="quick-action-icon bg-success bg-opacity-10 text-success" style="width: 50px; height: 50px; font-size: 20px; margin: 0;">
+                                            <div class="quick-action-icon bg-success bg-opacity-10 text-success" style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
                                                 <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="text-muted mb-1">Completed</h6>
-                                            <h3 class="mb-0"><?= $completedCases ?></h3>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="text-muted mb-0 small">Completed</h6>
+                                            <h4 class="mb-0"><?= $completedCases ?></h4>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mt-2 mt-md-0">
                             <div class="card stat-card h-100">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-shrink-0">
-                                            <div class="quick-action-icon bg-info bg-opacity-10 text-info" style="width: 50px; height: 50px; font-size: 20px; margin: 0;">
+                                            <div class="quick-action-icon bg-info bg-opacity-10 text-info" style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
                                                 <iconify-icon icon="solar:document-text-outline"></iconify-icon>
                                             </div>
                                         </div>
-                                        <div class="flex-grow-1 ms-3">
-                                            <h6 class="text-muted mb-1">Pending Action</h6>
-                                            <h3 class="mb-0"><?= $pendingCases ?></h3>
+                                        <div class="flex-grow-1 ms-2">
+                                            <h6 class="text-muted mb-0 small">Pending</h6>
+                                            <h4 class="mb-0"><?= $pendingCases ?></h4>
                                         </div>
                                     </div>
                                 </div>
@@ -235,7 +266,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
 
                     <div class="row mt-3">
                         <!-- Quick Actions -->
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 order-2 order-lg-1">
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="mb-0">Quick Actions</h5>
@@ -247,7 +278,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                                                 <div class="quick-action-icon bg-primary bg-opacity-10 text-primary">
                                                     <iconify-icon icon="solar:add-circle-outline"></iconify-icon>
                                                 </div>
-                                                <h6 class="mb-0">New Application</h6>
+                                                <h6 class="mb-0 small">New App</h6>
                                             </a>
                                         </div>
                                         <div class="col-6 mb-3">
@@ -255,7 +286,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                                                 <div class="quick-action-icon bg-info bg-opacity-10 text-info">
                                                     <iconify-icon icon="solar:document-upload-outline"></iconify-icon>
                                                 </div>
-                                                <h6 class="mb-0">Upload Document</h6>
+                                                <h6 class="mb-0 small">Upload</h6>
                                             </a>
                                         </div>
                                         <div class="col-6 mb-3">
@@ -263,7 +294,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                                                 <div class="quick-action-icon bg-warning bg-opacity-10 text-warning">
                                                     <iconify-icon icon="solar:folder-open-outline"></iconify-icon>
                                                 </div>
-                                                <h6 class="mb-0">My Cases</h6>
+                                                <h6 class="mb-0 small">My Cases</h6>
                                             </a>
                                         </div>
                                         <div class="col-6 mb-3">
@@ -271,7 +302,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                                                 <div class="quick-action-icon bg-success bg-opacity-10 text-success">
                                                     <iconify-icon icon="solar:user-edit-outline"></iconify-icon>
                                                 </div>
-                                                <h6 class="mb-0">Edit Profile</h6>
+                                                <h6 class="mb-0 small">Profile</h6>
                                             </a>
                                         </div>
                                     </div>
@@ -314,7 +345,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                         </div>
 
                         <!-- Recent Cases -->
-                        <div class="col-lg-8">
+                        <div class="col-lg-8 order-1 order-lg-2">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0">Recent Applications</h5>
@@ -374,7 +405,7 @@ $recentNotifications = array_slice($notifications, 0, 3);
                             </div>
 
                             <!-- Services Quick Links -->
-                            <div class="card mt-3">
+                            <div class="card mt-3 d-none d-lg-block">
                                 <div class="card-header">
                                     <h5 class="mb-0">Our Services</h5>
                                 </div>
