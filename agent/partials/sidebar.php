@@ -27,15 +27,15 @@
                 </a>
             </li>
 
-            <?php if(auth('agent')['status'] == 'pending'): ?>
-            <li class="nav-item">
-                <a class="nav-link" href="verification.php">
-                    <span class="nav-icon">
-                        <iconify-icon icon="solar:shield-check-outline"></iconify-icon>
-                    </span>
-                    <span class="nav-text text-danger"> Verify Account </span>
-                </a>
-            </li>
+            <?php if (auth('agent')['status'] == 'pending'): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="verification.php">
+                        <span class="nav-icon">
+                            <iconify-icon icon="solar:shield-check-outline"></iconify-icon>
+                        </span>
+                        <span class="nav-text text-danger"> Verify Account </span>
+                    </a>
+                </li>
             <?php endif; ?>
 
             <li class="nav-item">
@@ -74,7 +74,27 @@
                 </a>
             </li>
 
-             <li class="nav-item">
+            <li class="menu-title">Account...</li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="notifications.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:bell-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Notifications </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="profile.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:user-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> My Profile </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="logout.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:logout-3-outline"></iconify-icon>

@@ -72,6 +72,15 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="logout.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:logout-3-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Logout </span>
+                </a>
+            </li>
+
         </ul>
     </div>
 </div>

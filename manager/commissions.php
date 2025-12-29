@@ -283,7 +283,7 @@ $whereClause = implode(' AND ', $where);
                                             <td><?= htmlspecialchars($row['client_name']) ?></td>
                                             <td>
                                                 <?php if ($row['case_number']): ?>
-                                                    <?= htmlspecialchars($row['case_number'] ?><br>
+                                                    <?= htmlspecialchars($row['case_number']) ?><br>
                                                     <small class="text-muted"><?= htmlspecialchars(substr($row['case_title'], 0, 30)) ?></small>
                                                 <?php else: ?>
                                                     <span class="text-muted">N/A</span>
