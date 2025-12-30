@@ -359,7 +359,7 @@ $completeness = round(($completedFields / $totalFields) * 100);
                                     linked to you when they register.</p>
                                 <div class="input-group">
                                     <input type="text" class="form-control"
-                                        value="<?= 'http://' . $_SERVER['HTTP_HOST'] . '/smile-dove/user/register.php?ref=' . $info['agent_code'] ?>"
+                                        value="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/smile-dove/user/register.php?ref=' . $info['agent_code'] ?>"
                                         readonly id="refLink">
                                     <button class="btn btn-primary" type="button"
                                         onclick="navigator.clipboard.writeText(document.getElementById('refLink').value); alert('Copied!');">

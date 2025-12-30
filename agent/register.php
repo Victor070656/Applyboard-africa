@@ -8,6 +8,7 @@ if (isLoggedIn('agent')) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <title>ApplyBoard Africa Ltd Agent || Register</title>
@@ -56,34 +57,46 @@ if (isLoggedIn('agent')) {
                                         <input type="password" class="form-control" name="password" required>
                                     </div>
                                     <div class="d-grid">
-                                        <button class="btn btn-primary btn-lg fw-medium" name="register" type="submit">Register</button>
+                                        <button class="btn btn-primary btn-lg fw-medium" name="register"
+                                            type="submit">Register</button>
                                     </div>
                                     <div class="mt-3 text-center">
-                                        <p class="mb-0">Already have an account? <a href="login.php" class="text-primary fw-bold">Login</a></p>
+                                        <p class="mb-0">Already have an account? <a href="login.php"
+                                                class="text-primary fw-bold">Login</a></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <?php
                         if (isset($_POST['register'])) {
-                            $fullname = mysqli_real_escape_string($conn, $_POST['fullname']);
-                            $email = mysqli_real_escape_string($conn, $_POST['email']);
-                            $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-                            $password = $_POST['password']; 
-                            
-                            // Generate Agent Code (e.g., AGT-RANDOM)
-                            $agent_code = 'AGT-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
+                            $fullname = mysqli_real_escape_string($conn, trim($_POST['fullname']));
+                            $email = mysqli_real_escape_string($conn, trim($_POST['email']));
+                            $phone = mysqli_real_escape_string($conn, trim($_POST['phone']));
+                            $password = $_POST['password'];
 
-                            // Check email
-                            $check = mysqli_query($conn, "SELECT * FROM `agents` WHERE `email` = '$email'");
-                            if (mysqli_num_rows($check) > 0) {
-                                echo "<script>alert('Email already registered')</script>";
+                            // Validation
+                            if (empty($fullname) || empty($email) || empty($password)) {
+                                echo "<script>alert('Please fill in all required fields')</script>";
+                            } elseif (strlen($password) < 6) {
+                                echo "<script>alert('Password must be at least 6 characters')</script>";
                             } else {
-                                $sql = "INSERT INTO `agents` (`agent_code`, `fullname`, `email`, `password`, `phone`, `status`) VALUES ('$agent_code', '$fullname', '$email', '$password', '$phone', 'pending')";
-                                if (mysqli_query($conn, $sql)) {
-                                    echo "<script>alert('Registration Successful! Please login.'); location.href = 'login.php'</script>";
+                                // Generate Agent Code (e.g., AGT-RANDOM)
+                                $agent_code = 'AGT-' . strtoupper(substr(md5(uniqid(mt_rand(), true)), 0, 6));
+
+                                // Check email
+                                $check = mysqli_query($conn, "SELECT * FROM `agents` WHERE `email` = '$email'");
+                                if (mysqli_num_rows($check) > 0) {
+                                    echo "<script>alert('Email already registered')</script>";
                                 } else {
-                                    echo "<script>alert('Error: " . mysqli_error($conn) . "')</script>";
+                                    // Hash the password
+                                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                                    $sql = "INSERT INTO `agents` (`agent_code`, `fullname`, `email`, `password`, `phone`, `status`) VALUES ('$agent_code', '$fullname', '$email', '$hashed_password', '$phone', 'pending')";
+                                    if (mysqli_query($conn, $sql)) {
+                                        echo "<script>alert('Registration Successful! Your agent code is: $agent_code. Please login.'); location.href = 'login.php'</script>";
+                                    } else {
+                                        echo "<script>alert('Error: " . mysqli_error($conn) . "')</script>";
+                                    }
                                 }
                             }
                         }
@@ -96,4 +109,5 @@ if (isLoggedIn('agent')) {
     <script src="assets/js/vendor.min.js"></script>
     <script src="assets/js/app.js"></script>
 </body>
+
 </html>

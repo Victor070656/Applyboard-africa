@@ -368,6 +368,7 @@ include_once "partials/header.php";
     .contact-grid {
       grid-template-columns: 1fr;
     }
+
     .locations-grid {
       grid-template-columns: 1fr;
     }
@@ -377,26 +378,33 @@ include_once "partials/header.php";
     .contact-form-wrapper {
       padding: 32px 24px;
     }
+
     .contact-info-card {
       padding: 24px;
     }
+
     .location-card {
       padding: 24px;
     }
+
     .map-wrapper iframe {
       height: 300px;
     }
+
     .cta-section {
       padding: 60px 24px;
     }
+
     .social-icons {
       gap: 12px;
     }
+
     .social-icons a {
       width: 48px;
       height: 48px;
       font-size: 20px;
     }
+
     .form-row {
       grid-template-columns: 1fr;
     }
@@ -421,39 +429,46 @@ include_once "partials/header.php";
 
         <?php
         if (isset($_POST['submit_inquiry'])) {
-            $name = mysqli_real_escape_string($conn, $_POST['form_name']);
-            $email = mysqli_real_escape_string($conn, $_POST['form_email']);
-            $phone = mysqli_real_escape_string($conn, $_POST['form_phone']);
-            $subject = mysqli_real_escape_string($conn, $_POST['form_subject']);
-            $message = mysqli_real_escape_string($conn, $_POST['form_message']);
+          $name = mysqli_real_escape_string($conn, $_POST['form_name']);
+          $email = mysqli_real_escape_string($conn, $_POST['form_email']);
+          $phone = mysqli_real_escape_string($conn, $_POST['form_phone']);
+          $subject = mysqli_real_escape_string($conn, $_POST['form_subject']);
+          $message = mysqli_real_escape_string($conn, $_POST['form_message']);
 
-            // Resolve Agent
-            $agent_id = 'NULL';
-            $ref_code = isset($_GET['ref']) ? $_GET['ref'] : (isset($_COOKIE['sdtravels_ref']) ? $_COOKIE['sdtravels_ref'] : '');
+          // Resolve Agent from URL parameter or cookie
+          $agent_id = 'NULL';
+          $ref_code = isset($_GET['ref']) ? $_GET['ref'] : (isset($_COOKIE['sdtravels_ref']) ? $_COOKIE['sdtravels_ref'] : '');
 
-            if ($ref_code) {
-                $ref_code = mysqli_real_escape_string($conn, $ref_code);
-                $agent_check = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `agent_code` = '$ref_code'");
-                if ($agent_check && mysqli_num_rows($agent_check) > 0) {
-                    $agent_id = mysqli_fetch_assoc($agent_check)['id'];
-                }
+          if ($ref_code) {
+            $ref_code = mysqli_real_escape_string($conn, $ref_code);
+            $agent_check = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `agent_code` = '$ref_code' AND `status` = 'verified'");
+            if ($agent_check && mysqli_num_rows($agent_check) > 0) {
+              $agent_id = mysqli_fetch_assoc($agent_check)['id'];
+            }
+          }
+
+          $full_message = "Subject: $subject\n\n$message";
+
+          $sql = "INSERT INTO `inquiries` (`name`, `email`, `phone`, `message`, `agent_id`) VALUES ('$name', '$email', '$phone', '$full_message', $agent_id)";
+
+          if (mysqli_query($conn, $sql)) {
+            // If inquiry is linked to an agent, notify them
+            if ($agent_id != 'NULL') {
+              $inquiry_id = mysqli_insert_id($conn);
+              mysqli_query($conn, "INSERT INTO `notifications` (`user_id`, `user_type`, `type`, `title`, `message`) 
+                                        VALUES ($agent_id, 'agent', 'inquiry_received', 'New Inquiry Received', 'A new inquiry from $name has been submitted via your referral.')");
             }
 
-            $full_message = "Subject: $subject\n\n$message";
-
-            $sql = "INSERT INTO `inquiries` (`name`, `email`, `phone`, `message`, `agent_id`) VALUES ('$name', '$email', '$phone', '$full_message', $agent_id)";
-
-            if (mysqli_query($conn, $sql)) {
-                echo "<div class='alert-success'>
+            echo "<div class='alert-success'>
                         <i class='fas fa-check-circle'></i>
                         <span>Thank you! Your message has been sent successfully. We'll get back to you soon.</span>
                       </div>";
-            } else {
-                echo "<div class='alert-error'>
+          } else {
+            echo "<div class='alert-error'>
                         <i class='fas fa-exclamation-circle'></i>
                         <span>Error sending message. Please try again.</span>
                       </div>";
-            }
+          }
         }
         ?>
 
@@ -480,7 +495,8 @@ include_once "partials/header.php";
           </div>
           <div class="form-group">
             <label>Message *</label>
-            <textarea name="form_message" class="form-control" rows="6" placeholder="How can we help you?" required></textarea>
+            <textarea name="form_message" class="form-control" rows="6" placeholder="How can we help you?"
+              required></textarea>
           </div>
           <div class="button-row">
             <button type="submit" name="submit_inquiry" class="btn-submit">
@@ -500,8 +516,10 @@ include_once "partials/header.php";
             <i class="fas fa-phone-alt"></i>
           </div>
           <h4>Phone Numbers</h4>
-          <p style="margin-bottom: 8px;"><strong>Secretary:</strong><br /><a href="tel:+2349069503394">+234 906 9503 394</a></p>
-          <p style="margin-bottom: 8px;"><strong>Manager:</strong><br /><a href="tel:+2349023297280">+234 902 3297 280</a></p>
+          <p style="margin-bottom: 8px;"><strong>Secretary:</strong><br /><a href="tel:+2349069503394">+234 906 9503
+              394</a></p>
+          <p style="margin-bottom: 8px;"><strong>Manager:</strong><br /><a href="tel:+2349023297280">+234 902 3297
+              280</a></p>
           <p><strong>MD:</strong><br /><a href="tel:+2348145450396">+234 814 5450 396</a></p>
         </div>
 
@@ -591,7 +609,9 @@ include_once "partials/header.php";
   </div>
   <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px;">
     <div class="map-wrapper">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.0228649087003!2d3.872499073870538!3d7.35132861299248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10398d001d271eb3%3A0x81ed092bffc4ca30!2sSmile%20Dove%20Nigeria%20Limited!5e0!3m2!1sen!2sng!4v1744215177663!5m2!1sen!2sng" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.0228649087003!2d3.872499073870538!3d7.35132861299248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10398d001d271eb3%3A0x81ed092bffc4ca30!2sSmile%20Dove%20Nigeria%20Limited!5e0!3m2!1sen!2sng!4v1744215177663!5m2!1sen!2sng"
+        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 </section>
@@ -639,11 +659,12 @@ include_once "partials/header.php";
       window.requirejs && !window.whatsAppWidgetClient && (requirejs.config({ paths: { GlassixWhatsAppWidgetClient: "https://cdn.glassix.com/clients/whatsapp.widget.1.2.min.js" } }),
         require(["GlassixWhatsAppWidgetClient"], function (t) { window.whatsAppWidgetClient = new t(window.glassixWidgetOptions), whatsAppWidgetClient.attach() })),
         window.GlassixWhatsAppWidgetClient && "function" == typeof window.GlassixWhatsAppWidgetClient ? (window.whatsAppWidgetClient = new GlassixWhatsAppWidgetClient(t), whatsAppWidgetClient.attach()) : i()
-      }, i = function () {
-        a.onload = e, a.src = "https://cdn.glassix.net/clients/whatsapp.widget.1.2.min.js", s && s.parentElement && s.parentElement.removeChild(s), n.parentNode.insertBefore(a, n)
-      }, n = document.getElementsByTagName("script")[0], s = document.createElement("script"); s.async = !0, s.type = "text/javascript", s.crossorigin = "anonymous", s.id = "glassix-whatsapp-widget-script"; var a = s.cloneNode();
-      s.onload = e, s.src = "https://cdn.glassix.com/clients/whatsapp.widget.1.2.min.js", !document.getElementById(s.id) && document.body && (n.parentNode.insertBefore(s, n), s.onerror = i)
+    }, i = function () {
+      a.onload = e, a.src = "https://cdn.glassix.net/clients/whatsapp.widget.1.2.min.js", s && s.parentElement && s.parentElement.removeChild(s), n.parentNode.insertBefore(a, n)
+    }, n = document.getElementsByTagName("script")[0], s = document.createElement("script"); s.async = !0, s.type = "text/javascript", s.crossorigin = "anonymous", s.id = "glassix-whatsapp-widget-script"; var a = s.cloneNode();
+    s.onload = e, s.src = "https://cdn.glassix.com/clients/whatsapp.widget.1.2.min.js", !document.getElementById(s.id) && document.body && (n.parentNode.insertBefore(s, n), s.onerror = i)
   }(glassixWidgetOptions);
 </script>
 </body>
+
 </html>

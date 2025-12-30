@@ -14,9 +14,11 @@ include '../config/config.php';
     <meta charset="utf-8" />
     <title>ApplyBoard Africa Ltd || Sign In</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ApplyBoard Africa Ltd: An advanced, fully responsive admin dashboard template packed with features to streamline your analytics and management needs." />
+    <meta name="description"
+        content="ApplyBoard Africa Ltd: An advanced, fully responsive admin dashboard template packed with features to streamline your analytics and management needs." />
     <meta name="author" content="StackBros" />
-    <meta name="keywords" content="ApplyBoard Africa Ltd, admin dashboard, responsive template, analytics, modern UI, management tools" />
+    <meta name="keywords"
+        content="ApplyBoard Africa Ltd, admin dashboard, responsive template, analytics, modern UI, management tools" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#ffffff">
@@ -54,7 +56,7 @@ include '../config/config.php';
                             <div class="card-body p-5">
                                 <div class="text-center">
                                     <div class="mx-auto mb-4 text-center auth-logo">
-                                        
+
                                     </div>
                                     <h4 class="fw-bold text-dark mb-2">Welcome Back!</h3>
                                         <p class="text-muted">Sign in to your account to continue</p>
@@ -62,16 +64,19 @@ include '../config/config.php';
                                 <form method="post" class="mt-4">
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email Address</label>
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="Enter your email">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                            placeholder="Enter your email">
                                     </div>
                                     <div class="mb-3">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <label for="password" class="form-label">Password</label>
                                         </div>
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="Enter your password">
                                     </div>
                                     <div class="d-grid">
-                                        <button class="btn btn-dark btn-lg fw-medium" name="submit" type="submit">Sign In</button>
+                                        <button class="btn btn-dark btn-lg fw-medium" name="submit" type="submit">Sign
+                                            In</button>
                                     </div>
                                 </form>
                             </div>
@@ -84,7 +89,7 @@ include '../config/config.php';
                             $result = mysqli_query($conn, $sql);
                             if (mysqli_num_rows($result) > 0) {
                                 $row = mysqli_fetch_assoc($result);
-                                loginUser('manager', $row);
+                                loginUser('admin', $row);
                                 echo "<script>alert('Login Successfull'); location.href = './'</script>";
                             } else {
                                 echo "<script>alert('Invalid Email and Password combination')</script>";

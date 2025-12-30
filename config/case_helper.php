@@ -11,7 +11,8 @@
 /**
  * Get valid case stages by case type
  */
-function getCaseStages($caseType = null) {
+function getCaseStages($caseType = null)
+{
     $stages = [
         'study_abroad' => [
             'assessment' => 'Assessment',
@@ -77,7 +78,8 @@ function getCaseStages($caseType = null) {
 /**
  * Get next stage for a case type
  */
-function getNextStage($caseType, $currentStage) {
+function getNextStage($caseType, $currentStage)
+{
     $stages = getCaseStages($caseType);
     $stageKeys = array_keys($stages);
     $currentIndex = array_search($currentStage, $stageKeys);
@@ -91,7 +93,8 @@ function getNextStage($caseType, $currentStage) {
 /**
  * Get previous stage for a case type
  */
-function getPreviousStage($caseType, $currentStage) {
+function getPreviousStage($caseType, $currentStage)
+{
     $stages = getCaseStages($caseType);
     $stageKeys = array_keys($stages);
     $currentIndex = array_search($currentStage, $stageKeys);
@@ -105,9 +108,112 @@ function getPreviousStage($caseType, $currentStage) {
 /**
  * Get stage label
  */
-function getStageLabel($caseType, $stage) {
+function getStageLabel($caseType, $stage)
+{
     $stages = getCaseStages($caseType);
     return isset($stages[$stage]) ? $stages[$stage] : $stage;
+}
+
+/**
+ * Get badge class for a stage
+ */
+function getStageBadge($stage)
+{
+    $badges = [
+        'assessment' => 'bg-primary',
+        'options' => 'bg-info',
+        'application' => 'bg-secondary',
+        'submission' => 'bg-warning',
+        'offer' => 'bg-success',
+        'visa' => 'bg-danger',
+        'travel' => 'bg-purple',
+        'booking' => 'bg-orange',
+        'completed' => 'bg-green',
+        'closed' => 'bg-dark',
+        'requirements' => 'bg-primary',
+        'processing' => 'bg-info',
+        'decision' => 'bg-warning',
+        'documents' => 'bg-info'
+    ];
+    return isset($badges[$stage]) ? $badges[$stage] : 'bg-secondary';
+}
+
+/**
+ * Get case type label
+ */
+function getCaseTypeLabel($type)
+{
+    $labels = [
+        'study_abroad' => 'Study Abroad',
+        'visa_student' => 'Student Visa',
+        'visa_tourist' => 'Tourist Visa',
+        'visa_family' => 'Family Visa',
+        'travel_booking' => 'Travel Booking',
+        'pilgrimage' => 'Pilgrimage',
+        'other' => 'Other'
+    ];
+    return isset($labels[$type]) ? $labels[$type] : ucfirst(str_replace('_', ' ', $type));
+}
+
+/**
+ * Get a setting value from the settings database table
+ */
+function getSettingValue($key, $default = null)
+{
+    global $conn;
+    $key = mysqli_real_escape_string($conn, $key);
+    $result = mysqli_query($conn, "SELECT setting_value FROM settings WHERE setting_key = '$key' LIMIT 1");
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['setting_value'];
+    }
+    return $default;
+}
+
+/**
+ * Get case pricing for a specific case type
+ * Returns default amount and commission from database settings
+ */
+function getCasePricing($caseType)
+{
+    global $conn;
+
+    $defaults = [
+        'amount' => 0,
+        'commission' => 0,
+        'commission_percent' => 10
+    ];
+
+    // Read from database settings table
+    $amount = getSettingValue('case_amount_' . $caseType, 0);
+    $commission = getSettingValue('case_commission_' . $caseType, 0);
+    $commissionPercent = getSettingValue('case_commission_percent_' . $caseType, 10);
+
+    return [
+        'amount' => floatval($amount),
+        'commission' => floatval($commission),
+        'commission_percent' => floatval($commissionPercent)
+    ];
+}
+
+/**
+ * Calculate commission amount based on case type and amount
+ */
+function calculateCommission($caseType, $amount)
+{
+    $pricing = getCasePricing($caseType);
+
+    // If fixed commission is set, use it
+    if ($pricing['commission'] > 0) {
+        return $pricing['commission'];
+    }
+
+    // Otherwise calculate from percentage
+    if ($pricing['commission_percent'] > 0 && $amount > 0) {
+        return ($amount * $pricing['commission_percent']) / 100;
+    }
+
+    return 0;
 }
 
 // ============================================================================
@@ -117,14 +223,16 @@ function getStageLabel($caseType, $stage) {
 /**
  * Generate unique case number
  */
-function generateCaseNumber() {
+function generateCaseNumber()
+{
     return 'CS-' . date('Y') . '-' . strtoupper(substr(uniqid(), -6));
 }
 
 /**
  * Create a new case
  */
-function createCase($data) {
+function createCase($data)
+{
     global $conn;
 
     $caseNumber = isset($data['case_number']) ? $data['case_number'] : generateCaseNumber();
@@ -137,7 +245,12 @@ function createCase($data) {
     $institution = isset($data['institution']) ? mysqli_real_escape_string($conn, $data['institution']) : '';
     $program = isset($data['program']) ? mysqli_real_escape_string($conn, $data['program']) : '';
     $intake = isset($data['intake']) ? mysqli_real_escape_string($conn, $data['intake']) : '';
-    $amount = isset($data['amount']) ? floatval($data['amount']) : 0;
+
+    // Get default pricing if not provided
+    $pricing = getCasePricing($caseType);
+    $amount = isset($data['amount']) && $data['amount'] > 0 ? floatval($data['amount']) : $pricing['amount'];
+    $commissionAmount = isset($data['commission_amount']) && $data['commission_amount'] > 0 ? floatval($data['commission_amount']) : calculateCommission($caseType, $amount);
+
     $assignedTo = isset($data['assigned_to']) ? intval($data['assigned_to']) : 'NULL';
     $notes = isset($data['notes']) ? mysqli_real_escape_string($conn, $data['notes']) : '';
     $createdBy = isset($data['created_by']) ? intval($data['created_by']) : 0;
@@ -145,10 +258,10 @@ function createCase($data) {
 
     $sql = "INSERT INTO `cases` (
         `case_number`, `client_id`, `agent_id`, `case_type`, `title`, `description`,
-        `destination_country`, `institution`, `program`, `intake`, `amount`, `assigned_to`, `notes`
+        `destination_country`, `institution`, `program`, `intake`, `amount`, `commission_amount`, `assigned_to`, `notes`
     ) VALUES (
         '$caseNumber', '$clientId', '$agentId', '$caseType', '$title', '$description',
-        '$destinationCountry', '$institution', '$program', '$intake', '$amount', $assignedTo, '$notes'
+        '$destinationCountry', '$institution', '$program', '$intake', '$amount', '$commissionAmount', $assignedTo, '$notes'
     )";
 
     if (mysqli_query($conn, $sql)) {
@@ -168,7 +281,8 @@ function createCase($data) {
 /**
  * Update case stage
  */
-function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes = '') {
+function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes = '')
+{
     global $conn;
 
     $caseId = intval($caseId);
@@ -194,13 +308,21 @@ function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes 
         logCaseStageChange($caseId, $currentStage, $newStage, $changedBy, $changedByType, $notes);
 
         // Log activity
-        logActivity($changedBy, $changedByType, 'case_stage_updated', 'case', $caseId,
-            "Case {$case['case_number']} moved from $currentStage to $newStage");
+        logActivity(
+            $changedBy,
+            $changedByType,
+            'case_stage_updated',
+            'case',
+            $caseId,
+            "Case {$case['case_number']} moved from $currentStage to $newStage"
+        );
 
         // Send notification to agent
         $agent = mysqli_fetch_assoc(mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `id` = '{$case['agent_id']}'"));
         if ($agent) {
-            createNotification($agent['id'], 'agent',
+            createNotification(
+                $agent['id'],
+                'agent',
                 'Case Stage Updated',
                 "Case {$case['case_number']} has been moved to " . getStageLabelFromStage($newStage),
                 'success',
@@ -209,7 +331,9 @@ function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes 
         }
 
         // Send notification to client
-        createNotification($case['client_id'], 'client',
+        createNotification(
+            $case['client_id'],
+            'client',
             'Your Case Status Updated',
             "Your case {$case['case_number']} has been updated to: " . getStageLabelFromStage($newStage),
             'success',
@@ -218,7 +342,7 @@ function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes 
 
         // Check if case is completed and calculate commission
         if ($newStage === 'completed' || $newStage === 'closed') {
-            calculateCommission($caseId);
+            calculateCaseCommission($caseId);
         }
 
         return true;
@@ -229,7 +353,8 @@ function updateCaseStage($caseId, $newStage, $changedBy, $changedByType, $notes 
 /**
  * Get stage label directly (without case type)
  */
-function getStageLabelFromStage($stage) {
+function getStageLabelFromStage($stage)
+{
     $labels = [
         'assessment' => 'Assessment',
         'options' => 'Options Provided',
@@ -251,7 +376,8 @@ function getStageLabelFromStage($stage) {
 /**
  * Log case stage change
  */
-function logCaseStageChange($caseId, $fromStage, $toStage, $changedBy, $changedByType, $notes = '') {
+function logCaseStageChange($caseId, $fromStage, $toStage, $changedBy, $changedByType, $notes = '')
+{
     global $conn;
 
     $caseId = intval($caseId);
@@ -270,7 +396,8 @@ function logCaseStageChange($caseId, $fromStage, $toStage, $changedBy, $changedB
 /**
  * Get case by ID
  */
-function getCase($caseId) {
+function getCase($caseId)
+{
     global $conn;
 
     $caseId = intval($caseId);
@@ -292,7 +419,8 @@ function getCase($caseId) {
 /**
  * Get cases by filter
  */
-function getCases($filters = []) {
+function getCases($filters = [])
+{
     global $conn;
 
     $where = ["1=1"];
@@ -351,7 +479,8 @@ function getCases($filters = []) {
 /**
  * Count cases by filter
  */
-function countCases($filters = []) {
+function countCases($filters = [])
+{
     global $conn;
 
     $where = ["1=1"];
@@ -383,16 +512,26 @@ function countCases($filters = []) {
 /**
  * Update case details
  */
-function updateCase($caseId, $data) {
+function updateCase($caseId, $data)
+{
     global $conn;
 
     $caseId = intval($caseId);
     $set = [];
 
     $allowedFields = [
-        'title', 'description', 'destination_country', 'institution', 'program',
-        'intake', 'amount', 'commission_amount', 'commission_paid', 'status',
-        'assigned_to', 'notes'
+        'title',
+        'description',
+        'destination_country',
+        'institution',
+        'program',
+        'intake',
+        'amount',
+        'commission_amount',
+        'commission_paid',
+        'status',
+        'assigned_to',
+        'notes'
     ];
 
     foreach ($allowedFields as $field) {
@@ -430,7 +569,8 @@ function updateCase($caseId, $data) {
 /**
  * Upload document for a case
  */
-function uploadDocument($file, $clientId, $documentType, $caseId = null, $uploadedBy = 'client', $uploadedById = 0) {
+function uploadDocument($file, $clientId, $documentType, $caseId = null, $uploadedBy = 'client', $uploadedById = 0)
+{
     global $conn;
 
     $uploadDir = '../uploads/documents/';
@@ -464,8 +604,14 @@ function uploadDocument($file, $clientId, $documentType, $caseId = null, $upload
 
         if (mysqli_query($conn, $sql)) {
             $docId = mysqli_insert_id($conn);
-            logActivity($uploadedById, $uploadedBy, 'document_uploaded', 'document', $docId,
-                "Document $fileName uploaded");
+            logActivity(
+                $uploadedById,
+                $uploadedBy,
+                'document_uploaded',
+                'document',
+                $docId,
+                "Document $fileName uploaded"
+            );
 
             return ['success' => true, 'document_id' => $docId, 'message' => 'Document uploaded successfully'];
         }
@@ -477,7 +623,8 @@ function uploadDocument($file, $clientId, $documentType, $caseId = null, $upload
 /**
  * Get documents for a case
  */
-function getCaseDocuments($caseId) {
+function getCaseDocuments($caseId)
+{
     global $conn;
 
     $caseId = intval($caseId);
@@ -495,7 +642,8 @@ function getCaseDocuments($caseId) {
 /**
  * Update document status
  */
-function updateDocumentStatus($docId, $status, $notes = '') {
+function updateDocumentStatus($docId, $status, $notes = '')
+{
     global $conn;
 
     $docId = intval($docId);
@@ -511,9 +659,10 @@ function updateDocumentStatus($docId, $status, $notes = '') {
 // ============================================================================
 
 /**
- * Calculate commission for a case
+ * Calculate and update commission for a specific case (legacy function)
  */
-function calculateCommission($caseId) {
+function calculateCaseCommission($caseId)
+{
     global $conn;
 
     $caseId = intval($caseId);
@@ -548,7 +697,8 @@ function calculateCommission($caseId) {
 /**
  * Create commission record
  */
-function createCommissionRecord($agentId, $caseId, $clientId, $amount, $rate, $caseAmount) {
+function createCommissionRecord($agentId, $caseId, $clientId, $amount, $rate, $caseAmount)
+{
     global $conn;
 
     $agentId = intval($agentId);
@@ -564,7 +714,8 @@ function createCommissionRecord($agentId, $caseId, $clientId, $amount, $rate, $c
 /**
  * Get pending commissions for an agent
  */
-function getAgentCommissions($agentId, $status = null) {
+function getAgentCommissions($agentId, $status = null)
+{
     global $conn;
 
     $agentId = intval($agentId);
@@ -593,7 +744,8 @@ function getAgentCommissions($agentId, $status = null) {
 /**
  * Update commission status
  */
-function updateCommissionStatus($commissionId, $status, $approvedBy = null, $paymentMethod = null, $paymentRef = null) {
+function updateCommissionStatus($commissionId, $status, $approvedBy = null, $paymentMethod = null, $paymentRef = null)
+{
     global $conn;
 
     $commissionId = intval($commissionId);
@@ -626,7 +778,8 @@ function updateCommissionStatus($commissionId, $status, $approvedBy = null, $pay
 /**
  * Log activity
  */
-function logActivity($userId, $userType, $action, $entityType = null, $entityId = null, $description = null) {
+function logActivity($userId, $userType, $action, $entityType = null, $entityId = null, $description = null)
+{
     global $conn;
 
     $userId = $userId ? "'" . intval($userId) . "'" : 'NULL';
@@ -647,7 +800,8 @@ function logActivity($userId, $userType, $action, $entityType = null, $entityId 
 /**
  * Get activity logs
  */
-function getActivityLogs($filters = []) {
+function getActivityLogs($filters = [])
+{
     global $conn;
 
     $where = ["1=1"];
@@ -685,7 +839,8 @@ function getActivityLogs($filters = []) {
 /**
  * Create notification
  */
-function createNotification($userId, $userType, $title, $message, $type = 'info', $link = null) {
+function createNotification($userId, $userType, $title, $message, $type = 'info', $link = null)
+{
     global $conn;
 
     $userId = intval($userId);
@@ -704,7 +859,8 @@ function createNotification($userId, $userType, $title, $message, $type = 'info'
 /**
  * Get notifications for user
  */
-function getUserNotifications($userId, $userType, $unreadOnly = false) {
+function getUserNotifications($userId, $userType, $unreadOnly = false)
+{
     global $conn;
 
     $userId = intval($userId);
@@ -730,7 +886,8 @@ function getUserNotifications($userId, $userType, $unreadOnly = false) {
 /**
  * Mark notification as read
  */
-function markNotificationRead($notificationId) {
+function markNotificationRead($notificationId)
+{
     global $conn;
 
     $notificationId = intval($notificationId);
@@ -741,7 +898,8 @@ function markNotificationRead($notificationId) {
 /**
  * Mark all notifications as read for user
  */
-function markAllNotificationsRead($userId, $userType) {
+function markAllNotificationsRead($userId, $userType)
+{
     global $conn;
 
     $userId = intval($userId);
@@ -754,7 +912,8 @@ function markAllNotificationsRead($userId, $userType) {
 /**
  * Get unread notification count
  */
-function getUnreadNotificationCount($userId, $userType) {
+function getUnreadNotificationCount($userId, $userType)
+{
     global $conn;
 
     $userId = intval($userId);
@@ -776,23 +935,32 @@ function getUnreadNotificationCount($userId, $userType) {
 /**
  * Calculate and update agent performance
  */
-function updateAgentPerformance($agentId) {
+function updateAgentPerformance($agentId)
+{
     global $conn;
 
     $agentId = intval($agentId);
 
     // Get counts
-    $totalReferrals = mysqli_fetch_assoc(mysqli_query($conn,
-        "SELECT COUNT(*) as count FROM `users` WHERE `agent_id` = '$agentId'"))['count'];
+    $totalReferrals = mysqli_fetch_assoc(mysqli_query(
+        $conn,
+        "SELECT COUNT(*) as count FROM `users` WHERE `agent_id` = '$agentId'"
+    ))['count'];
 
-    $activeCases = mysqli_fetch_assoc(mysqli_query($conn,
-        "SELECT COUNT(*) as count FROM `cases` WHERE `agent_id` = '$agentId' AND `status` = 'active'"))['count'];
+    $activeCases = mysqli_fetch_assoc(mysqli_query(
+        $conn,
+        "SELECT COUNT(*) as count FROM `cases` WHERE `agent_id` = '$agentId' AND `status` = 'active'"
+    ))['count'];
 
-    $completedCases = mysqli_fetch_assoc(mysqli_query($conn,
-        "SELECT COUNT(*) as count FROM `cases` WHERE `agent_id` = '$agentId' AND (`stage` = 'completed' OR `stage` = 'closed')"))['count'];
+    $completedCases = mysqli_fetch_assoc(mysqli_query(
+        $conn,
+        "SELECT COUNT(*) as count FROM `cases` WHERE `agent_id` = '$agentId' AND (`stage` = 'completed' OR `stage` = 'closed')"
+    ))['count'];
 
-    $totalEarnings = mysqli_fetch_assoc(mysqli_query($conn,
-        "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agentId' AND `status` = 'paid'"))['total'];
+    $totalEarnings = mysqli_fetch_assoc(mysqli_query(
+        $conn,
+        "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agentId' AND `status` = 'paid'"
+    ))['total'];
 
     // Calculate ratings (simplified logic)
     $ratingActivity = min(5.0, ($totalReferrals * 0.5) + ($activeCases * 0.3));
@@ -802,9 +970,12 @@ function updateAgentPerformance($agentId) {
 
     // Determine tier
     $tier = 'bronze';
-    if ($ratingOverall >= 4.5) $tier = 'platinum';
-    elseif ($ratingOverall >= 3.5) $tier = 'gold';
-    elseif ($ratingOverall >= 2.5) $tier = 'silver';
+    if ($ratingOverall >= 4.5)
+        $tier = 'platinum';
+    elseif ($ratingOverall >= 3.5)
+        $tier = 'gold';
+    elseif ($ratingOverall >= 2.5)
+        $tier = 'silver';
 
     // Check if performance record exists
     $existing = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM `agent_performance` WHERE `agent_id` = '$agentId'"));
@@ -840,7 +1011,8 @@ function updateAgentPerformance($agentId) {
 /**
  * Get agent performance
  */
-function getAgentPerformance($agentId) {
+function getAgentPerformance($agentId)
+{
     global $conn;
 
     $agentId = intval($agentId);
