@@ -434,6 +434,31 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
 
                 <?php else: ?>
                     <!-- Cases List -->
+                    <?php
+                    // Show filter info if filtering by client or agent
+                    $filterInfo = '';
+                    if (isset($_GET['client'])) {
+                        $clientId = intval($_GET['client']);
+                        $clientInfo = mysqli_fetch_assoc(mysqli_query($conn, "SELECT fullname, email FROM users WHERE id = $clientId"));
+                        if ($clientInfo) {
+                            $filterInfo = '<div class="alert alert-info mb-3">
+                                <i class="ti ti-filter me-2"></i>Showing cases for client: <strong>' . htmlspecialchars($clientInfo['fullname']) . '</strong> (' . htmlspecialchars($clientInfo['email']) . ')
+                                <a href="cases.php" class="btn btn-sm btn-outline-primary float-end">Clear Filter</a>
+                            </div>';
+                        }
+                    }
+                    if (isset($_GET['agent'])) {
+                        $agentId = intval($_GET['agent']);
+                        $agentInfo = mysqli_fetch_assoc(mysqli_query($conn, "SELECT fullname, agent_code FROM agents WHERE id = $agentId"));
+                        if ($agentInfo) {
+                            $filterInfo = '<div class="alert alert-info mb-3">
+                                <i class="ti ti-filter me-2"></i>Showing cases for agent: <strong>' . htmlspecialchars($agentInfo['fullname']) . '</strong> (' . htmlspecialchars($agentInfo['agent_code']) . ')
+                                <a href="cases.php" class="btn btn-sm btn-outline-primary float-end">Clear Filter</a>
+                            </div>';
+                        }
+                    }
+                    echo $filterInfo;
+                    ?>
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <div class="card">
@@ -506,6 +531,10 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
                                                     $filters['status'] = $statusFilter;
                                                 if (isset($_GET['search']))
                                                     $filters['search'] = $_GET['search'];
+                                                if (isset($_GET['client']))
+                                                    $filters['client_id'] = intval($_GET['client']);
+                                                if (isset($_GET['agent']))
+                                                    $filters['agent_id'] = intval($_GET['agent']);
 
                                                 $cases = getCases($filters);
 

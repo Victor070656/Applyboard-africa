@@ -59,13 +59,13 @@ if ($reportType === 'overview') {
      $agentPerformance = mysqli_query($conn, "
         SELECT a.fullname, a.id,
                COUNT(DISTINCT c.id) as case_count,
-               COUNT(DISTINCT CASE WHEN c.status = 'completed' THEN c.id END) as completed_cases,
-               COALESCE(SUM(com.amount), 0) as total_commissions
+               COUNT(DISTINCT CASE WHEN c.status = 'completed' OR c.stage = 'completed' THEN c.id END) as completed_cases,
+               COALESCE((SELECT SUM(amount) FROM commissions WHERE agent_id = a.id AND status = 'paid'), 0) as total_commissions,
+               COALESCE((SELECT SUM(commission_amount) FROM cases WHERE agent_id = a.id AND (status = 'completed' OR stage = 'completed')), 0) as case_commissions
         FROM agents a
-        LEFT JOIN cases c ON a.id = c.agent_id AND c.created_at BETWEEN '$startDate' AND '$endDate'
-        LEFT JOIN commissions com ON a.id = com.agent_id AND com.status = 'paid' AND com.created_at BETWEEN '$startDate' AND '$endDate'
+        LEFT JOIN cases c ON a.id = c.agent_id
         WHERE a.status = 'verified'
-        GROUP BY a.id
+        GROUP BY a.id, a.fullname
         ORDER BY completed_cases DESC, case_count DESC
         LIMIT 10
     ");
@@ -318,19 +318,29 @@ if ($reportType === 'overview') {
                                                   </tr>
                                              </thead>
                                              <tbody>
-                                                  <?php while ($agent = mysqli_fetch_assoc($agentPerformance)): ?>
+                                                  <?php
+                                                  if ($agentPerformance && mysqli_num_rows($agentPerformance) > 0):
+                                                       while ($agent = mysqli_fetch_assoc($agentPerformance)):
+                                                            $earnings = max($agent['total_commissions'], $agent['case_commissions']);
+                                                            ?>
+                                                            <tr>
+                                                                 <td>
+                                                                      <strong><?= htmlspecialchars($agent['fullname']) ?></strong>
+                                                                 </td>
+                                                                 <td><?= $agent['case_count'] ?></td>
+                                                                 <td>
+                                                                      <span
+                                                                           class="badge bg-success"><?= $agent['completed_cases'] ?></span>
+                                                                 </td>
+                                                                 <td>₦<?= number_format($earnings, 2) ?></td>
+                                                            </tr>
+                                                       <?php endwhile;
+                                                  else: ?>
                                                        <tr>
-                                                            <td>
-                                                                 <strong><?= htmlspecialchars($agent['fullname']) ?></strong>
+                                                            <td colspan="4" class="text-center text-muted">No agent data available
                                                             </td>
-                                                            <td><?= $agent['case_count'] ?></td>
-                                                            <td>
-                                                                 <span
-                                                                      class="badge bg-success"><?= $agent['completed_cases'] ?></span>
-                                                            </td>
-                                                            <td>$<?= number_format($agent['total_commissions'], 2) ?></td>
                                                        </tr>
-                                                  <?php endwhile; ?>
+                                                  <?php endif; ?>
                                              </tbody>
                                         </table>
                                    </div>
@@ -444,7 +454,8 @@ if ($reportType === 'overview') {
                                         <div class="card-body text-center">
                                              <h6>Period</h6>
                                              <h5><?= date('M d, Y', strtotime($startDate)) ?> -
-                                                  <?= date('M d, Y', strtotime($endDate)) ?></h5>
+                                                  <?= date('M d, Y', strtotime($endDate)) ?>
+                                             </h5>
                                         </div>
                                    </div>
                               </div>
