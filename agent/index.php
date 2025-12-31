@@ -28,15 +28,23 @@ $getActiveCases = mysqli_query($conn, "SELECT COUNT(*) as count FROM `cases` WHE
 $activeCasesData = mysqli_fetch_assoc($getActiveCases);
 $activeCasesCount = $activeCasesData['count'];
 
-// Commissions pending
-$getPendingCommissions = mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agent_id' AND `status` = 'pending'");
-$commissionsPendingData = mysqli_fetch_assoc($getPendingCommissions);
-$commissionsPending = $commissionsPendingData['total'];
+// Pending Payout (commissions awaiting payment - pending or approved)
+$getPendingPayout = mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agent_id' AND `status` IN ('pending', 'approved')");
+$pendingPayoutData = mysqli_fetch_assoc($getPendingPayout);
+$pendingPayout = floatval($pendingPayoutData['total']);
 
-// Total earned
+// Total earned (only from paid commissions - already received)
 $getTotalEarned = mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agent_id' AND `status` = 'paid'");
 $totalEarnedData = mysqli_fetch_assoc($getTotalEarned);
-$totalEarned = $totalEarnedData['total'];
+$totalEarned = floatval($totalEarnedData['total']);
+
+// Lifetime earnings (all commissions - paid + pending + approved)
+$getLifetimeEarnings = mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '$agent_id' AND `status` IN ('pending', 'approved', 'paid')");
+$lifetimeEarningsData = mysqli_fetch_assoc($getLifetimeEarnings);
+$lifetimeEarnings = floatval($lifetimeEarningsData['total']);
+
+// Update agents table with correct values
+mysqli_query($conn, "UPDATE `agents` SET `wallet_balance` = '$pendingPayout', `total_earned` = '$totalEarned' WHERE `id` = '$agent_id'");
 
 // Performance and rating
 updateAgentPerformance($agent_id);
@@ -176,7 +184,7 @@ $inquiriesCount = mysqli_num_rows($getInquiries);
                                              <div class="col-6 text-end">
                                                   <p class="text-muted mb-0 text-truncate">Pending</p>
                                                   <h3 class="text-dark mt-2 mb-0">
-                                                       ₦<?= number_format($commissionsPending, 0); ?></h3>
+                                                       ₦<?= number_format($pendingPayout, 0); ?></h3>
                                              </div>
                                         </div>
                                    </div>
@@ -230,16 +238,21 @@ $inquiriesCount = mysqli_num_rows($getInquiries);
                               <div class="card rounded-4">
                                    <div class="card-body">
                                         <div class="row">
-                                             <div class="col-md-6">
-                                                  <h4 class="card-title">Total Earned</h4>
-                                                  <h3 class="text-success">₦<?= number_format($totalEarned, 2) ?></h3>
-                                                  <p class="text-muted mb-0">From paid commissions</p>
+                                             <div class="col-md-4">
+                                                  <h4 class="card-title">Pending Payout</h4>
+                                                  <h3 class="text-warning">₦<?= number_format($pendingPayout, 2) ?></h3>
+                                                  <p class="text-muted mb-0">Awaiting payment</p>
                                              </div>
-                                             <div class="col-md-6">
-                                                  <h4 class="card-title">Wallet Balance</h4>
-                                                  <h3 class="text-primary">
-                                                       ₦<?= number_format($agent['wallet_balance'], 2) ?></h3>
-                                                  <p class="text-muted mb-0">Available for withdrawal</p>
+                                             <div class="col-md-4">
+                                                  <h4 class="card-title">Total Received</h4>
+                                                  <h3 class="text-success">₦<?= number_format($totalEarned, 2) ?></h3>
+                                                  <p class="text-muted mb-0">Already paid out</p>
+                                             </div>
+                                             <div class="col-md-4">
+                                                  <h4 class="card-title">Lifetime Earnings</h4>
+                                                  <h3 class="text-primary">₦<?= number_format($lifetimeEarnings, 2) ?>
+                                                  </h3>
+                                                  <p class="text-muted mb-0">Total commissions earned</p>
                                              </div>
                                         </div>
                                    </div>

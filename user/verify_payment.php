@@ -39,7 +39,15 @@ if (empty($reference)) {
 
                 if ($metadata) {
                     // Get agent ID from user (referral tracking)
-                    $agentId = isset($user['agent_id']) ? $user['agent_id'] : 0;
+                    // Verify the agent is still verified before assigning case
+                    $agentId = 0;
+                    if (isset($user['agent_id']) && $user['agent_id'] > 0) {
+                        $verifyAgent = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `id` = '{$user['agent_id']}' AND `status` = 'verified'");
+                        if ($verifyAgent && mysqli_num_rows($verifyAgent) > 0) {
+                            $agentId = $user['agent_id'];
+                        }
+                        // If agent is not verified, case is created without agent assignment
+                    }
 
                     // Prepare case data
                     $caseData = [

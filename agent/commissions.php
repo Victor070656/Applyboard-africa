@@ -45,6 +45,17 @@ $performance = getAgentPerformance($agent['id']);
                     </div>
                 </div>
 
+                <?php
+                // Calculate commission stats
+                $commissionStats = mysqli_fetch_assoc(mysqli_query(
+                    $conn,
+                    "SELECT 
+                        COALESCE(SUM(CASE WHEN status IN ('pending', 'approved') THEN amount ELSE 0 END), 0) as pending_payout,
+                        COALESCE(SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END), 0) as total_received,
+                        COALESCE(SUM(CASE WHEN status IN ('pending', 'approved', 'paid') THEN amount ELSE 0 END), 0) as lifetime_earnings
+                    FROM `commissions` WHERE `agent_id` = '{$agent['id']}'"
+                ));
+                ?>
                 <!-- Stats Cards -->
                 <div class="row">
                     <div class="col-md-3">
@@ -52,8 +63,28 @@ $performance = getAgentPerformance($agent['id']);
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Wallet Balance</h6>
-                                        <h4 class="mb-0">₦<?= number_format($agent['wallet_balance'], 2) ?></h4>
+                                        <h6 class="text-muted mb-1">Pending Payout</h6>
+                                        <h4 class="mb-0">₦<?= number_format($commissionStats['pending_payout'], 2) ?>
+                                        </h4>
+                                        <small class="text-muted">Awaiting payment</small>
+                                    </div>
+                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded">
+                                        <iconify-icon icon="solar:clock-circle-outline"
+                                            class="fs-24 text-warning"></iconify-icon>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1">
+                                        <h6 class="text-muted mb-1">Total Received</h6>
+                                        <h4 class="mb-0">₦<?= number_format($commissionStats['total_received'], 2) ?>
+                                        </h4>
+                                        <small class="text-muted">Already paid out</small>
                                     </div>
                                     <div class="avatar-sm bg-success bg-opacity-10 rounded">
                                         <iconify-icon icon="solar:wallet-money-outline"
@@ -68,36 +99,14 @@ $performance = getAgentPerformance($agent['id']);
                             <div class="card-body">
                                 <div class="d-flex align-items-center">
                                     <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Total Earned</h6>
-                                        <h4 class="mb-0">₦<?= number_format($agent['total_earned'], 2) ?></h4>
+                                        <h6 class="text-muted mb-1">Lifetime Earnings</h6>
+                                        <h4 class="mb-0">₦<?= number_format($commissionStats['lifetime_earnings'], 2) ?>
+                                        </h4>
+                                        <small class="text-muted">All time total</small>
                                     </div>
                                     <div class="avatar-sm bg-primary bg-opacity-10 rounded">
                                         <iconify-icon icon="solar:diagram-chart-outline"
                                             class="fs-24 text-primary"></iconify-icon>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Pending</h6>
-                                        <h4 class="mb-0">
-                                            <?php
-                                            $pending = mysqli_fetch_assoc(mysqli_query(
-                                                $conn,
-                                                "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `agent_id` = '{$agent['id']}' AND `status` = 'pending'"
-                                            ));
-                                            echo "₦" . number_format($pending['total'], 0);
-                                            ?>
-                                        </h4>
-                                    </div>
-                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded">
-                                        <iconify-icon icon="solar:clock-circle-outline"
-                                            class="fs-24 text-warning"></iconify-icon>
                                     </div>
                                 </div>
                             </div>

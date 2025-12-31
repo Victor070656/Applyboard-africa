@@ -12,6 +12,16 @@ $agent_id = $agent['id'];
 $success = false;
 $error = '';
 
+// Ensure required columns exist in agents table
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `address` varchar(255) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `city` varchar(100) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `country` varchar(100) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `bank_name` varchar(100) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `account_number` varchar(50) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `account_name` varchar(150) DEFAULT NULL");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `wallet_balance` decimal(12,2) NOT NULL DEFAULT 0.00");
+mysqli_query($conn, "ALTER TABLE `agents` ADD COLUMN IF NOT EXISTS `total_earned` decimal(12,2) NOT NULL DEFAULT 0.00");
+
 // Get full agent info
 $getAgent = mysqli_query($conn, "SELECT * FROM `agents` WHERE `id` = '$agent_id'");
 $info = mysqli_fetch_assoc($getAgent);

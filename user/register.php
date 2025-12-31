@@ -41,8 +41,18 @@ if (isset($_POST['submit'])) {
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'] ?? '';
 
-    // Get agent_id from hidden field (which was set from $referral_agent_id)
-    $post_agent_id = isset($_POST['agent_id']) && $_POST['agent_id'] != '' ? intval($_POST['agent_id']) : null;
+    // Get agent_id from hidden field and RE-VALIDATE that the agent is verified
+    // This prevents manipulation of the hidden field to assign users to unverified agents
+    $post_agent_id = null;
+    if (isset($_POST['agent_id']) && $_POST['agent_id'] != '') {
+        $submitted_agent_id = intval($_POST['agent_id']);
+        // Verify the agent exists AND is verified before allowing the referral
+        $verify_agent = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `id` = $submitted_agent_id AND `status` = 'verified'");
+        if ($verify_agent && mysqli_num_rows($verify_agent) > 0) {
+            $post_agent_id = $submitted_agent_id;
+        }
+        // If agent is not verified, $post_agent_id remains null - user registers without referral
+    }
 
     // Validation
     if (empty($fullname) || empty($email) || empty($password)) {

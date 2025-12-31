@@ -46,8 +46,10 @@ if (isset($_POST['update_amounts']) && isset($_POST['case_id'])) {
                 } else {
                     mysqli_query($conn, "INSERT INTO commissions (agent_id, case_id, amount, status, paid_date) VALUES ('{$case['agent_id']}', $caseId, '$commissionAmount', 'paid', NOW())");
                 }
-                // Update agent wallet
-                mysqli_query($conn, "UPDATE agents SET wallet_balance = wallet_balance + $commissionAmount, total_earned = total_earned + $commissionAmount WHERE id = '{$case['agent_id']}'");
+                // Sync agent wallet balance with total paid commissions
+                $agentId = $case['agent_id'];
+                $totalPaid = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM commissions WHERE agent_id = '$agentId' AND status = 'paid'"))['total'];
+                mysqli_query($conn, "UPDATE agents SET wallet_balance = '$totalPaid', total_earned = '$totalPaid' WHERE id = '$agentId'");
             }
         }
     } else {
@@ -86,20 +88,30 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
         // Check if user exists or create one
         $userCheck = mysqli_fetch_assoc(mysqli_query($conn, "SELECT `id` FROM `users` WHERE `email` = '{$inquiry['email']}'"));
 
+        // Verify the agent is still verified before assigning
+        $validAgentId = null;
+        if (!empty($inquiry['agent_id'])) {
+            $verifyAgent = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `id` = '{$inquiry['agent_id']}' AND `status` = 'verified'");
+            if ($verifyAgent && mysqli_num_rows($verifyAgent) > 0) {
+                $validAgentId = $inquiry['agent_id'];
+            }
+        }
+
         if (!$userCheck) {
-            // Create user account
+            // Create user account - only assign to agent if verified
             $password = 'Password123';
+            $agentInsert = $validAgentId ? ", '$validAgentId'" : ", NULL";
             mysqli_query($conn, "INSERT INTO `users` (`userid`, `fullname`, `email`, `password`, `agent_id`)
-                    VALUES ('" . uniqid() . "', '{$inquiry['name']}', '{$inquiry['email']}', '$password', '{$inquiry['agent_id']}')");
+                    VALUES ('" . uniqid() . "', '{$inquiry['name']}', '{$inquiry['email']}', '$password'" . $agentInsert . ")");
             $clientId = mysqli_insert_id($conn);
         } else {
             $clientId = $userCheck['id'];
         }
 
-        // Create case
+        // Create case - only assign to verified agent
         $caseData = [
             'client_id' => $clientId,
-            'agent_id' => $inquiry['agent_id'] ?: 1, // Default to admin if no agent
+            'agent_id' => $validAgentId ?: null, // Only assign if agent is verified
             'case_type' => $inquiry['service_type'] ?: 'other',
             'title' => 'Case from Inquiry - ' . $inquiry['name'],
             'description' => $inquiry['message'],

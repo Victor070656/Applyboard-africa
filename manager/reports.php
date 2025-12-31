@@ -390,9 +390,10 @@ if ($reportType === 'overview') {
                                                             </td>
                                                             <td><?= $agent['total_clients'] ?></td>
                                                             <td>
-                                                                 <strong>$<?= number_format($agent['total_earned'], 2) ?></strong><br>
-                                                                 <small class="text-warning">Pending:
-                                                                      $<?= number_format($agent['pending_commission'], 2) ?></small>
+                                                                 <strong>₦<?= number_format($agent['total_earned'], 2) ?></strong>
+                                                                 <small class="text-muted">(received)</small><br>
+                                                                 <small class="text-warning">Pending Payout:
+                                                                      ₦<?= number_format($agent['pending_commission'], 2) ?></small>
                                                             </td>
                                                             <td>
                                                                  <span

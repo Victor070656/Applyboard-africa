@@ -22,10 +22,12 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         if (updateCommissionStatus($id, 'paid', $manager['id'])) {
             $msg = "Commission marked as paid";
 
-            // Update agent wallet
+            // Sync agent wallet balance with total paid commissions
             $comm = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM `commissions` WHERE `id` = '$id'"));
             if ($comm) {
-                mysqli_query($conn, "UPDATE `agents` SET `wallet_balance` = `wallet_balance` + '{$comm['amount']}' WHERE `id` = '{$comm['agent_id']}'");
+                // Recalculate total from all paid commissions
+                $totalPaid = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COALESCE(SUM(amount), 0) as total FROM commissions WHERE agent_id = '{$comm['agent_id']}' AND status = 'paid'"))['total'];
+                mysqli_query($conn, "UPDATE `agents` SET `wallet_balance` = '$totalPaid', `total_earned` = '$totalPaid' WHERE `id` = '{$comm['agent_id']}'");
             }
         } else {
             $err = "Failed to update commission";
@@ -355,11 +357,11 @@ $whereClause = implode(' AND ', $where);
                                             <tr>
                                                 <th>Agent</th>
                                                 <th>Code</th>
-                                                <th>Total Referrals</th>
-                                                <th>Active Cases</th>
-                                                <th>Completed Cases</th>
-                                                <th>Total Earned</th>
-                                                <th>Pending Commission</th>
+                                                <th>Referrals</th>
+                                                <th>Active</th>
+                                                <th>Completed</th>
+                                                <th>Total Received</th>
+                                                <th>Pending Payout</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
