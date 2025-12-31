@@ -11,6 +11,24 @@ use PHPMailer\PHPMailer\Exception;
 
 $secKey = "sk_test_e3bb322135d48ff5c41900329e9aceade2dc7511";
 
+/**
+ * Sanitize user input to prevent XSS and SQL injection
+ */
+function sanitize($input)
+{
+    global $conn;
+    if ($input === null) {
+        return '';
+    }
+    $input = trim($input);
+    $input = stripslashes($input);
+    $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+    if (isset($conn)) {
+        $input = $conn->real_escape_string($input);
+    }
+    return $input;
+}
+
 function getCurrencyExchange()
 {
     $url = "https://v6.exchangerate-api.com/v6/6a5827ebff0307cf01be282c/pair/USD/NGN";

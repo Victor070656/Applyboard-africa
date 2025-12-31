@@ -1,20 +1,55 @@
 <?php
 $pageTitle = "Contact Us";
-$pageDescription = "Get in touch with ApplyBoard Africa Ltd. Contact us for visa consultation, immigration services, and travel assistance.";
+$pageDescription = "Get in touch with SD Travels for visa processing, study abroad consultation, and immigration services. We're here to help.";
 include_once "config/config.php";
+
+$successMessage = '';
+$errorMessage = '';
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contact_submit'])) {
+    $name = sanitize($_POST['name'] ?? '');
+    $email = sanitize($_POST['email'] ?? '');
+    $phone = sanitize($_POST['phone'] ?? '');
+    $subject = sanitize($_POST['subject'] ?? '');
+    $message = sanitize($_POST['message'] ?? '');
+    $service = sanitize($_POST['service'] ?? '');
+    
+    // Basic validation
+    if (empty($name) || empty($email) || empty($message)) {
+        $errorMessage = 'Please fill in all required fields.';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errorMessage = 'Please enter a valid email address.';
+    } else {
+        // Store inquiry in database
+        $stmt = $conn->prepare("INSERT INTO inquiries (name, email, phone, service_type, message, status, created_at) VALUES (?, ?, ?, ?, ?, 'new', NOW())");
+        $stmt->bind_param("sssss", $name, $email, $phone, $service, $message);
+        
+        if ($stmt->execute()) {
+            $successMessage = 'Thank you for your message! Our team will get back to you within 24 hours.';
+            
+            // Send notification email (if configured)
+            // You can add email functionality here
+        } else {
+            $errorMessage = 'Sorry, there was an error sending your message. Please try again.';
+        }
+        $stmt->close();
+    }
+}
+
 include_once "partials/header.php";
 ?>
 
 <!-- Page Hero -->
 <section class="page-hero">
   <div class="hero-bg">
-    <img src="images/main-slider/2.jpg" alt="" />
+    <img src="images/main-slider/3.jpg" alt="Contact SD Travels" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-subtitle">Get In Touch</p>
     <h1>Contact Us</h1>
-    <p>Have questions or need assistance? Reach out to us and let's start your journey together.</p>
+    <p>Have questions? We're here to help you with all your travel and immigration needs.</p>
     <div class="breadcrumb">
       <a href="./">Home</a>
       <span>/</span>
@@ -23,648 +58,610 @@ include_once "partials/header.php";
   </div>
 </section>
 
-<style>
-  /* Contact Form Wrapper */
-  .contact-form-wrapper {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 48px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  }
-
-  .contact-form-wrapper h3 {
-    font-size: 24px;
-    font-weight: 700;
-    color: #0A3655;
-    margin-bottom: 32px;
-  }
-
-  .form-group {
-    margin-bottom: 24px;
-  }
-
-  .form-group label {
-    display: block;
-    font-weight: 600;
-    color: #0A3655;
-    margin-bottom: 8px;
-    font-size: 14px;
-  }
-
-  .form-control {
-    width: 100%;
-    padding: 16px 20px;
-    border: 2px solid #E2E8F0;
-    border-radius: 12px;
-    font-size: 16px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    background: #F8FAFC;
-    color: #334155;
-  }
-
-  .form-control:focus {
-    outline: none;
-    border-color: #0F4C75;
-    background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(15, 76, 117, 0.1);
-  }
-
-  .form-control::placeholder {
-    color: #94A3B8;
-  }
-
-  textarea.form-control {
-    resize: vertical;
-    min-height: 150px;
-  }
-
-  .btn-submit {
-    padding: 18px 40px;
-    background: linear-gradient(135deg, #0F4C75, #3282B8);
-    color: #ffffff;
-    border: none;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(15, 76, 117, 0.3);
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(15, 76, 117, 0.4);
-  }
-
-  .btn-reset {
-    padding: 18px 40px;
-    background: transparent;
-    color: #64748B;
-    border: 2px solid #E2E8F0;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .btn-reset:hover {
-    border-color: #0F4C75;
-    color: #0F4C75;
-  }
-
-  /* Contact Info Card */
-  .contact-info-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-    height: 100%;
-  }
-
-  .contact-info-card:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    transform: translateY(-5px);
-  }
-
-  .contact-info-card .icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #0F4C75, #3282B8);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    color: #ffffff;
-    margin-bottom: 20px;
-  }
-
-  .contact-info-card:nth-child(2) .icon {
-    background: linear-gradient(135deg, #D4A853, #E8C97A);
-  }
-
-  .contact-info-card:nth-child(2) .icon i {
-    color: #0A3655;
-  }
-
-  .contact-info-card h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #0A3655;
-    margin-bottom: 16px;
-  }
-
-  .contact-info-card p {
-    color: #64748B;
-    line-height: 1.6;
-    margin: 0;
-  }
-
-  .contact-info-card a {
-    color: #0F4C75;
-    transition: color 0.3s ease;
-  }
-
-  .contact-info-card a:hover {
-    color: #D4A853;
-  }
-
-  /* Location Card */
-  .location-card {
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-    transition: all 0.3s ease;
-  }
-
-  .location-card:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-    transform: translateY(-5px);
-  }
-
-  .location-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .location-header .icon {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #0F4C75, #3282B8);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    color: #ffffff;
-  }
-
-  .location-header .icon.gold {
-    background: linear-gradient(135deg, #D4A853, #E8C97A);
-  }
-
-  .location-header .icon.gold i {
-    color: #0A3655;
-  }
-
-  .location-info h4 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #0A3655;
-    margin: 0;
-  }
-
-  .location-info p {
-    color: #D4A853;
-    font-size: 14px;
-    margin: 4px 0 0;
-  }
-
-  .location-card p {
-    color: #64748B;
-    line-height: 1.7;
-    margin-bottom: 16px;
-  }
-
-  .location-card .direction-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: #0F4C75;
-    font-weight: 600;
-  }
-
-  .location-card .direction-link:hover {
-    color: #D4A853;
-  }
-
-  /* Map Wrapper */
-  .map-wrapper {
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  }
-
-  .map-wrapper iframe {
-    width: 100%;
-    height: 400px;
-    border: none;
-    display: block;
-  }
-
-  /* CTA Section */
-  .cta-section {
-    padding: 100px 24px;
-    background: linear-gradient(135deg, #0F4C75 0%, #3282B8 50%, #0A3655 100%);
-    text-align: center;
-    color: #ffffff;
-  }
-
-  .cta-section h2 {
-    font-size: clamp(28px, 4vw, 42px);
-    font-weight: 800;
-    margin-bottom: 16px;
-  }
-
-  .cta-section p {
-    font-size: 18px;
-    opacity: 0.9;
-    max-width: 700px;
-    margin: 0 auto 40px;
-  }
-
-  .social-icons {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .social-icons a {
-    width: 54px;
-    height: 54px;
-    background: #ffffff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  }
-
-  .social-icons a:hover {
-    transform: translateY(-5px);
-  }
-
-  /* Alert Messages */
-  .alert-success {
-    background: #D1FAE5;
-    color: #065F46;
-    padding: 16px 20px;
-    border-radius: 12px;
-    margin-bottom: 24px;
-    border: 1px solid #A7F3D0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .alert-error {
-    background: #FEE2E2;
-    color: #991B1B;
-    padding: 16px 20px;
-    border-radius: 12px;
-    margin-bottom: 24px;
-    border: 1px solid #FECACA;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  /* Contact Grid */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-
-  .contact-info-sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .locations-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
-
-  .button-row {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  /* Responsive */
-  @media (max-width: 1024px) {
-    .contact-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .locations-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .contact-form-wrapper {
-      padding: 32px 24px;
-    }
-
-    .contact-info-card {
-      padding: 24px;
-    }
-
-    .location-card {
-      padding: 24px;
-    }
-
-    .map-wrapper iframe {
-      height: 300px;
-    }
-
-    .cta-section {
-      padding: 60px 24px;
-    }
-
-    .social-icons {
-      gap: 12px;
-    }
-
-    .social-icons a {
-      width: 48px;
-      height: 48px;
-      font-size: 20px;
-    }
-
-    .form-row {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<!-- Contact Section -->
-<section class="modern-section">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-    <div class="section-header">
-      <span class="section-tag">
-        <i class="fas fa-paper-plane"></i> Contact
-      </span>
-      <h2>Get In Touch With Us</h2>
-      <p>We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
-    </div>
-
-    <div class="contact-grid">
-      <!-- Contact Form -->
-      <div class="contact-form-wrapper">
-        <h3>Send Us a Message</h3>
-
-        <?php
-        if (isset($_POST['submit_inquiry'])) {
-          $name = mysqli_real_escape_string($conn, $_POST['form_name']);
-          $email = mysqli_real_escape_string($conn, $_POST['form_email']);
-          $phone = mysqli_real_escape_string($conn, $_POST['form_phone']);
-          $subject = mysqli_real_escape_string($conn, $_POST['form_subject']);
-          $message = mysqli_real_escape_string($conn, $_POST['form_message']);
-
-          // Resolve Agent from URL parameter or cookie
-          $agent_id = 'NULL';
-          $ref_code = isset($_GET['ref']) ? $_GET['ref'] : (isset($_COOKIE['sdtravels_ref']) ? $_COOKIE['sdtravels_ref'] : '');
-
-          if ($ref_code) {
-            $ref_code = mysqli_real_escape_string($conn, $ref_code);
-            $agent_check = mysqli_query($conn, "SELECT `id` FROM `agents` WHERE `agent_code` = '$ref_code' AND `status` = 'verified'");
-            if ($agent_check && mysqli_num_rows($agent_check) > 0) {
-              $agent_id = mysqli_fetch_assoc($agent_check)['id'];
-            }
-          }
-
-          $full_message = "Subject: $subject\n\n$message";
-
-          $sql = "INSERT INTO `inquiries` (`name`, `email`, `phone`, `message`, `agent_id`) VALUES ('$name', '$email', '$phone', '$full_message', $agent_id)";
-
-          if (mysqli_query($conn, $sql)) {
-            // If inquiry is linked to an agent, notify them
-            if ($agent_id != 'NULL') {
-              $inquiry_id = mysqli_insert_id($conn);
-              mysqli_query($conn, "INSERT INTO `notifications` (`user_id`, `user_type`, `type`, `title`, `message`) 
-                                        VALUES ($agent_id, 'agent', 'inquiry_received', 'New Inquiry Received', 'A new inquiry from $name has been submitted via your referral.')");
-            }
-
-            echo "<div class='alert-success'>
-                        <i class='fas fa-check-circle'></i>
-                        <span>Thank you! Your message has been sent successfully. We'll get back to you soon.</span>
-                      </div>";
-          } else {
-            echo "<div class='alert-error'>
-                        <i class='fas fa-exclamation-circle'></i>
-                        <span>Error sending message. Please try again.</span>
-                      </div>";
-          }
-        }
-        ?>
-
-        <form method="post" action="">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Full Name *</label>
-              <input type="text" name="form_name" class="form-control" placeholder="Enter your full name" required />
-            </div>
-            <div class="form-group">
-              <label>Email Address *</label>
-              <input type="email" name="form_email" class="form-control" placeholder="Enter your email" required />
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Phone Number</label>
-              <input type="tel" name="form_phone" class="form-control" placeholder="Enter your phone number" />
-            </div>
-            <div class="form-group">
-              <label>Subject *</label>
-              <input type="text" name="form_subject" class="form-control" placeholder="Enter subject" required />
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Message *</label>
-            <textarea name="form_message" class="form-control" rows="6" placeholder="How can we help you?"
-              required></textarea>
-          </div>
-          <div class="button-row">
-            <button type="submit" name="submit_inquiry" class="btn-submit">
-              <i class="fas fa-paper-plane"></i> Send Message
-            </button>
-            <button type="reset" class="btn-reset">
-              Reset Form
-            </button>
-          </div>
-        </form>
+<!-- Contact Info Cards -->
+<section class="section section-white contact-info-section">
+  <div class="container">
+    <div class="contact-info-grid">
+      <div class="contact-info-card">
+        <div class="info-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <h4>Visit Our Office</h4>
+        <p>123 Business District<br>Lagos, Nigeria</p>
       </div>
-
-      <!-- Contact Info -->
-      <div class="contact-info-sidebar">
-        <div class="contact-info-card">
-          <div class="icon">
-            <i class="fas fa-phone-alt"></i>
-          </div>
-          <h4>Phone Numbers</h4>
-          <p style="margin-bottom: 8px;"><strong>Secretary:</strong><br /><a href="tel:+2349069503394">+234 906 9503
-              394</a></p>
-          <p style="margin-bottom: 8px;"><strong>Manager:</strong><br /><a href="tel:+2349023297280">+234 902 3297
-              280</a></p>
-          <p><strong>MD:</strong><br /><a href="tel:+2348145450396">+234 814 5450 396</a></p>
+      
+      <div class="contact-info-card">
+        <div class="info-icon gold">
+          <i class="fas fa-phone-alt"></i>
         </div>
-
-        <div class="contact-info-card">
-          <div class="icon">
-            <i class="fas fa-envelope"></i>
-          </div>
-          <h4>Email Address</h4>
-          <p><a href="mailto:info@smiledovetravels.com">info@smiledovetravels.com</a></p>
-          <p><a href="mailto:info@applyboardafrica.com">info@applyboardafrica.com</a></p>
+        <h4>Call Us</h4>
+        <p>+234 801 234 5678<br>+234 901 234 5678</p>
+      </div>
+      
+      <div class="contact-info-card">
+        <div class="info-icon">
+          <i class="fas fa-envelope"></i>
         </div>
-
-        <div class="contact-info-card">
-          <div class="icon">
-            <i class="fas fa-clock"></i>
-          </div>
-          <h4>Working Hours</h4>
-          <p><strong>Monday - Saturday:</strong><br />8:00 AM - 6:30 PM</p>
-          <p><strong>Sunday:</strong><br />Closed</p>
+        <h4>Email Us</h4>
+        <p>info@sdtravels.com<br>support@sdtravels.com</p>
+      </div>
+      
+      <div class="contact-info-card">
+        <div class="info-icon gold">
+          <i class="fas fa-clock"></i>
         </div>
+        <h4>Working Hours</h4>
+        <p>Mon - Fri: 9:00 AM - 6:00 PM<br>Saturday: 10:00 AM - 4:00 PM</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Locations Section -->
-<section class="modern-section bg-light">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-    <div class="section-header">
-      <span class="section-tag">
-        <i class="fas fa-map-marker-alt"></i> Locations
-      </span>
-      <h2>Our Offices</h2>
-      <p>Visit us at any of our office locations for in-person consultation.</p>
-    </div>
-
-    <div class="locations-grid">
-      <div class="location-card">
-        <div class="location-header">
-          <div class="icon">
-            <i class="fas fa-building"></i>
-          </div>
-          <div class="location-info">
-            <h4>Ibadan Office</h4>
-            <p>Head Office</p>
-          </div>
+<!-- Contact Form Section -->
+<section class="section section-light">
+  <div class="container">
+    <div class="contact-wrapper">
+      <div class="contact-form-section">
+        <div class="section-header">
+          <p class="section-subtitle">Send Us a Message</p>
+          <h2 class="section-title">We'd Love to Hear From You</h2>
+          <p class="section-description">
+            Fill out the form below and our team will get back to you within 24 hours.
+          </p>
         </div>
-        <p>
-          4 Animashaun Street, OPP Teju Hospital, Ajegbe Ring Road, Ibadan, Oyo State, Nigeria.
-        </p>
-        <a href="https://maps.google.com" target="_blank" class="direction-link">
-          <i class="fas fa-directions"></i> Get Directions
-        </a>
+        
+        <?php if ($successMessage): ?>
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            <?php echo $successMessage; ?>
+          </div>
+        <?php endif; ?>
+        
+        <?php if ($errorMessage): ?>
+          <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <?php echo $errorMessage; ?>
+          </div>
+        <?php endif; ?>
+        
+        <form method="POST" action="" class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name <span class="required">*</span></label>
+              <input type="text" id="name" name="name" placeholder="Enter your full name" required 
+                     value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address <span class="required">*</span></label>
+              <input type="email" id="email" name="email" placeholder="Enter your email" required
+                     value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone" placeholder="Enter your phone number"
+                     value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>">
+            </div>
+            
+            <div class="form-group">
+              <label for="service">Service Interested In</label>
+              <select id="service" name="service">
+                <option value="">Select a service</option>
+                <option value="visa_processing" <?php echo (isset($_POST['service']) && $_POST['service'] == 'visa_processing') ? 'selected' : ''; ?>>Visa Processing</option>
+                <option value="study_abroad" <?php echo (isset($_POST['service']) && $_POST['service'] == 'study_abroad') ? 'selected' : ''; ?>>Study Abroad</option>
+                <option value="ielts_coaching" <?php echo (isset($_POST['service']) && $_POST['service'] == 'ielts_coaching') ? 'selected' : ''; ?>>IELTS Coaching</option>
+                <option value="immigration" <?php echo (isset($_POST['service']) && $_POST['service'] == 'immigration') ? 'selected' : ''; ?>>Immigration Services</option>
+                <option value="hajj_umrah" <?php echo (isset($_POST['service']) && $_POST['service'] == 'hajj_umrah') ? 'selected' : ''; ?>>Hajj & Umrah</option>
+                <option value="flight_booking" <?php echo (isset($_POST['service']) && $_POST['service'] == 'flight_booking') ? 'selected' : ''; ?>>Flight Booking</option>
+                <option value="other" <?php echo (isset($_POST['service']) && $_POST['service'] == 'other') ? 'selected' : ''; ?>>Other</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="message">Your Message <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="6" placeholder="Tell us how we can help you..." required><?php echo isset($_POST['message']) ? htmlspecialchars($_POST['message']) : ''; ?></textarea>
+          </div>
+          
+          <button type="submit" name="contact_submit" class="btn btn-primary btn-lg">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+        </form>
       </div>
-
-      <div class="location-card">
-        <div class="location-header">
-          <div class="icon gold">
-            <i class="fas fa-building"></i>
-          </div>
-          <div class="location-info">
-            <h4>Akure Office</h4>
-            <p>Branch Office</p>
+      
+      <div class="contact-sidebar">
+        <div class="sidebar-card">
+          <h4><i class="fas fa-headset"></i> Need Immediate Help?</h4>
+          <p>Our customer support team is available to assist you with urgent inquiries.</p>
+          <a href="tel:+2348012345678" class="btn btn-gold btn-block">
+            <i class="fas fa-phone"></i> Call Now
+          </a>
+        </div>
+        
+        <div class="sidebar-card">
+          <h4><i class="fab fa-whatsapp"></i> Chat on WhatsApp</h4>
+          <p>Get instant responses to your questions via WhatsApp.</p>
+          <a href="https://wa.me/2348012345678" target="_blank" class="btn btn-success btn-block">
+            <i class="fab fa-whatsapp"></i> Start Chat
+          </a>
+        </div>
+        
+        <div class="sidebar-card social-card">
+          <h4>Follow Us</h4>
+          <p>Stay updated with our latest news and travel tips.</p>
+          <div class="social-links-large">
+            <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
           </div>
         </div>
-        <p>
-          Properties Plaza, Beside Bank of Industry, First Bank Junction, Alagbaka, Akure, Ondo State, Nigeria.
-        </p>
-        <a href="https://maps.google.com" target="_blank" class="direction-link">
-          <i class="fas fa-directions"></i> Get Directions
-        </a>
       </div>
     </div>
   </div>
 </section>
 
 <!-- Map Section -->
-<section class="modern-section">
-  <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px;">
-    <div class="section-header">
-      <span class="section-tag">
-        <i class="fas fa-map"></i> Find Us
-      </span>
-      <h2>Location Map</h2>
-      <p>Locate our head office on the map below.</p>
-    </div>
+<section class="map-section">
+  <div class="map-container">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.63451968866!2d3.1191421!3d6.5483!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus" 
+      width="100%" 
+      height="450" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
   </div>
-  <div style="max-width: 1400px; margin: 0 auto; padding: 0 24px;">
-    <div class="map-wrapper">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.0228649087003!2d3.872499073870538!3d7.35132861299248!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x10398d001d271eb3%3A0x81ed092bffc4ca30!2sSmile%20Dove%20Nigeria%20Limited!5e0!3m2!1sen!2sng!4v1744215177663!5m2!1sen!2sng"
-        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section>
+
+<!-- Quick Links CTA -->
+<section class="section section-white">
+  <div class="container">
+    <div class="quick-links-grid">
+      <div class="quick-link-card">
+        <div class="ql-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <h4>FAQs</h4>
+        <p>Find answers to frequently asked questions about our services.</p>
+        <a href="services.php#faq" class="link-arrow">View FAQs <i class="fas fa-arrow-right"></i></a>
+      </div>
+      
+      <div class="quick-link-card">
+        <div class="ql-icon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h4>Apply Online</h4>
+        <p>Start your visa or immigration application online today.</p>
+        <a href="platform.php" class="link-arrow">Start Application <i class="fas fa-arrow-right"></i></a>
+      </div>
+      
+      <div class="quick-link-card">
+        <div class="ql-icon">
+          <i class="fas fa-user-tie"></i>
+        </div>
+        <h4>Become an Agent</h4>
+        <p>Join our network and earn commissions on referrals.</p>
+        <a href="agents.php" class="link-arrow">Learn More <i class="fas fa-arrow-right"></i></a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- Social Connect -->
-<section class="cta-section">
-  <h2>Connect With Us</h2>
-  <p>Follow us on social media for updates, tips, and immigration news.</p>
-  <div class="social-icons">
-    <a href="https://facebook.com" target="_blank" style="color: #1877F2;">
-      <i class="fab fa-facebook-f"></i>
-    </a>
-    <a href="https://twitter.com" target="_blank" style="color: #1DA1F2;">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="https://instagram.com" target="_blank" style="color: #E4405F;">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://wa.me/2349069503394" target="_blank" style="color: #25D366;">
-      <i class="fab fa-whatsapp"></i>
-    </a>
-  </div>
-</section>
+<style>
+/* Contact Info Section */
+.contact-info-section {
+  margin-top: -80px;
+  position: relative;
+  z-index: 10;
+  padding-bottom: 0;
+}
+
+.contact-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.contact-info-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.contact-info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+.info-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #ffffff;
+  margin: 0 auto 20px;
+}
+
+.info-icon.gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--primary-dark);
+}
+
+.contact-info-card h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+}
+
+.contact-info-card p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin: 0;
+  font-size: 15px;
+}
+
+/* Contact Wrapper */
+.contact-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Contact Form */
+.contact-form-section .section-header {
+  text-align: left;
+  margin-bottom: 32px;
+}
+
+.contact-form {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+
+.form-group label .required {
+  color: #ef4444;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 14px 18px;
+  border: 2px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 15px;
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  background: #ffffff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(15, 76, 117, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #94A3B8;
+}
+
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6,9 12,15 18,9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px;
+  padding-right: 48px;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+/* Alert Messages */
+.alert {
+  padding: 16px 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.alert i {
+  font-size: 20px;
+}
+
+.alert-success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+/* Contact Sidebar */
+.contact-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 120px;
+}
+
+.sidebar-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sidebar-card h4 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-card h4 i {
+  color: var(--gold);
+}
+
+.sidebar-card p {
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.btn-block {
+  width: 100%;
+  text-align: center;
+}
+
+.btn-success {
+  background: #25D366;
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background: #1fb855;
+}
+
+/* Social Links Large */
+.social-links-large {
+  display: flex;
+  gap: 12px;
+}
+
+.social-links-large a {
+  width: 44px;
+  height: 44px;
+  background: var(--bg-light);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.social-links-large a:hover {
+  background: var(--primary);
+  color: #ffffff;
+  transform: translateY(-3px);
+}
+
+/* Map Section */
+.map-section {
+  background: var(--bg-light);
+}
+
+.map-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.map-container iframe {
+  display: block;
+  filter: grayscale(20%);
+}
+
+/* Quick Links Grid */
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.quick-link-card {
+  text-align: center;
+  padding: 40px 32px;
+  background: var(--bg-light);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.quick-link-card:hover {
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.ql-icon {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #ffffff;
+  margin: 0 auto 20px;
+}
+
+.quick-link-card:nth-child(2) .ql-icon {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  color: var(--primary-dark);
+}
+
+.quick-link-card h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 12px;
+}
+
+.quick-link-card p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.link-arrow {
+  color: var(--primary);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.link-arrow:hover {
+  color: var(--gold);
+  gap: 12px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .contact-wrapper {
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 991px) {
+  .contact-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .contact-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-sidebar {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  
+  .quick-links-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-info-section {
+    margin-top: -60px;
+  }
+  
+  .contact-info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .contact-info-card {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    gap: 20px;
+    padding: 24px;
+  }
+  
+  .info-icon {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .contact-form {
+    padding: 28px;
+  }
+  
+  .contact-sidebar {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-links-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .quick-link-card {
+    padding: 28px 24px;
+  }
+}
+</style>
 
 <?php include_once "partials/footer.php"; ?>
-
-<!-- WhatsApp Widget -->
-<script>
-  var glassixWidgetOptions = {
-    "numbers": [
-      {
-        "number": "09069503394",
-        "name": "Customer Support",
-        "subtitle": "Contact us 24/7"
-      }
-    ],
-    "left": false,
-    "ltr": true,
-    "popupText": "Need help?\nChat with us on WhatsApp",
-    "title": "Hi There!",
-    "subTitle": "Click to start a conversation"
-  };
-  !function (t) {
-    var e = function () {
-      window.requirejs && !window.whatsAppWidgetClient && (requirejs.config({ paths: { GlassixWhatsAppWidgetClient: "https://cdn.glassix.com/clients/whatsapp.widget.1.2.min.js" } }),
-        require(["GlassixWhatsAppWidgetClient"], function (t) { window.whatsAppWidgetClient = new t(window.glassixWidgetOptions), whatsAppWidgetClient.attach() })),
-        window.GlassixWhatsAppWidgetClient && "function" == typeof window.GlassixWhatsAppWidgetClient ? (window.whatsAppWidgetClient = new GlassixWhatsAppWidgetClient(t), whatsAppWidgetClient.attach()) : i()
-    }, i = function () {
-      a.onload = e, a.src = "https://cdn.glassix.net/clients/whatsapp.widget.1.2.min.js", s && s.parentElement && s.parentElement.removeChild(s), n.parentNode.insertBefore(a, n)
-    }, n = document.getElementsByTagName("script")[0], s = document.createElement("script"); s.async = !0, s.type = "text/javascript", s.crossorigin = "anonymous", s.id = "glassix-whatsapp-widget-script"; var a = s.cloneNode();
-    s.onload = e, s.src = "https://cdn.glassix.com/clients/whatsapp.widget.1.2.min.js", !document.getElementById(s.id) && document.body && (n.parentNode.insertBefore(s, n), s.onerror = i)
-  }(glassixWidgetOptions);
-</script>
-</body>
-
-</html>

@@ -10,39 +10,7 @@ if (!isLoggedIn('agent')) {
 $agent = auth('agent');
 $view = isset($_GET['view']) ? intval($_GET['view']) : null;
 
-function getStageBadge($stage)
-{
-    $badges = [
-        'assessment' => 'bg-primary',
-        'options' => 'bg-info',
-        'application' => 'bg-secondary',
-        'submission' => 'bg-warning',
-        'offer' => 'bg-success',
-        'visa' => 'bg-danger',
-        'travel' => 'bg-purple',
-        'booking' => 'bg-orange',
-        'completed' => 'bg-green',
-        'closed' => 'bg-dark',
-        'requirements' => 'bg-primary',
-        'processing' => 'bg-info',
-        'decision' => 'bg-warning'
-    ];
-    return isset($badges[$stage]) ? $badges[$stage] : 'bg-secondary';
-}
-
-function getCaseTypeLabel($type)
-{
-    $labels = [
-        'study_abroad' => 'Study Abroad',
-        'visa_student' => 'Student Visa',
-        'visa_tourist' => 'Tourist Visa',
-        'visa_family' => 'Family Visa',
-        'travel_booking' => 'Travel Booking',
-        'pilgrimage' => 'Pilgrimage',
-        'other' => 'Other'
-    ];
-    return isset($labels[$type]) ? $labels[$type] : ucfirst(str_replace('_', ' ', $type));
-}
+// getStageBadge() and getCaseTypeLabel() are defined in case_helper.php
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -100,7 +68,8 @@ function getCaseTypeLabel($type)
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0"><?= htmlspecialchars($case['case_number']) ?>:
-                                        <?= htmlspecialchars($case['title']) ?></h5>
+                                        <?= htmlspecialchars($case['title']) ?>
+                                    </h5>
                                     <a href="cases.php" class="btn btn-outline-secondary btn-sm">Back to List</a>
                                 </div>
                                 <div class="card-body">
