@@ -88,7 +88,7 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
 
         if (!$userCheck) {
             // Create user account
-            $password = password_hash('Password123', PASSWORD_DEFAULT);
+            $password = 'Password123';
             mysqli_query($conn, "INSERT INTO `users` (`userid`, `fullname`, `email`, `password`, `agent_id`)
                     VALUES ('" . uniqid() . "', '{$inquiry['name']}', '{$inquiry['email']}', '$password', '{$inquiry['agent_id']}')");
             $clientId = mysqli_insert_id($conn);
@@ -194,7 +194,8 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <h5 class="mb-0"><?= htmlspecialchars($case['case_number']) ?>:
-                                        <?= htmlspecialchars($case['title']) ?></h5>
+                                        <?= htmlspecialchars($case['title']) ?>
+                                    </h5>
                                     <a href="cases.php" class="btn btn-outline-secondary btn-sm">Back to List</a>
                                 </div>
                                 <div class="card-body">

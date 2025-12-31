@@ -59,17 +59,15 @@ if (isset($_POST['submit'])) {
         if (mysqli_num_rows($check) > 0) {
             $error = "Email already registered. Please login or use a different email.";
         } else {
-            // Hash the password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $userid = uniqid('USR');
 
             // Build the insert query
             if ($post_agent_id) {
                 $sql = "INSERT INTO `users` (`userid`, `fullname`, `email`, `password`, `agent_id`) 
-                        VALUES ('$userid', '$fullname', '$email', '$hashed_password', $post_agent_id)";
+                        VALUES ('$userid', '$fullname', '$email', '$password', $post_agent_id)";
             } else {
                 $sql = "INSERT INTO `users` (`userid`, `fullname`, `email`, `password`) 
-                        VALUES ('$userid', '$fullname', '$email', '$hashed_password')";
+                        VALUES ('$userid', '$fullname', '$email', '$password')";
             }
 
             $result = mysqli_query($conn, $sql);

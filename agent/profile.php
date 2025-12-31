@@ -67,15 +67,14 @@ if (isset($_POST["change_password"])) {
     $confirmPassword = $_POST["confirm_password"] ?? '';
 
     // Verify current password
-    if (!password_verify($currentPassword, $info['password'])) {
+    if ($currentPassword !== $info['password']) {
         $error = "Current password is incorrect";
     } elseif (strlen($newPassword) < 6) {
         $error = "New password must be at least 6 characters";
     } elseif ($newPassword !== $confirmPassword) {
         $error = "New passwords do not match";
     } else {
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql = "UPDATE `agents` SET `password` = '$hashedPassword' WHERE `id` = '$agent_id'";
+        $sql = "UPDATE `agents` SET `password` = '$newPassword' WHERE `id` = '$agent_id'";
         $query = mysqli_query($conn, $sql);
         if ($query) {
             $success = "Password changed successfully";

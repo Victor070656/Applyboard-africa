@@ -20,22 +20,8 @@ if (isset($_POST['submit'])) {
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
 
-        // Check password - support both hashed and legacy plaintext
-        $password_valid = false;
-
-        // First try password_verify for hashed passwords
-        if (password_verify($password, $row['password'])) {
-            $password_valid = true;
-        }
-        // Fallback: check if it's a legacy plaintext password
-        elseif ($password === $row['password']) {
-            $password_valid = true;
-            // Optionally upgrade to hashed password
-            $hashed = password_hash($password, PASSWORD_DEFAULT);
-            mysqli_query($conn, "UPDATE `users` SET `password` = '$hashed' WHERE `id` = '{$row['id']}'");
-        }
-
-        if ($password_valid) {
+        // Check password
+        if ($password === $row['password']) {
             loginUser('user', $row);
             echo "<script>location.href = './'</script>";
             exit;

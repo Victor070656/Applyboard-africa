@@ -668,25 +668,50 @@ function calculateCaseCommission($caseId)
     $caseId = intval($caseId);
     $case = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM `cases` WHERE `id` = '$caseId'"));
 
-    if (!$case || $case['commission_amount'] > 0) {
-        return false; // Already calculated or case not found
+    if (!$case) {
+        return false; // Case not found
+    }
+
+    // Check if commission record already exists
+    $existingCommission = mysqli_fetch_assoc(mysqli_query($conn, "SELECT id FROM `commissions` WHERE `case_id` = '$caseId'"));
+    if ($existingCommission) {
+        return false; // Commission already created
+    }
+
+    // Check if case has an agent assigned
+    if (empty($case['agent_id'])) {
+        return false; // No agent assigned
     }
 
     $agent = mysqli_fetch_assoc(mysqli_query($conn, "SELECT `commission_rate` FROM `agents` WHERE `id` = '{$case['agent_id']}'"));
-    if (!$agent) {
-        return false;
+
+    $caseAmount = floatval($case['amount']);
+    $commissionAmount = floatval($case['commission_amount']);
+
+    // If commission_amount was pre-calculated in case, use it
+    // Otherwise calculate from agent's rate
+    if ($commissionAmount <= 0 && $agent) {
+        $rate = floatval($agent['commission_rate']);
+        if ($caseAmount > 0 && $rate > 0) {
+            $commissionAmount = ($caseAmount * $rate) / 100;
+            mysqli_query($conn, "UPDATE `cases` SET `commission_amount` = '$commissionAmount' WHERE `id` = '$caseId'");
+        }
     }
 
-    $rate = floatval($agent['commission_rate']);
-    $caseAmount = floatval($case['amount']);
-
-    if ($caseAmount > 0 && $rate > 0) {
-        $commissionAmount = ($caseAmount * $rate) / 100;
-
-        mysqli_query($conn, "UPDATE `cases` SET `commission_amount` = '$commissionAmount' WHERE `id` = '$caseId'");
-
-        // Create commission record
+    // Create commission record if we have a valid amount
+    if ($commissionAmount > 0) {
+        $rate = $caseAmount > 0 ? ($commissionAmount / $caseAmount) * 100 : 0;
         createCommissionRecord($case['agent_id'], $caseId, $case['client_id'], $commissionAmount, $rate, $caseAmount);
+
+        // Notify agent about commission
+        createNotification(
+            $case['agent_id'],
+            'agent',
+            'Commission Earned',
+            'You earned a commission of ₦' . number_format($commissionAmount, 2) . ' for case #' . $case['case_number'],
+            'success',
+            'commissions.php'
+        );
 
         return $commissionAmount;
     }
@@ -700,6 +725,31 @@ function calculateCaseCommission($caseId)
 function createCommissionRecord($agentId, $caseId, $clientId, $amount, $rate, $caseAmount)
 {
     global $conn;
+
+    // Ensure commissions table exists
+    mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `commissions` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `agent_id` int(11) NOT NULL,
+        `case_id` int(11) DEFAULT NULL,
+        `client_id` int(11) NOT NULL,
+        `commission_type` enum('referral','case_completion','service','bonus') NOT NULL DEFAULT 'case_completion',
+        `amount` decimal(12,2) NOT NULL,
+        `rate_percentage` decimal(5,2) DEFAULT NULL,
+        `case_amount` decimal(12,2) DEFAULT 0.00,
+        `status` enum('pending','approved','paid','rejected','cancelled') NOT NULL DEFAULT 'pending',
+        `payment_method` varchar(100) DEFAULT NULL,
+        `payment_reference` varchar(255) DEFAULT NULL,
+        `paid_date` datetime DEFAULT NULL,
+        `approved_by` int(11) DEFAULT NULL,
+        `approved_at` datetime DEFAULT NULL,
+        `notes` text DEFAULT NULL,
+        `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+        PRIMARY KEY (`id`),
+        KEY `idx_agent_id` (`agent_id`),
+        KEY `idx_case_id` (`case_id`),
+        KEY `idx_status` (`status`),
+        KEY `idx_created_at` (`created_at`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
     $agentId = intval($agentId);
     $caseId = intval($caseId);

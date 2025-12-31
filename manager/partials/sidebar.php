@@ -63,6 +63,15 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="payments.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:card-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Payments </span>
+                </a>
+            </li>
+
             <li class="menu-title">Management...</li>
 
             <li class="nav-item">

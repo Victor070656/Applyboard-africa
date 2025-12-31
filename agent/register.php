@@ -88,10 +88,7 @@ if (isLoggedIn('agent')) {
                                 if (mysqli_num_rows($check) > 0) {
                                     echo "<script>alert('Email already registered')</script>";
                                 } else {
-                                    // Hash the password
-                                    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-                                    $sql = "INSERT INTO `agents` (`agent_code`, `fullname`, `email`, `password`, `phone`, `status`) VALUES ('$agent_code', '$fullname', '$email', '$hashed_password', '$phone', 'pending')";
+                                    $sql = "INSERT INTO `agents` (`agent_code`, `fullname`, `email`, `password`, `phone`, `status`) VALUES ('$agent_code', '$fullname', '$email', '$password', '$phone', 'pending')";
                                     if (mysqli_query($conn, $sql)) {
                                         echo "<script>alert('Registration Successful! Your agent code is: $agent_code. Please login.'); location.href = 'login.php'</script>";
                                     } else {

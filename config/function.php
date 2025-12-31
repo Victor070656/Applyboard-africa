@@ -23,16 +23,23 @@ function getCurrencyExchange()
     return $response;
 }
 
-function makePayment($email, $amount, $callback)
+function makePayment($email, $amount, $callback, $reference = null)
 {
     global $secKey;
     $transaction = new Transaction($secKey);
 
-    $response = $transaction
-        ->setCallbackUrl($callback)
-        ->setEmail($email)
-        ->setAmount($amount)
-        ->initialize();
+    // Amount should be in Naira - the Paystack library handles conversion to kobo
+    // Build transaction with required fields
+    $transaction->setCallbackUrl($callback);
+    $transaction->setEmail($email);
+    $transaction->setAmount($amount);
+
+    // Set custom reference if provided
+    if ($reference) {
+        $transaction->setReference($reference);
+    }
+
+    $response = $transaction->initialize();
 
     $_SESSION["ref"] = $response->reference;
     echo "<script>location.href = '" . $response->authorizationUrl . "'</script>";

@@ -32,6 +32,9 @@ mysqli_query($conn, "CREATE TABLE IF NOT EXISTS `services` (
     `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci");
 
+// Note: Case type pricing must be configured by admin in Settings > Case Type Pricing
+// No default values are seeded - admin must set all pricing
+
 /**
  * Get a setting value from database
  */
