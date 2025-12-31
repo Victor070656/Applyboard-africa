@@ -163,7 +163,7 @@ include_once "partials/header.php";
   </section>
 
   <!-- Leadership Team -->
-  <section class="section section-lg bg-light">
+  <!-- <section class="section section-lg bg-light">
     <div class="container">
       <div class="section-header">
         <span class="section-tag">
@@ -209,7 +209,7 @@ include_once "partials/header.php";
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <!-- CTA Section -->
   <section class="cta-section">
