@@ -237,7 +237,7 @@ function createCase($data)
 
     $caseNumber = isset($data['case_number']) ? $data['case_number'] : generateCaseNumber();
     $clientId = mysqli_real_escape_string($conn, $data['client_id']);
-    $agentId = mysqli_real_escape_string($conn, $data['agent_id']);
+    $agentId = !empty($data['agent_id']) ? intval($data['agent_id']) : 'NULL';
     $caseType = mysqli_real_escape_string($conn, $data['case_type']);
     $title = mysqli_real_escape_string($conn, $data['title']);
     $description = isset($data['description']) ? mysqli_real_escape_string($conn, $data['description']) : '';
@@ -260,7 +260,7 @@ function createCase($data)
         `case_number`, `client_id`, `agent_id`, `case_type`, `title`, `description`,
         `destination_country`, `institution`, `program`, `intake`, `amount`, `commission_amount`, `assigned_to`, `notes`
     ) VALUES (
-        '$caseNumber', '$clientId', '$agentId', '$caseType', '$title', '$description',
+        '$caseNumber', '$clientId', $agentId, '$caseType', '$title', '$description',
         '$destinationCountry', '$institution', '$program', '$intake', '$amount', '$commissionAmount', $assignedTo, '$notes'
     )";
 

@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `cases` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `case_number` varchar(50) NOT NULL,
   `client_id` int(11) NOT NULL,
-  `agent_id` int(11) NOT NULL,
+  `agent_id` int(11) DEFAULT NULL,
   `case_type` enum('study_abroad','visa_student','visa_tourist','visa_family','travel_booking','pilgrimage','other') NOT NULL,
   `stage` enum('assessment','options','application','submission','offer','visa','travel','booking','completed','closed') NOT NULL DEFAULT 'assessment',
   `status` enum('active','on_hold','cancelled','completed') NOT NULL DEFAULT 'active',
