@@ -9,22 +9,32 @@ if (!isLoggedIn('agent')) {
 
 $agent = auth('agent');
 $view = isset($_GET['view']) ? intval($_GET['view']) : null;
+$pageTitle = $view ? 'Case Details' : 'Case Files';
 
-// getStageBadge() and getCaseTypeLabel() are defined in case_helper.php
+// Get case stats
+$totalCases = countCases(['agent_id' => $agent['id']]);
+$activeCases = countCases(['agent_id' => $agent['id'], 'status' => 'active']);
+$completedCases = countCases(['agent_id' => $agent['id'], 'status' => 'completed']);
+$pendingCases = countCases(['agent_id' => $agent['id'], 'stage' => 'assessment']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd Agent || My Cases</title>
+    <title><?= $pageTitle ?> | Agent Portal - ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#0F4C75">
 
     <link rel="shortcut icon" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
@@ -36,10 +46,26 @@ $view = isset($_GET['view']) ? intval($_GET['view']) : null;
 
         <div class="page-content">
             <div class="container-fluid">
+
+                <!-- Page Title -->
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">My Cases</h4>
+                            <div>
+                                <h4 class="mb-0"><?= $view ? 'Case Details' : 'Case Files' ?></h4>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="./">Dashboard</a></li>
+                                    <?php if ($view): ?>
+                                        <li class="breadcrumb-item"><a href="cases.php">Cases</a></li>
+                                        <li class="breadcrumb-item active">Details</li>
+                                    <?php else: ?>
+                                        <li class="breadcrumb-item active">Cases</li>
+                                    <?php endif; ?>
+                                </ol>
+                            </div>
+                            <?php if (!$view): ?>
+                                <span class="badge bg-primary"><?= $totalCases ?> Total</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -249,38 +275,111 @@ $view = isset($_GET['view']) ? intval($_GET['view']) : null;
 
                 <?php else: ?>
                     <!-- Cases List -->
+
+                    <!-- Stats Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-lg-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon primary">
+                                            <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div class="stat-value"><?= number_format($totalCases) ?></div>
+                                            <div class="stat-label">Total Cases</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon warning">
+                                            <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div class="stat-value"><?= number_format($activeCases) ?></div>
+                                            <div class="stat-label">Active</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon success">
+                                            <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div class="stat-value"><?= number_format($completedCases) ?></div>
+                                            <div class="stat-label">Completed</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="card stat-card h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="stat-icon info">
+                                            <iconify-icon icon="solar:hourglass-outline"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <div class="stat-value"><?= number_format($pendingCases) ?></div>
+                                            <div class="stat-label">Pending</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-centered mb-0">
-                                            <thead>
-                                                <tr>
-                                                    <th>Case #</th>
-                                                    <th>Title</th>
-                                                    <th>Client</th>
-                                                    <th>Type</th>
-                                                    <th>Stage</th>
-                                                    <th>Status</th>
-                                                    <th>Created</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                $cases = getCases(['agent_id' => $agent['id']]);
-
-                                                if (empty($cases)):
-                                                    ?>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">All Cases</h5>
+                                </div>
+                                <div class="card-body p-0">
+                                    <?php $cases = getCases(['agent_id' => $agent['id']]); ?>
+                                    <?php if (empty($cases)): ?>
+                                        <div class="text-center py-5">
+                                            <div
+                                                class="quick-action-icon bg-secondary bg-opacity-10 text-secondary mx-auto mb-3">
+                                                <iconify-icon icon="solar:folder-open-outline"></iconify-icon>
+                                            </div>
+                                            <h5>No Cases Yet</h5>
+                                            <p class="text-muted mb-0">Once clients start their applications, cases will appear
+                                                here.</p>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="table-responsive">
+                                            <table class="table table-hover mb-0">
+                                                <thead class="table-light">
                                                     <tr>
-                                                        <td colspan="8" class="text-center">No cases found</td>
+                                                        <th>Case</th>
+                                                        <th>Client</th>
+                                                        <th>Type</th>
+                                                        <th>Stage</th>
+                                                        <th>Status</th>
+                                                        <th>Created</th>
+                                                        <th>Action</th>
                                                     </tr>
-                                                <?php else: ?>
+                                                </thead>
+                                                <tbody>
                                                     <?php foreach ($cases as $row): ?>
                                                         <tr>
-                                                            <td><strong><?= htmlspecialchars($row['case_number']) ?></strong></td>
-                                                            <td><?= htmlspecialchars($row['title']) ?></td>
+                                                            <td>
+                                                                <strong><?= htmlspecialchars($row['case_number']) ?></strong>
+                                                                <div class="small text-muted">
+                                                                    <?= htmlspecialchars(substr($row['title'], 0, 30)) ?></div>
+                                                            </td>
                                                             <td><?= htmlspecialchars($row['client_name']) ?></td>
                                                             <td><span
                                                                     class="badge bg-secondary"><?= getCaseTypeLabel($row['case_type']) ?></span>
@@ -288,20 +387,27 @@ $view = isset($_GET['view']) ? intval($_GET['view']) : null;
                                                             <td><span
                                                                     class="badge <?= getStageBadge($row['stage']) ?>"><?= getStageLabelFromStage($row['stage']) ?></span>
                                                             </td>
-                                                            <td><span
-                                                                    class="badge <?= $row['status'] == 'active' ? 'bg-success' : ($row['status'] == 'completed' ? 'bg-primary' : 'bg-warning') ?>"><?= ucfirst($row['status']) ?></span>
+                                                            <td>
+                                                                <span
+                                                                    class="badge <?= $row['status'] == 'active' ? 'bg-success' : ($row['status'] == 'completed' ? 'bg-primary' : 'bg-warning') ?>">
+                                                                    <?= ucfirst($row['status']) ?>
+                                                                </span>
                                                             </td>
-                                                            <td><?= date('d M Y', strtotime($row['created_at'])) ?></td>
+                                                            <td><span
+                                                                    class="text-muted"><?= date('d M Y', strtotime($row['created_at'])) ?></span>
+                                                            </td>
                                                             <td>
                                                                 <a href="?view=<?= $row['id'] ?>"
-                                                                    class="btn btn-sm btn-outline-primary">View</a>
+                                                                    class="btn btn-sm btn-outline-primary">
+                                                                    <iconify-icon icon="solar:eye-outline"></iconify-icon> View
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     <?php endforeach; ?>
-                                                <?php endif; ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>

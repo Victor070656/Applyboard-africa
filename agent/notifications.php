@@ -9,6 +9,7 @@ if (!isLoggedIn('agent')) {
 
 $agent = auth('agent');
 $agent_id = $agent['id'];
+$pageTitle = 'Notifications';
 
 // Mark notification as read
 if (isset($_GET['mark_read']) && isset($_GET['id'])) {
@@ -34,12 +35,19 @@ $unreadCount = getUnreadNotificationCount($agent_id, 'agent');
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd Agent || Notifications</title>
+    <title>Notifications | Agent Portal - ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#0F4C75">
+
     <link rel="shortcut icon" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 
@@ -50,12 +58,12 @@ $unreadCount = getUnreadNotificationCount($agent_id, 'agent');
         }
 
         .notification-item:hover {
-            background-color: #f8f9fa;
+            background-color: var(--bs-tertiary-bg);
         }
 
         .notification-item.unread {
-            border-left-color: #0F4C75;
-            background-color: #f0f8ff;
+            border-left-color: var(--bs-primary);
+            background-color: var(--bs-primary-bg-subtle);
         }
 
         .notification-icon {
@@ -77,14 +85,16 @@ $unreadCount = getUnreadNotificationCount($agent_id, 'agent');
         <div class="page-content">
             <div class="container-fluid">
 
+                <!-- Page Title -->
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex justify-content-between align-items-center">
                             <div>
                                 <h4 class="mb-0">Notifications</h4>
-                                <?php if ($unreadCount > 0): ?>
-                                    <small class="text-muted"><?= $unreadCount ?> unread notifications</small>
-                                <?php endif; ?>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="./">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Notifications</li>
+                                </ol>
                             </div>
                             <?php if ($unreadCount > 0): ?>
                                 <a href="?mark_all_read=1" class="btn btn-sm btn-outline-primary">
@@ -95,14 +105,34 @@ $unreadCount = getUnreadNotificationCount($agent_id, 'agent');
                     </div>
                 </div>
 
+                <!-- Stats -->
+                <?php if ($unreadCount > 0): ?>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="alert alert-primary d-flex align-items-center mb-0">
+                                <iconify-icon icon="solar:bell-bing-outline" class="fs-20 me-2"></iconify-icon>
+                                You have <strong class="mx-1"><?= $unreadCount ?></strong> unread
+                                notification<?= $unreadCount > 1 ? 's' : '' ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">All Notifications</h5>
+                            </div>
                             <div class="card-body p-0">
                                 <?php if (empty($notifications)): ?>
                                     <div class="text-center py-5">
-                                        <iconify-icon icon="solar:bell-off-outline" class="fs-48 text-muted"></iconify-icon>
-                                        <p class="text-muted mt-3 mb-0">No notifications yet</p>
+                                        <div
+                                            class="quick-action-icon bg-secondary bg-opacity-10 text-secondary mx-auto mb-3">
+                                            <iconify-icon icon="solar:bell-off-outline"></iconify-icon>
+                                        </div>
+                                        <h5>No Notifications Yet</h5>
+                                        <p class="text-muted mb-0">You'll be notified of important updates here</p>
                                     </div>
                                 <?php else: ?>
                                     <div class="list-group list-group-flush">
@@ -118,7 +148,8 @@ $unreadCount = getUnreadNotificationCount($agent_id, 'agent');
                                                     <div class="flex-grow-1">
                                                         <h6 class="mb-1"><?= htmlspecialchars($notification['title']) ?></h6>
                                                         <p class="text-muted mb-1">
-                                                            <?= htmlspecialchars($notification['message']) ?></p>
+                                                            <?= htmlspecialchars($notification['message']) ?>
+                                                        </p>
                                                         <small class="text-muted">
                                                             <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
                                                             <?= getTimeAgo($notification['created_at']) ?>

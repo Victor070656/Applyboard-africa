@@ -1,108 +1,126 @@
-<div class="app-sidebar">
-    <!-- Sidebar Logo -->
-    <div class="logo-box">
-        <a href="./" class="logo-dark">
-            <img src="../images/favicon.png" style="height: 30px; border-radius: 7px;" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" style="height: 40px; border-radius: 7px;" class="logo-lg" alt="logo dark">
-        </a>
+<?php
+$agentAccount = auth('agent');
+$agentStatus = $agentAccount['status'] ?? 'pending';
+$agentName = $agentAccount['fullname'] ?? 'Agent';
+$currentAgentPage = basename($_SERVER['SCRIPT_NAME']);
 
-        <a href="./" class="logo-light">
-            <img src="../images/favicon.png" style="height: 30px; border-radius: 7px;" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" style="height: 40px; border-radius: 7px;" class="logo-lg" alt="logo light">
+if (!function_exists('isAgentNavActive')) {
+    function isAgentNavActive($current, $pages)
+    {
+        return in_array($current, (array) $pages, true) ? 'active' : '';
+    }
+}
+?>
+
+<div class="app-sidebar">
+    <div class="logo-box">
+        <a href="./" class="logo-link d-flex align-items-center gap-2">
+            <img src="../images/favicon.png" class="logo-sm" alt="ApplyBoard Africa">
+            <div class="d-flex flex-column">
+                <span class="text-white fw-semibold">ApplyBoard Africa</span>
+                <small class="text-white-50">Agent Workspace</small>
+            </div>
         </a>
     </div>
 
     <div class="scrollbar" data-simplebar>
-
         <ul class="navbar-nav" id="navbar-nav">
-
-            <li class="menu-title">Agent Panel</li>
-
+            <li class="menu-title">Overview</li>
             <li class="nav-item">
-                <a class="nav-link" href="./">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'index.php'); ?>" href="./">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:widget-2-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Dashboard </span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
             </li>
 
-            <?php if (auth('agent')['status'] == 'pending'): ?>
+            <?php if ($agentStatus === 'pending'): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="verification.php">
+                    <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'verification.php'); ?>"
+                        href="verification.php">
                         <span class="nav-icon">
                             <iconify-icon icon="solar:shield-check-outline"></iconify-icon>
                         </span>
-                        <span class="nav-text text-danger"> Verify Account </span>
+                        <span class="nav-text text-warning">Verify Account</span>
                     </a>
                 </li>
             <?php endif; ?>
 
+            <li class="menu-title">Clients &amp; Cases</li>
             <li class="nav-item">
-                <a class="nav-link" href="clients.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'clients.php'); ?>" href="clients.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:users-group-two-rounded-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> My Clients </span>
+                    <span class="nav-text">My Clients</span>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="inquiries.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'inquiries.php'); ?>" href="inquiries.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:question-circle-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Inquiries </span>
+                    <span class="nav-text">Inquiries</span>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="cases.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, ['cases.php', 'case-details.php']); ?>"
+                    href="cases.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Cases </span>
+                    <span class="nav-text">Case Files</span>
                 </a>
             </li>
 
+            <li class="menu-title">Revenue</li>
             <li class="nav-item">
-                <a class="nav-link" href="commissions.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'commissions.php'); ?>"
+                    href="commissions.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Commissions </span>
+                    <span class="nav-text">Commissions</span>
                 </a>
             </li>
 
-            <li class="menu-title">Account...</li>
-
+            <li class="menu-title">Account</li>
             <li class="nav-item">
-                <a class="nav-link" href="notifications.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'notifications.php'); ?>"
+                    href="notifications.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:bell-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Notifications </span>
+                    <span class="nav-text">Notifications</span>
                 </a>
             </li>
-
             <li class="nav-item">
-                <a class="nav-link" href="profile.php">
+                <a class="nav-link <?= isAgentNavActive($currentAgentPage, 'profile.php'); ?>" href="profile.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:user-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> My Profile </span>
+                    <span class="nav-text">My Profile</span>
                 </a>
             </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="logout.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:logout-3-outline"></iconify-icon>
                     </span>
-                    <span class="nav-text"> Logout </span>
+                    <span class="nav-text">Sign Out</span>
                 </a>
             </li>
-
         </ul>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="text-white-50 small mb-2">Signed in as</div>
+        <div class="text-white fw-semibold mb-3"><?= htmlspecialchars($agentName); ?></div>
+        <a href="../" target="_blank"
+            class="btn btn-light btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
+            <iconify-icon icon="solar:global-outline"></iconify-icon>
+            Visit Website
+        </a>
     </div>
 </div>

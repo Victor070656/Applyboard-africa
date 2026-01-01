@@ -114,18 +114,26 @@ if (!empty($info['bank_name']))
 if (!empty($info['account_number']))
     $completedFields++;
 $completeness = round(($completedFields / $totalFields) * 100);
+$pageTitle = 'My Profile';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd Agent || My Profile</title>
+    <title>My Profile | Agent Portal - ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#0F4C75">
+
     <link rel="shortcut icon" href="../images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 
@@ -134,7 +142,7 @@ $completeness = round(($completedFields / $totalFields) * 100);
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #0F4C75, #3282B8);
+            background: linear-gradient(135deg, var(--bs-primary), #3282B8);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -147,23 +155,15 @@ $completeness = round(($completedFields / $totalFields) * 100);
         .completeness-meter {
             height: 8px;
             border-radius: 4px;
-            background: #e9ecef;
+            background: var(--bs-tertiary-bg);
             overflow: hidden;
         }
 
         .completeness-bar {
             height: 100%;
             border-radius: 4px;
-            background: linear-gradient(90deg, #0F4C75, #3282B8);
+            background: linear-gradient(90deg, var(--bs-primary), #3282B8);
             transition: width 0.5s ease;
-        }
-
-        .stat-card {
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-3px);
         }
     </style>
 </head>
@@ -176,10 +176,17 @@ $completeness = round(($completedFields / $totalFields) * 100);
         <div class="page-content">
             <div class="container-fluid">
 
+                <!-- Page Title -->
                 <div class="row">
                     <div class="col-12">
-                        <div class="page-title-box">
-                            <h4 class="mb-0">My Profile</h4>
+                        <div class="page-title-box d-flex justify-content-between align-items-center">
+                            <div>
+                                <h4 class="mb-0">My Profile</h4>
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="./">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">Profile</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
