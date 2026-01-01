@@ -124,7 +124,7 @@ if ($hour >= 12 && $hour < 17) {
                     <!-- Welcome Banner -->
                     <div class="welcome-banner">
                          <div class="welcome-content">
-                              <h4><?php echo $greeting; ?>, <?php echo htmlspecialchars($manager_name); ?>! 👋</h4>
+                              <h4 class="text-white"><?php echo $greeting; ?>, <?php echo htmlspecialchars($manager_name); ?>! 👋</h4>
                               <p>Welcome to your admin dashboard. Manage agents, track applications, and monitor
                                    platform performance all from one place.</p>
                               <div class="d-flex gap-2 mt-3">

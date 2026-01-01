@@ -93,7 +93,7 @@ body {
   border-bottom: none;
   box-shadow: var(--shadow-md);
   height: 64px;
-  z-index: 1040;
+  z-index: 1010;
 }
 
 .topbar-container {
@@ -423,13 +423,20 @@ body {
   color: var(--admin-primary);
 }
 
-.app-sidebar .navbar-nav .nav-link.active {
+.app-sidebar .navbar-nav .nav-link.active,
+.app-sidebar .navbar-nav .nav-item .nav-link.active {
   background: linear-gradient(
     135deg,
     var(--admin-primary) 0%,
     var(--admin-primary-dark) 100%
-  );
-  color: white;
+  ) !important;
+  color: #ffffff !important;
+}
+
+.app-sidebar .navbar-nav .nav-link.active iconify-icon,
+.app-sidebar .navbar-nav .nav-link.active i,
+.app-sidebar .navbar-nav .nav-link.active span {
+  color: #ffffff !important;
 }
 
 .app-sidebar .menu-title {
