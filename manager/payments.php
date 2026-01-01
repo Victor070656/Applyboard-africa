@@ -78,16 +78,22 @@ $todayStats = mysqli_fetch_assoc(mysqli_query($conn, "SELECT
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd || Payments</title>
+    <title>Payments Management | ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" href="../images/favicon.png">
+    <meta name="theme-color" content="#1e3a5f">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
 
-     <!-- Custom Dashboard css (mobile fixes) -->
-     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
+    <!-- Custom Dashboard css (mobile fixes) -->
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
@@ -100,95 +106,81 @@ $todayStats = mysqli_fetch_assoc(mysqli_query($conn, "SELECT
         <div class="page-content">
             <div class="container-fluid">
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box">
-                            <h4 class="mb-0">Payments</h4>
-                            <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Payments</li>
-                            </ol>
-                        </div>
-                    </div>
+                <!-- Page Title -->
+                <div class="page-title-box">
+                    <h4>Payments Management</h4>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Payments</li>
+                    </ol>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card">
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm rounded-circle bg-success-subtle">
-                                            <iconify-icon icon="solar:wallet-money-outline"
-                                                class="avatar-title text-success fs-3"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Total Revenue</p>
+                                        <h3 class="stat-value mb-1">₦<?= number_format($stats['total_success'] ?? 0) ?>
+                                        </h3>
+                                        <span class="stat-trend up"><?= $stats['success_count'] ?? 0 ?>
+                                            successful</span>
                                     </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <p class="text-muted mb-1">Total Revenue</p>
-                                        <h4 class="mb-0 text-success">
-                                            ₦<?= number_format($stats['total_success'] ?? 0, 2) ?></h4>
+                                    <div class="stat-icon success">
+                                        <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm rounded-circle bg-primary-subtle">
-                                            <iconify-icon icon="solar:calendar-outline"
-                                                class="avatar-title text-primary fs-3"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Today's Revenue</p>
+                                        <h3 class="stat-value mb-1">
+                                            ₦<?= number_format($todayStats['today_amount'] ?? 0) ?></h3>
+                                        <span class="stat-trend up"><?= $todayStats['today_count'] ?? 0 ?>
+                                            transaction(s)</span>
                                     </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <p class="text-muted mb-1">Today's Revenue</p>
-                                        <h4 class="mb-0 text-primary">
-                                            ₦<?= number_format($todayStats['today_amount'] ?? 0, 2) ?></h4>
-                                        <small class="text-muted"><?= $todayStats['today_count'] ?? 0 ?>
-                                            transaction(s)</small>
+                                    <div class="stat-icon primary">
+                                        <iconify-icon icon="solar:calendar-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm rounded-circle bg-warning-subtle">
-                                            <iconify-icon icon="solar:clock-circle-outline"
-                                                class="avatar-title text-warning fs-3"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Pending</p>
+                                        <h3 class="stat-value mb-1">₦<?= number_format($stats['total_pending'] ?? 0) ?>
+                                        </h3>
+                                        <span class="stat-trend down"><?= $stats['pending_count'] ?? 0 ?> pending</span>
                                     </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <p class="text-muted mb-1">Pending</p>
-                                        <h4 class="mb-0 text-warning">
-                                            ₦<?= number_format($stats['total_pending'] ?? 0, 2) ?></h4>
-                                        <small class="text-muted"><?= $stats['pending_count'] ?? 0 ?> pending</small>
+                                    <div class="stat-icon warning">
+                                        <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="avatar-sm rounded-circle bg-info-subtle">
-                                            <iconify-icon icon="solar:chart-outline"
-                                                class="avatar-title text-info fs-3"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Total Transactions</p>
+                                        <h3 class="stat-value mb-1"><?= $stats['total_count'] ?? 0 ?></h3>
+                                        <span class="stat-trend up"><?= $stats['failed_count'] ?? 0 ?> failed</span>
                                     </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <p class="text-muted mb-1">Total Transactions</p>
-                                        <h4 class="mb-0"><?= $stats['total_count'] ?? 0 ?></h4>
-                                        <small class="text-success"><?= $stats['success_count'] ?? 0 ?>
-                                            successful</small>
+                                    <div class="stat-icon info">
+                                        <iconify-icon icon="solar:chart-2-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
@@ -325,11 +317,11 @@ $todayStats = mysqli_fetch_assoc(mysqli_query($conn, "SELECT
 
             </div>
 
-            <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+            <footer class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 text-center">
-                            <p class="mb-0">
+                            <p>
                                 <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard Africa Ltd.
                             </p>
                         </div>

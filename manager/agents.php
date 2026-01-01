@@ -42,24 +42,34 @@ if ($view) {
           ];
      }
 }
+
+// Get counts for stats
+$totalAgents = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM agents"))['c'];
+$verifiedAgents = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM agents WHERE status = 'verified'"))['c'];
+$pendingAgents = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM agents WHERE status = 'pending'"))['c'];
+$rejectedAgents = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM agents WHERE status = 'rejected'"))['c'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
      <meta charset="utf-8" />
-     <title>ApplyBoard Africa Ltd || Agents</title>
+     <title>Agents Management | ApplyBoard Africa</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+     <meta name="theme-color" content="#1e3a5f">
      <link rel="shortcut icon" href="../images/favicon.png">
-     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
-          rel="stylesheet">
+
+     <!-- Google Fonts - Inter -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
-
-     <!-- Custom Dashboard css (mobile fixes) -->
      <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
+
      <script src="assets/js/config.js"></script>
      <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
@@ -71,73 +81,182 @@ if ($view) {
 
           <div class="page-content">
                <div class="container-fluid">
-                    <div class="row">
-                         <div class="col-12">
-                              <div class="page-title-box">
-                                   <h4 class="mb-0"><?= $view ? 'Agent Details' : 'Manage Agents' ?></h4>
-                                   <ol class="breadcrumb mb-0">
-                                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                                        <?php if ($view): ?>
-                                             <li class="breadcrumb-item"><a href="agents.php">Agents</a></li>
-                                             <li class="breadcrumb-item active">View Agent</li>
-                                        <?php else: ?>
-                                             <li class="breadcrumb-item active">Agents</li>
-                                        <?php endif; ?>
-                                   </ol>
+                    <!-- Page Title -->
+                    <div class="page-title-box">
+                         <h4><?= $view ? 'Agent Details' : 'Agents Management' ?></h4>
+                         <ol class="breadcrumb mb-0">
+                              <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                              <?php if ($view): ?>
+                                   <li class="breadcrumb-item"><a href="agents.php">Agents</a></li>
+                                   <li class="breadcrumb-item active">View Agent</li>
+                              <?php else: ?>
+                                   <li class="breadcrumb-item active">Agents</li>
+                              <?php endif; ?>
+                         </ol>
+                    </div>
+
+                    <?php if (!$view): ?>
+                         <!-- Stats Cards -->
+                         <div class="row g-3 mb-4">
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Total Agents</p>
+                                                       <h3 class="stat-value mb-1"><?= number_format($totalAgents) ?></h3>
+                                                       <span class="stat-trend up">
+                                                            <iconify-icon
+                                                                 icon="solar:users-group-two-rounded-outline"></iconify-icon>
+                                                            All agents
+                                                       </span>
+                                                  </div>
+                                                  <div class="stat-icon primary">
+                                                       <iconify-icon
+                                                            icon="solar:users-group-two-rounded-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Verified</p>
+                                                       <h3 class="stat-value mb-1"><?= number_format($verifiedAgents) ?></h3>
+                                                       <span class="stat-trend up">
+                                                            <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
+                                                            Active
+                                                       </span>
+                                                  </div>
+                                                  <div class="stat-icon success">
+                                                       <iconify-icon icon="solar:shield-check-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Pending</p>
+                                                       <h3 class="stat-value mb-1"><?= number_format($pendingAgents) ?></h3>
+                                                       <span class="stat-trend down">
+                                                            <iconify-icon icon="solar:hourglass-outline"></iconify-icon>
+                                                            Review needed
+                                                       </span>
+                                                  </div>
+                                                  <div class="stat-icon warning">
+                                                       <iconify-icon icon="solar:user-check-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Rejected</p>
+                                                       <h3 class="stat-value mb-1"><?= number_format($rejectedAgents) ?></h3>
+                                                       <span class="stat-trend down">
+                                                            <iconify-icon icon="solar:close-circle-outline"></iconify-icon>
+                                                            Declined
+                                                       </span>
+                                                  </div>
+                                                  <div class="stat-icon danger">
+                                                       <iconify-icon icon="solar:user-cross-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
+                                   </div>
                               </div>
                          </div>
-                    </div>
+                    <?php endif; ?>
 
                     <?php if ($view && $agentDetails): ?>
                          <!-- Agent Detail View -->
-                         <div class="row">
-                              <div class="col-12 mb-3">
-                                   <a href="agents.php" class="btn btn-secondary"><i class="ti ti-arrow-left me-1"></i> Back
-                                        to Agents</a>
-                              </div>
+                         <div class="mb-3">
+                              <a href="agents.php" class="btn btn-outline-primary">
+                                   <iconify-icon icon="solar:arrow-left-outline" class="me-1"></iconify-icon> Back to Agents
+                              </a>
                          </div>
 
                          <!-- Stats Cards -->
-                         <div class="row">
-                              <div class="col-md-3">
-                                   <div class="card">
-                                        <div class="card-body text-center">
-                                             <h6 class="text-muted">Total Referrals</h6>
-                                             <h3 class="text-primary"><?= number_format($agentStats['total_referrals']) ?>
-                                             </h3>
+                         <div class="row g-3 mb-4">
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center gap-3">
+                                                  <div class="stat-icon primary">
+                                                       <iconify-icon
+                                                            icon="solar:users-group-two-rounded-outline"></iconify-icon>
+                                                  </div>
+                                                  <div>
+                                                       <div class="stat-value">
+                                                            <?= number_format($agentStats['total_referrals']) ?></div>
+                                                       <div class="stat-label">Referrals</div>
+                                                  </div>
+                                             </div>
                                         </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card">
-                                        <div class="card-body text-center">
-                                             <h6 class="text-muted">Total Cases</h6>
-                                             <h3 class="text-info"><?= number_format($agentStats['total_cases']) ?></h3>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center gap-3">
+                                                  <div class="stat-icon info">
+                                                       <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
+                                                  </div>
+                                                  <div>
+                                                       <div class="stat-value">
+                                                            <?= number_format($agentStats['total_cases']) ?></div>
+                                                       <div class="stat-label">Total Cases</div>
+                                                  </div>
+                                             </div>
                                         </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card">
-                                        <div class="card-body text-center">
-                                             <h6 class="text-muted">Completed Cases</h6>
-                                             <h3 class="text-success"><?= number_format($agentStats['completed_cases']) ?>
-                                             </h3>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center gap-3">
+                                                  <div class="stat-icon success">
+                                                       <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
+                                                  </div>
+                                                  <div>
+                                                       <div class="stat-value">
+                                                            <?= number_format($agentStats['completed_cases']) ?></div>
+                                                       <div class="stat-label">Completed</div>
+                                                  </div>
+                                             </div>
                                         </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card">
-                                        <div class="card-body text-center">
-                                             <h6 class="text-muted">Total Received</h6>
-                                             <h3 class="text-success">₦<?= number_format($agentStats['total_earned'], 2) ?>
-                                             </h3>
-                                             <small class="text-muted">Paid commissions</small>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-center gap-3">
+                                                  <div class="stat-icon warning">
+                                                       <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
+                                                  </div>
+                                                  <div>
+                                                       <div class="stat-value">
+                                                            ₦<?= number_format($agentStats['total_earned']) ?></div>
+                                                       <div class="stat-label">Received</div>
+                                                  </div>
+                                             </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
 
-                         <div class="row">
+                         <div class="row g-4">
                               <!-- Agent Info -->
                               <div class="col-lg-6">
                                    <div class="card">
@@ -455,13 +574,13 @@ if ($view) {
                     <?php endif; ?>
                </div>
 
-               <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+               <footer class="footer">
                     <div class="container-fluid">
                          <div class="row">
                               <div class="col-12 text-center">
-                                   <p class="mb-0">
-                                        <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard
-                                        Africa Ltd.
+                                   <p>&copy;
+                                        <script>document.write(new Date().getFullYear())</script> ApplyBoard Africa Ltd.
+                                        All rights reserved.
                                    </p>
                               </div>
                          </div>

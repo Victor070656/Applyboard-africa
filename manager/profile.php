@@ -14,22 +14,31 @@ if (!isset($_SESSION['sdtravels_manager'])) {
 <head>
      <!-- Title Meta -->
      <meta charset="utf-8" />
-     <title>ApplyBoard Africa Ltd || Profile</title>
+     <title>My Profile | ApplyBoard Africa</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <meta name="description" content="ApplyBoard Africa Ltd: An advanced, fully responsive admin dashboard template packed with features to streamline your analytics and management needs." />
+     <meta name="description"
+          content="ApplyBoard Africa Ltd: An advanced, fully responsive admin dashboard template packed with features to streamline your analytics and management needs." />
      <meta name="author" content="StackBros" />
-     <meta name="keywords" content="ApplyBoard Africa Ltd, admin dashboard, responsive template, analytics, modern UI, management tools" />
+     <meta name="keywords"
+          content="ApplyBoard Africa Ltd, admin dashboard, responsive template, analytics, modern UI, management tools" />
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
      <meta name="robots" content="index, follow" />
      <meta name="theme-color" content="#ffffff">
 
      <!-- App favicon -->
      <link rel="shortcut icon" href="../images/favicon.png">
+     <meta name="theme-color" content="#1e3a5f">
+
+     <!-- Google Fonts - Inter -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
      <!-- Google Font Family link -->
      <link rel="preconnect" href="https://fonts.googleapis.com/index.html">
      <link rel="preconnect" href="https://fonts.gstatic.com/index.html" crossorigin>
-     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
+          rel="stylesheet">
 
      <!-- Vendor css -->
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
@@ -80,7 +89,7 @@ if (!isset($_SESSION['sdtravels_manager'])) {
                               <div class="page-title-box">
                                    <h4 class="mb-0">Profile</h4>
                                    <ol class="breadcrumb mb-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">ApplyBoard Africa Ltd</a></li>
+                                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                                         <li class="breadcrumb-item active">Profile</li>
                                    </ol>
                               </div>
@@ -103,20 +112,25 @@ if (!isset($_SESSION['sdtravels_manager'])) {
                                                   $info = mysqli_fetch_assoc($getInfo);
                                                   ?>
                                                   <div class="mb-3 col-md-6">
-                                                       <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                                       <label for="email" class="form-label">Email <span
+                                                                 class="text-danger">*</span></label>
                                                        <input type="email" id="email" name="email" required
-                                                            class="form-control" value="<?= $info['email']; ?>" placeholder="Email">
+                                                            class="form-control" value="<?= $info['email']; ?>"
+                                                            placeholder="Email">
                                                   </div>
 
                                                   <div class="mb-3 col-md-6">
-                                                       <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                                                       <input type="text" id="password" value="<?= $info['password']; ?>" name="password" required class="form-control"
-                                                            placeholder="********">
+                                                       <label for="password" class="form-label">Password <span
+                                                                 class="text-danger">*</span></label>
+                                                       <input type="text" id="password"
+                                                            value="<?= $info['password']; ?>" name="password" required
+                                                            class="form-control" placeholder="********">
                                                   </div>
 
 
                                                   <div class="">
-                                                       <button type="submit" name="send" class="btn btn-dark">Update</button>
+                                                       <button type="submit" name="send"
+                                                            class="btn btn-dark">Update</button>
                                                   </div>
                                              </div>
                                              <?php
@@ -143,11 +157,11 @@ if (!isset($_SESSION['sdtravels_manager'])) {
                <!-- End Container Fluid -->
 
                <!-- Footer Start -->
-               <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+               <footer class="footer">
                     <div class="container-fluid">
                          <div class="row">
                               <div class="col-12 text-center">
-                                   <p class="mb-0">
+                                   <p>
                                         <script>
                                              document.write(new Date().getFullYear())
                                         </script> &copy; ApplyBoard Africa Ltd.</a>
@@ -169,7 +183,7 @@ if (!isset($_SESSION['sdtravels_manager'])) {
 
      <!-- Vendor Javascript -->
      <script>
-          document.getElementById('fileupload').addEventListener('change', function() {
+          document.getElementById('fileupload').addEventListener('change', function () {
                document.getElementById('confirmFile').innerHTML = this.files[0].name;
           });
      </script>

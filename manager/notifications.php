@@ -106,10 +106,16 @@ $unreadCount = mysqli_fetch_assoc(mysqli_query($conn, "
 
 <head>
      <meta charset="utf-8" />
-     <title>ApplyBoard Africa Ltd || Notifications</title>
+     <title>Notifications | ApplyBoard Africa</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
      <link rel="shortcut icon" href="../images/favicon.png">
+     <meta name="theme-color" content="#1e3a5f">
+
+     <!-- Google Fonts - Inter -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
           rel="stylesheet">
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
@@ -149,8 +155,7 @@ $unreadCount = mysqli_fetch_assoc(mysqli_query($conn, "
                                    <div>
                                         <h4 class="mb-0">Notifications</h4>
                                         <ol class="breadcrumb mb-0">
-                                             <li class="breadcrumb-item"><a href="javascript: void(0);">ApplyBoard
-                                                       Africa Ltd</a></li>
+                                             <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                                              <li class="breadcrumb-item active">Notifications</li>
                                         </ol>
                                    </div>
@@ -168,55 +173,44 @@ $unreadCount = mysqli_fetch_assoc(mysqli_query($conn, "
                     </div>
 
                     <!-- Stats -->
-                    <div class="row mb-3">
-                         <div class="col-md-4">
-                              <div class="card">
+                    <div class="row g-3 mb-4">
+                         <div class="col-6 col-lg-4">
+                              <div class="stat-card card">
                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                             <div class="flex-shrink-0">
-                                                  <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
-                                                       <iconify-icon icon="solar:bell-outline"
-                                                            class="fs-24 text-primary"></iconify-icon>
-                                                  </div>
+                                        <div class="d-flex align-items-start justify-content-between">
+                                             <div>
+                                                  <p class="stat-label mb-1">Total</p>
+                                                  <h3 class="stat-value mb-1"><?= mysqli_num_rows($getNotifications) ?>
+                                                  </h3>
                                              </div>
-                                             <div class="flex-grow-1 ms-3">
-                                                  <p class="text-muted mb-1">Total</p>
-                                                  <h4 class="mb-0"><?= mysqli_num_rows($getNotifications) ?></h4>
+                                             <div class="stat-icon primary">
+                                                  <iconify-icon icon="solar:bell-outline"></iconify-icon>
                                              </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
-                         <div class="col-md-4">
-                              <div class="card">
+                         <div class="col-6 col-lg-4">
+                              <div class="stat-card card">
                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                             <div class="flex-shrink-0">
-                                                  <div class="bg-warning bg-opacity-10 p-3 rounded-circle">
-                                                       <iconify-icon icon="solar:bell-minimalistic-outline"
-                                                            class="fs-24 text-warning"></iconify-icon>
-                                                  </div>
+                                        <div class="d-flex align-items-start justify-content-between">
+                                             <div>
+                                                  <p class="stat-label mb-1">Unread</p>
+                                                  <h3 class="stat-value mb-1"><?= $unreadCount ?></h3>
                                              </div>
-                                             <div class="flex-grow-1 ms-3">
-                                                  <p class="text-muted mb-1">Unread</p>
-                                                  <h4 class="mb-0"><?= $unreadCount ?></h4>
+                                             <div class="stat-icon warning">
+                                                  <iconify-icon icon="solar:bell-minimalistic-outline"></iconify-icon>
                                              </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
-                         <div class="col-md-4">
-                              <div class="card">
+                         <div class="col-12 col-lg-4">
+                              <div class="stat-card card">
                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                             <div class="flex-shrink-0">
-                                                  <div class="bg-info bg-opacity-10 p-3 rounded-circle">
-                                                       <iconify-icon icon="solar:calendar-outline"
-                                                            class="fs-24 text-info"></iconify-icon>
-                                                  </div>
-                                             </div>
-                                             <div class="flex-grow-1 ms-3">
-                                                  <p class="text-muted mb-1">This Week</p>
+                                        <div class="d-flex align-items-start justify-content-between">
+                                             <div>
+                                                  <p class="stat-label mb-1">This Week</p>
                                                   <?php
                                                   $weekCount = mysqli_fetch_assoc(mysqli_query($conn, "
                                                       SELECT COUNT(*) as c FROM notifications
@@ -224,7 +218,10 @@ $unreadCount = mysqli_fetch_assoc(mysqli_query($conn, "
                                                       AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
                                                   "))['c'];
                                                   ?>
-                                                  <h4 class="mb-0"><?= $weekCount ?></h4>
+                                                  <h3 class="stat-value mb-1"><?= $weekCount ?></h3>
+                                             </div>
+                                             <div class="stat-icon info">
+                                                  <iconify-icon icon="solar:calendar-outline"></iconify-icon>
                                              </div>
                                         </div>
                                    </div>
@@ -376,11 +373,11 @@ $unreadCount = mysqli_fetch_assoc(mysqli_query($conn, "
 
                </div>
 
-               <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+               <footer class="footer">
                     <div class="container-fluid">
                          <div class="row">
                               <div class="col-12 text-center">
-                                   <p class="mb-0">
+                                   <p>
                                         <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard
                                         Africa Ltd.
                                    </p>

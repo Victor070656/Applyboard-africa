@@ -61,21 +61,23 @@ $whereClause = implode(' AND ', $where);
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd || Commissions</title>
+    <title>Commission Management | ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="#1e3a5f">
     <link rel="shortcut icon" href="../images/favicon.png">
-    <link
-        href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
-        rel="stylesheet">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
 
-     <!-- Custom Dashboard css (mobile fixes) -->
-     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
-    <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
 
@@ -86,110 +88,99 @@ $whereClause = implode(' AND ', $where);
 
         <div class="page-content">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="page-title-box">
-                            <h4 class="mb-0">Commission Management</h4>
-                        </div>
-                    </div>
+                <!-- Page Title -->
+                <div class="page-title-box">
+                    <h4>Commission Management</h4>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Commissions</li>
+                    </ol>
                 </div>
 
                 <!-- Stats Cards -->
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="card">
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Pending Commissions</h6>
-                                        <h4 class="mb-0">
-                                            <?php
-                                            $pending = mysqli_fetch_assoc(mysqli_query(
-                                                $conn,
-                                                "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'pending'"
-                                            ));
-                                            echo number_format($pending['count']);
-                                            ?>
-                                        </h4>
-                                        <small class="text-muted">₦<?= number_format($pending['total'], 2) ?></small>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Pending</p>
+                                        <?php
+                                        $pending = mysqli_fetch_assoc(mysqli_query(
+                                            $conn,
+                                            "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'pending'"
+                                        ));
+                                        ?>
+                                        <h3 class="stat-value mb-1"><?= number_format($pending['count']) ?></h3>
+                                        <span class="stat-trend down">₦<?= number_format($pending['total']) ?></span>
                                     </div>
-                                    <div class="avatar-sm bg-warning bg-opacity-10 rounded">
-                                        <iconify-icon icon="solar:clock-circle-outline"
-                                            class="fs-24 text-warning"></iconify-icon>
+                                    <div class="stat-icon warning">
+                                        <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Approved</h6>
-                                        <h4 class="mb-0">
-                                            <?php
-                                            $approved = mysqli_fetch_assoc(mysqli_query(
-                                                $conn,
-                                                "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'approved'"
-                                            ));
-                                            echo number_format($approved['count']);
-                                            ?>
-                                        </h4>
-                                        <small class="text-muted">₦<?= number_format($approved['total'], 2) ?></small>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Approved</p>
+                                        <?php
+                                        $approved = mysqli_fetch_assoc(mysqli_query(
+                                            $conn,
+                                            "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'approved'"
+                                        ));
+                                        ?>
+                                        <h3 class="stat-value mb-1"><?= number_format($approved['count']) ?></h3>
+                                        <span class="stat-trend up">₦<?= number_format($approved['total']) ?></span>
                                     </div>
-                                    <div class="avatar-sm bg-info bg-opacity-10 rounded">
-                                        <iconify-icon icon="solar:check-circle-outline"
-                                            class="fs-24 text-info"></iconify-icon>
+                                    <div class="stat-icon info">
+                                        <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Paid This Month</h6>
-                                        <h4 class="mb-0">
-                                            <?php
-                                            $paid = mysqli_fetch_assoc(mysqli_query(
-                                                $conn,
-                                                "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'paid' AND YEAR(paid_date) = YEAR(CURDATE()) AND MONTH(paid_date) = MONTH(CURDATE())"
-                                            ));
-                                            echo number_format($paid['count']);
-                                            ?>
-                                        </h4>
-                                        <small class="text-muted">₦<?= number_format($paid['total'], 2) ?></small>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Paid This Month</p>
+                                        <?php
+                                        $paid = mysqli_fetch_assoc(mysqli_query(
+                                            $conn,
+                                            "SELECT COUNT(*) as count, COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'paid' AND YEAR(paid_date) = YEAR(CURDATE()) AND MONTH(paid_date) = MONTH(CURDATE())"
+                                        ));
+                                        ?>
+                                        <h3 class="stat-value mb-1"><?= number_format($paid['count']) ?></h3>
+                                        <span class="stat-trend up">₦<?= number_format($paid['total']) ?></span>
                                     </div>
-                                    <div class="avatar-sm bg-success bg-opacity-10 rounded">
-                                        <iconify-icon icon="solar:wallet-money-outline"
-                                            class="fs-24 text-success"></iconify-icon>
+                                    <div class="stat-icon success">
+                                        <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card">
+                    <div class="col-6 col-lg-3">
+                        <div class="stat-card card">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1">
-                                        <h6 class="text-muted mb-1">Total Paid (All Time)</h6>
-                                        <h4 class="mb-0">
-                                            <?php
-                                            $totalPaid = mysqli_fetch_assoc(mysqli_query(
-                                                $conn,
-                                                "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'paid'"
-                                            ));
-                                            echo "₦" . number_format($totalPaid['total'], 0);
-                                            ?>
-                                        </h4>
+                                <div class="d-flex align-items-start justify-content-between">
+                                    <div>
+                                        <p class="stat-label mb-1">Total Paid (All Time)</p>
+                                        <?php
+                                        $totalPaid = mysqli_fetch_assoc(mysqli_query(
+                                            $conn,
+                                            "SELECT COALESCE(SUM(amount), 0) as total FROM `commissions` WHERE `status` = 'paid'"
+                                        ));
+                                        ?>
+                                        <h3 class="stat-value mb-1">₦<?= number_format($totalPaid['total']) ?></h3>
                                     </div>
-                                    <div class="avatar-sm bg-primary bg-opacity-10 rounded">
-                                        <iconify-icon icon="solar:diagram-chart-outline"
-                                            class="fs-24 text-primary"></iconify-icon>
+                                    <div class="stat-icon primary">
+                                        <iconify-icon icon="solar:chart-2-outline"></iconify-icon>
                                     </div>
                                 </div>
                             </div>

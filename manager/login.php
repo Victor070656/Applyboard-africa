@@ -12,7 +12,7 @@ include '../config/config.php';
 <head>
     <!-- Title Meta -->
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd || Sign In</title>
+    <title>Admin Login | ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="ApplyBoard Africa Ltd: An advanced, fully responsive admin dashboard template packed with features to streamline your analytics and management needs." />
@@ -40,8 +40,8 @@ include '../config/config.php';
     <!-- App css -->
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
 
-     <!-- Custom Dashboard css (mobile fixes) -->
-     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
+    <!-- Custom Dashboard css (mobile fixes) -->
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
 
     <!-- Theme Config js -->
     <script src="assets/js/config.js"></script>

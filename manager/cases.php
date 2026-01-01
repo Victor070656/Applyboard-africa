@@ -137,10 +137,16 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
 
 <head>
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd || Cases</title>
+    <title>Case Management | ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="shortcut icon" href="../images/favicon.png">
+    <meta name="theme-color" content="#1e3a5f">
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
         rel="stylesheet">
@@ -148,8 +154,8 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
 
-     <!-- Custom Dashboard css (mobile fixes) -->
-     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
+    <!-- Custom Dashboard css (mobile fixes) -->
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
     <script src="assets/js/config.js"></script>
     <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
@@ -330,7 +336,7 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
                                             <div class="timeline-item mb-3">
                                                 <small
                                                     class="text-muted"><?= date('d M Y H:i', strtotime($history['created_at'])) ?></small>
-                                                <p class="mb-0">
+                                                <p>
                                                     <strong><?= $changerName ?></strong> changed stage
                                                     <?php if ($history['from_stage']): ?>
                                                         from <span
@@ -449,6 +455,75 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
 
                 <?php else: ?>
                     <!-- Cases List -->
+
+                    <!-- Stats Cards -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <p class="stat-label mb-1">Total Cases</p>
+                                            <?php $totalCases = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM cases"))['c']; ?>
+                                            <h3 class="stat-value mb-1"><?= number_format($totalCases) ?></h3>
+                                        </div>
+                                        <div class="stat-icon primary">
+                                            <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <p class="stat-label mb-1">Active Cases</p>
+                                            <?php $activeCases = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM cases WHERE status = 'active'"))['c']; ?>
+                                            <h3 class="stat-value mb-1"><?= number_format($activeCases) ?></h3>
+                                        </div>
+                                        <div class="stat-icon success">
+                                            <iconify-icon icon="solar:play-circle-outline"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <p class="stat-label mb-1">Completed</p>
+                                            <?php $completedCases = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM cases WHERE status = 'completed'"))['c']; ?>
+                                            <h3 class="stat-value mb-1"><?= number_format($completedCases) ?></h3>
+                                        </div>
+                                        <div class="stat-icon info">
+                                            <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-lg-3">
+                            <div class="stat-card card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start justify-content-between">
+                                        <div>
+                                            <p class="stat-label mb-1">On Hold</p>
+                                            <?php $onHoldCases = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM cases WHERE status = 'on_hold'"))['c']; ?>
+                                            <h3 class="stat-value mb-1"><?= number_format($onHoldCases) ?></h3>
+                                        </div>
+                                        <div class="stat-icon warning">
+                                            <iconify-icon icon="solar:pause-circle-outline"></iconify-icon>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <?php
                     // Show filter info if filtering by client or agent
                     $filterInfo = '';
@@ -592,11 +667,11 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
                 <?php endif; ?>
             </div>
 
-            <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+            <footer class="footer">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 text-center">
-                            <p class="mb-0">
+                            <p>
                                 <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard Africa Ltd.
                             </p>
                         </div>

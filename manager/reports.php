@@ -150,10 +150,16 @@ if ($reportType === 'overview') {
 
 <head>
      <meta charset="utf-8" />
-     <title>ApplyBoard Africa Ltd || Reports</title>
+     <title>Reports | ApplyBoard Africa</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
      <link rel="shortcut icon" href="../images/favicon.png">
+     <meta name="theme-color" content="#1e3a5f">
+
+     <!-- Google Fonts - Inter -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
           rel="stylesheet">
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
@@ -200,8 +206,7 @@ if ($reportType === 'overview') {
                               <div class="page-title-box">
                                    <h4 class="mb-0">Reports & Analytics</h4>
                                    <ol class="breadcrumb mb-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">ApplyBoard Africa
-                                                  Ltd</a></li>
+                                        <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
                                         <li class="breadcrumb-item active">Reports</li>
                                    </ol>
                               </div>
@@ -236,37 +241,69 @@ if ($reportType === 'overview') {
 
                     <?php if ($reportType === 'overview'): ?>
                          <!-- Overview Report -->
-                         <div class="row mb-3">
-                              <div class="col-md-3">
-                                   <div class="card stat-card-large bg-primary bg-opacity-10">
-                                        <iconify-icon icon="solar:wallet-money-outline"
-                                             class="fs-32 text-primary"></iconify-icon>
-                                        <h3>$<?= number_format($stats['totalRevenue'], 2) ?></h3>
-                                        <p class="text-muted mb-0">Total Revenue</p>
+                         <div class="row g-3 mb-4">
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Total Revenue</p>
+                                                       <h3 class="stat-value mb-1">
+                                                            ₦<?= number_format($stats['totalRevenue'], 2) ?></h3>
+                                                  </div>
+                                                  <div class="stat-icon primary">
+                                                       <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card stat-card-large bg-success bg-opacity-10">
-                                        <iconify-icon icon="solar:check-circle-outline"
-                                             class="fs-32 text-success"></iconify-icon>
-                                        <h3><?= number_format($stats['completedCases']) ?></h3>
-                                        <p class="text-muted mb-0">Completed Cases</p>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Completed Cases</p>
+                                                       <h3 class="stat-value mb-1">
+                                                            <?= number_format($stats['completedCases']) ?></h3>
+                                                  </div>
+                                                  <div class="stat-icon success">
+                                                       <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card stat-card-large bg-info bg-opacity-10">
-                                        <iconify-icon icon="solar:users-group-rounded-outline"
-                                             class="fs-32 text-info"></iconify-icon>
-                                        <h3><?= number_format($stats['totalAgents']) ?></h3>
-                                        <p class="text-muted mb-0">Active Agents</p>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">Active Agents</p>
+                                                       <h3 class="stat-value mb-1">
+                                                            <?= number_format($stats['totalAgents']) ?></h3>
+                                                  </div>
+                                                  <div class="stat-icon info">
+                                                       <iconify-icon icon="solar:users-group-rounded-outline"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
                                    </div>
                               </div>
-                              <div class="col-md-3">
-                                   <div class="card stat-card-large bg-warning bg-opacity-10">
-                                        <iconify-icon icon="solar:user-plus-rounded"
-                                             class="fs-32 text-warning"></iconify-icon>
-                                        <h3><?= number_format($stats['totalClients']) ?></h3>
-                                        <p class="text-muted mb-0">New Clients</p>
+                              <div class="col-6 col-lg-3">
+                                   <div class="stat-card card">
+                                        <div class="card-body">
+                                             <div class="d-flex align-items-start justify-content-between">
+                                                  <div>
+                                                       <p class="stat-label mb-1">New Clients</p>
+                                                       <h3 class="stat-value mb-1">
+                                                            <?= number_format($stats['totalClients']) ?></h3>
+                                                  </div>
+                                                  <div class="stat-icon warning">
+                                                       <iconify-icon icon="solar:user-plus-rounded"></iconify-icon>
+                                                  </div>
+                                             </div>
+                                        </div>
                                    </div>
                               </div>
                          </div>
@@ -477,11 +514,11 @@ if ($reportType === 'overview') {
 
                </div>
 
-               <footer class="footer card mb-0 rounded-0 justify-content-center align-items-center">
+               <footer class="footer">
                     <div class="container-fluid">
                          <div class="row">
                               <div class="col-12 text-center">
-                                   <p class="mb-0">
+                                   <p>
                                         <script>document.write(new Date().getFullYear())</script> &copy; ApplyBoard
                                         Africa Ltd.
                                    </p>
