@@ -5,56 +5,104 @@
                 <!-- Menu Toggle Button -->
                 <div class="topbar-item">
                     <button type="button" class="button-toggle-menu topbar-button">
-                        <iconify-icon icon="solar:hamburger-menu-outline"
-                            class="fs-24 align-middle"></iconify-icon>
+                        <iconify-icon icon="solar:hamburger-menu-outline" class="fs-24 align-middle"></iconify-icon>
                     </button>
                 </div>
 
-                <!-- App Search-->
-                <!-- <form class="app-search d-none d-md-block me-auto">
-                    <div class="position-relative">
-                        <input type="search" class="form-control" placeholder="admin,widgets..."
-                            autocomplete="off" value="">
-                        <iconify-icon icon="solar:magnifer-outline" class="search-widget-icon"></iconify-icon>
-                    </div>
-                </form> -->
+                <!-- Page Title (Mobile) -->
+                <div class="d-block d-md-none">
+                    <h6 class="mb-0 fw-semibold"><?= $pageTitle ?? 'Dashboard' ?></h6>
+                </div>
             </div>
 
             <div class="d-flex align-items-center gap-2">
+                <!-- Notifications -->
+                <div class="dropdown topbar-item">
+                    <button type="button" class="topbar-button position-relative" data-bs-toggle="dropdown" aria-expanded="false">
+                        <iconify-icon icon="solar:bell-outline" class="fs-22 align-middle"></iconify-icon>
+                        <?php if (isset($unreadCount) && $unreadCount > 0): ?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;">
+                            <?= $unreadCount > 9 ? '9+' : $unreadCount ?>
+                        </span>
+                        <?php endif; ?>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end" style="width: 320px; max-height: 400px; overflow-y: auto;">
+                        <div class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <?php if (isset($unreadCount) && $unreadCount > 0): ?>
+                            <span class="badge bg-primary-subtle text-primary"><?= $unreadCount ?> New</span>
+                            <?php endif; ?>
+                        </div>
+                        <?php if (isset($recentNotifications) && !empty($recentNotifications)): ?>
+                            <?php foreach ($recentNotifications as $notif): ?>
+                            <a class="dropdown-item py-3" href="notifications.php">
+                                <div class="d-flex gap-2">
+                                    <div class="flex-shrink-0">
+                                        <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                            <iconify-icon icon="solar:bell-outline" class="fs-16"></iconify-icon>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <p class="mb-1 fw-medium text-truncate" style="max-width: 200px;"><?= htmlspecialchars($notif['title']) ?></p>
+                                        <small class="text-muted"><?= date('M d, H:i', strtotime($notif['created_at'])) ?></small>
+                                    </div>
+                                </div>
+                            </a>
+                            <?php endforeach; ?>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-center text-primary py-2" href="notifications.php">
+                                View All Notifications
+                            </a>
+                        <?php else: ?>
+                            <div class="dropdown-item text-center py-4">
+                                <iconify-icon icon="solar:bell-off-outline" class="fs-24 text-muted mb-2 d-block"></iconify-icon>
+                                <p class="text-muted mb-0 small">No new notifications</p>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
                 <!-- Theme Color (Light/Dark) -->
-                <div class="topbar-item">
+                <div class="topbar-item d-none d-sm-block">
                     <button type="button" class="topbar-button" id="light-dark-mode">
-                        <iconify-icon icon="solar:moon-outline"
-                            class="fs-22 align-middle light-mode"></iconify-icon>
-                        <iconify-icon icon="solar:sun-2-outline"
-                            class="fs-22 align-middle dark-mode"></iconify-icon>
+                        <iconify-icon icon="solar:moon-outline" class="fs-22 align-middle light-mode"></iconify-icon>
+                        <iconify-icon icon="solar:sun-2-outline" class="fs-22 align-middle dark-mode"></iconify-icon>
                     </button>
                 </div>
 
-
-                <!-- User -->
+                <!-- User Dropdown -->
                 <div class="dropdown topbar-item">
-                    <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="d-flex align-items-center">
-                            <img class="rounded-circle" width="32" src="assets/images/users/avatar-1.jpg"
-                                alt="avatar-3">
+                    <a type="button" class="topbar-button d-flex align-items-center gap-2" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: linear-gradient(135deg, #0F4C75, #3EA5C5); color: white; font-size: 14px;">
+                            <?= isset($user['fullname']) ? strtoupper(substr($user['fullname'], 0, 1)) : 'U' ?>
+                        </div>
+                        <span class="d-none d-md-block">
+                            <span class="fw-medium text-dark"><?= htmlspecialchars($user['fullname'] ?? 'User') ?></span>
                         </span>
+                        <iconify-icon icon="solar:alt-arrow-down-outline" class="fs-14 d-none d-md-block"></iconify-icon>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                        <!-- item-->
-                        <h6 class="dropdown-header">Welcome!</h6>
-
+                        <div class="dropdown-header">
+                            <h6 class="mb-0"><?= htmlspecialchars($user['fullname'] ?? 'User') ?></h6>
+                            <small class="text-muted"><?= htmlspecialchars($user['email'] ?? '') ?></small>
+                        </div>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="profile.php">
-                            <iconify-icon icon="solar:user-outline"
-                                class="align-middle me-2 fs-18"></iconify-icon><span class="align-middle">My
-                                Account</span>
+                            <iconify-icon icon="solar:user-circle-outline" class="align-middle me-2 fs-18"></iconify-icon>
+                            <span class="align-middle">My Profile</span>
                         </a>
-
+                        <a class="dropdown-item" href="cases.php">
+                            <iconify-icon icon="solar:folder-with-files-outline" class="align-middle me-2 fs-18"></iconify-icon>
+                            <span class="align-middle">My Cases</span>
+                        </a>
+                        <a class="dropdown-item" href="../" target="_blank">
+                            <iconify-icon icon="solar:global-outline" class="align-middle me-2 fs-18"></iconify-icon>
+                            <span class="align-middle">Visit Website</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item text-danger" href="logout.php">
-                            <iconify-icon icon="solar:logout-3-outline"
-                                class="align-middle me-2 fs-18"></iconify-icon><span
-                                class="align-middle">Logout</span>
+                            <iconify-icon icon="solar:logout-3-outline" class="align-middle me-2 fs-18"></iconify-icon>
+                            <span class="align-middle">Sign Out</span>
                         </a>
                     </div>
                 </div>

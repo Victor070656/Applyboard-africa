@@ -31,21 +31,18 @@ $recentNotifications = array_slice($notifications, 0, 3);
 <head>
     <!-- Title Meta -->
     <meta charset="utf-8" />
-    <title>ApplyBoard Africa Ltd User || Dashboard</title>
+    <title>Dashboard | ApplyBoard Africa</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0F4C75">
 
     <!-- App favicon -->
     <link rel="shortcut icon" href="../images/favicon.png">
 
-    <!-- Google Font Family link -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/index.html">
-    <link rel="preconnect" href="https://fonts.gstatic.com/index.html" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
-        rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Vendor css -->
     <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
@@ -55,64 +52,14 @@ $recentNotifications = array_slice($notifications, 0, 3);
 
     <!-- App css -->
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    
+    <!-- Custom Dashboard CSS -->
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
 
     <!-- Theme Config js -->
     <script src="assets/js/config.js"></script>
     <!-- Iconify -->
     <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
-
-    <style>
-        .stat-card {
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .quick-action-card {
-            border: 2px dashed #e0e0e0;
-            border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: block;
-            color: inherit;
-        }
-
-        .quick-action-card:hover {
-            border-color: #0F4C75;
-            background: rgba(15, 76, 117, 0.05);
-            color: inherit;
-        }
-
-        .quick-action-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 10px;
-            font-size: 22px;
-        }
-
-        @media (max-width: 576px) {
-            .quick-action-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-                margin-bottom: 8px;
-            }
-
-            .quick-action-card {
-                padding: 10px;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -157,29 +104,20 @@ $recentNotifications = array_slice($notifications, 0, 3);
                 <!-- ========== Page Title End ========== -->
 
                 <!-- Welcome Banner -->
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-12">
-                        <div class="card bg-primary bg-opacity-10 border-primary">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center flex-wrap gap-2">
-                                    <div class="flex-shrink-0">
-                                        <div class="quick-action-icon bg-primary text-white">
-                                            <iconify-icon icon="solar:waving-hand-outline"></iconify-icon>
-                                        </div>
-                                    </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <h5 class="mb-1">Welcome back,
-                                            <?= htmlspecialchars($user['fullname'] ?? 'Student') ?>!</h5>
-                                        <p class="mb-0 text-muted d-none d-sm-block">Track your applications, upload
-                                            documents, and stay updated with your progress.</p>
-                                    </div>
-                                    <div class="flex-shrink-0">
-                                        <a href="new_application.php" class="btn btn-primary btn-sm">
-                                            <iconify-icon icon="solar:add-circle-outline"></iconify-icon> <span
-                                                class="d-none d-md-inline">New Application</span><span
-                                                class="d-md-none">New</span>
-                                        </a>
-                                    </div>
+                        <div class="welcome-banner">
+                            <div class="welcome-content d-flex align-items-center flex-wrap gap-3">
+                                <div class="flex-grow-1">
+                                    <h4>Welcome back, <?= htmlspecialchars($user['fullname'] ?? 'Student') ?>! 👋</h4>
+                                    <p class="d-none d-sm-block">Track your applications, upload documents, and stay updated with your immigration journey.</p>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="new_application.php" class="btn">
+                                        <iconify-icon icon="solar:add-circle-outline"></iconify-icon>
+                                        <span class="d-none d-md-inline">Start New Application</span>
+                                        <span class="d-md-none">Apply</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -187,74 +125,62 @@ $recentNotifications = array_slice($notifications, 0, 3);
                 </div>
 
                 <!-- Statistics Cards -->
-                <div class="row mt-3">
-                    <div class="col-6 col-md-3">
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-lg-3">
                         <div class="card stat-card h-100">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="quick-action-icon bg-primary bg-opacity-10 text-primary"
-                                            style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
-                                            <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon primary">
+                                        <iconify-icon icon="solar:folder-with-files-outline"></iconify-icon>
                                     </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="text-muted mb-0 small">Total</h6>
-                                        <h4 class="mb-0"><?= $totalCases ?></h4>
+                                    <div>
+                                        <div class="stat-value"><?= $totalCases ?></div>
+                                        <div class="stat-label">Total Cases</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3">
+                    <div class="col-6 col-lg-3">
                         <div class="card stat-card h-100">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="quick-action-icon bg-warning bg-opacity-10 text-warning"
-                                            style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
-                                            <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon warning">
+                                        <iconify-icon icon="solar:clock-circle-outline"></iconify-icon>
                                     </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="text-muted mb-0 small">Active</h6>
-                                        <h4 class="mb-0"><?= $activeCases ?></h4>
+                                    <div>
+                                        <div class="stat-value"><?= $activeCases ?></div>
+                                        <div class="stat-label">Active</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3 mt-2 mt-md-0">
+                    <div class="col-6 col-lg-3">
                         <div class="card stat-card h-100">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="quick-action-icon bg-success bg-opacity-10 text-success"
-                                            style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
-                                            <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon success">
+                                        <iconify-icon icon="solar:check-circle-outline"></iconify-icon>
                                     </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="text-muted mb-0 small">Completed</h6>
-                                        <h4 class="mb-0"><?= $completedCases ?></h4>
+                                    <div>
+                                        <div class="stat-value"><?= $completedCases ?></div>
+                                        <div class="stat-label">Completed</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-md-3 mt-2 mt-md-0">
+                    <div class="col-6 col-lg-3">
                         <div class="card stat-card h-100">
                             <div class="card-body">
-                                <div class="d-flex align-items-center">
-                                    <div class="flex-shrink-0">
-                                        <div class="quick-action-icon bg-info bg-opacity-10 text-info"
-                                            style="width: 40px; height: 40px; font-size: 18px; margin: 0;">
-                                            <iconify-icon icon="solar:document-text-outline"></iconify-icon>
-                                        </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon info">
+                                        <iconify-icon icon="solar:hourglass-outline"></iconify-icon>
                                     </div>
-                                    <div class="flex-grow-1 ms-2">
-                                        <h6 class="text-muted mb-0 small">Pending</h6>
-                                        <h4 class="mb-0"><?= $pendingCases ?></h4>
+                                    <div>
+                                        <div class="stat-value"><?= $pendingCases ?></div>
+                                        <div class="stat-label">Pending</div>
                                     </div>
                                 </div>
                             </div>

@@ -23,8 +23,8 @@ $view = isset($_GET['view']) ? intval($_GET['view']) : null;
     <link rel="shortcut icon" href="../images/favicon.png">
 
     <!-- Google Font Family link -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/index.html">
-    <link rel="preconnect" href="https://fonts.gstatic.com/index.html" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
         rel="stylesheet">
@@ -37,6 +37,7 @@ $view = isset($_GET['view']) ? intval($_GET['view']) : null;
 
     <!-- App css -->
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
 
     <!-- Theme Config js -->
     <script src="assets/js/config.js"></script>
