@@ -77,7 +77,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="clients.php">
                     <span class="nav-icon">
-                        <iconify-icon icon="solar:users-rounded-outline"></iconify-icon>
+                        <iconify-icon icon="solar:users-group-two-rounded-outline"></iconify-icon>
                     </span>
                     <span class="nav-text"> Clients </span>
                 </a>

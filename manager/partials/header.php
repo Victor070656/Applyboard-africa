@@ -33,7 +33,7 @@ $initials = strtoupper(substr($name_parts[0], 0, 1) . (isset($name_parts[1]) ? s
 ?>
 <header class="app-topbar">
     <div class="container-fluid">
-        <div class="topbar-container navbar-header">
+        <div class="topbar-container navbar-header align-items-center">
             <div class="topbar-left d-flex align-items-center gap-2">
                 <!-- Menu Toggle Button -->
                 <button type="button" class="topbar-toggle button-toggle-menu">
@@ -44,7 +44,7 @@ $initials = strtoupper(substr($name_parts[0], 0, 1) . (isset($name_parts[1]) ? s
                 <h1 class="brand-title d-none d-md-block mb-0">ApplyBoard Africa</h1>
             </div>
 
-            <div class="topbar-right d-flex align-items-center gap-2">
+            <div class="topbar-right d-flex align-items-center gap-">
                 <!-- Theme Color (Light/Dark) -->
                 <button type="button" class="topbar-icon-btn" id="light-dark-mode">
                     <iconify-icon icon="solar:moon-outline" class="align-middle light-mode"></iconify-icon>
@@ -52,7 +52,7 @@ $initials = strtoupper(substr($name_parts[0], 0, 1) . (isset($name_parts[1]) ? s
                 </button>
 
                 <!-- Notifications -->
-                <div class="dropdown topbar-item">
+                <div class="dropdown topbar-item mb-">
                     <button type="button" class="topbar-icon-btn" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <iconify-icon icon="solar:bell-outline" class="align-middle"></iconify-icon>
@@ -96,7 +96,7 @@ $initials = strtoupper(substr($name_parts[0], 0, 1) . (isset($name_parts[1]) ? s
                 </div>
 
                 <!-- User Dropdown -->
-                <div class="dropdown topbar-item">
+                <div class="dropdown topbar-item mb-">
                     <button type="button" class="topbar-user-btn" data-bs-toggle="dropdown" aria-haspopup="true"
                         aria-expanded="false">
                         <span class="user-avatar"><?php echo $initials; ?></span>
