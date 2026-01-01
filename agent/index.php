@@ -384,11 +384,11 @@ $agentRecentNotifications = array_slice(getUserNotifications($agent_id, 'agent',
                                                                            class="text-muted"><?= date('d M', strtotime($notif['created_at'])) ?></small>
                                                                  </div>
                                                                  <?php if (!empty($notif['link'])): ?>
-                                                                      <a href="<?= htmlspecialchars($notif['link']) ?>"
+                                                                      <!-- <a href="<?= htmlspecialchars($notif['link']) ?>"
                                                                            class="btn btn-sm btn-link">
                                                                            <iconify-icon
                                                                                 icon="solar:alt-arrow-right-outline"></iconify-icon>
-                                                                      </a>
+                                                                      </a> -->
                                                                  <?php endif; ?>
                                                             </div>
                                                        </div>

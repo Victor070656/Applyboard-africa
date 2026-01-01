@@ -28,10 +28,15 @@ $pageTitle = $pageTitle ?? 'Dashboard';
                     </button>
                 </div>
 
+                <!-- Desktop Title -->
                 <div class="d-none d-md-flex flex-column">
                     <span class="fw-semibold text-muted"
                         style="font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Agent Panel</span>
                     <span class="fw-semibold" style="font-size: 16px;"><?= htmlspecialchars($pageTitle); ?></span>
+                </div>
+                <!-- Mobile Title -->
+                <div class="d-block d-md-none">
+                    <h6 class="mb-0 fw-semibold"><?= htmlspecialchars($pageTitle); ?></h6>
                 </div>
             </div>
 
@@ -41,7 +46,8 @@ $pageTitle = $pageTitle ?? 'Dashboard';
                         aria-expanded="false">
                         <iconify-icon icon="solar:bell-outline" class="fs-22 align-middle"></iconify-icon>
                         <?php if (!empty($agentUnreadCount)): ?>
-                            <span class="badge bg-danger rounded-pill position-absolute top-0 start-100">
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                style="font-size: 10px;">
                                 <?= $agentUnreadCount > 9 ? '9+' : $agentUnreadCount; ?>
                             </span>
                         <?php endif; ?>

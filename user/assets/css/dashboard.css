@@ -5,6 +5,10 @@
 
 /* CSS Variables - Matching Guest Theme */
 :root {
+  /* Base Colors */
+  --white: #ffffff;
+  --black: #000000;
+
   /* Primary Colors */
   --primary-50: #e8f4f8;
   --primary-100: #c5e4ed;
@@ -87,6 +91,11 @@ body {
    SIDEBAR STYLES
    ============================================ */
 .app-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 260px;
   background: linear-gradient(
     180deg,
     var(--primary-800) 0%,
@@ -94,6 +103,8 @@ body {
   );
   border-right: none;
   box-shadow: var(--shadow-xl);
+  z-index: 1040;
+  transition: left 0.3s ease;
 }
 
 .app-sidebar .logo-box {
@@ -192,11 +203,19 @@ body {
   border-bottom: 1px solid var(--neutral-200);
   box-shadow: var(--shadow-sm);
   height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  padding-left: 260px;
+  transition: padding-left 0.3s ease;
 }
 
 .app-topbar .navbar-header {
   height: 70px;
   padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .topbar-button {
@@ -210,6 +229,7 @@ body {
   transition: var(--transition-base);
   border: none;
   background: transparent;
+  cursor: pointer;
 }
 
 .topbar-button:hover {
@@ -256,6 +276,8 @@ body {
 .page-content {
   padding: 24px;
   min-height: calc(100vh - 70px);
+  margin-left: 260px;
+  transition: margin-left 0.3s ease;
 }
 
 /* Page Title */
@@ -1193,10 +1215,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--primary-200), var(--primary-100));
-  color: var(--primary-700);
+  background: linear-gradient(135deg, var(--primary-700), var(--primary-500));
+  color: white;
   font-weight: 600;
   font-size: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 /* ============================================
@@ -1227,9 +1252,45 @@ body {
   padding: 16px 24px;
 }
 
+/* Sidebar Overlay/Backdrop for Mobile */
+.offcanvas-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1035;
+}
+
+.offcanvas-backdrop.show {
+  opacity: 1;
+}
+
 /* ============================================
    RESPONSIVE ADJUSTMENTS
    ============================================ */
+
+/* Large screens and below - Sidebar hidden by default */
+@media (max-width: 1199.98px) {
+  .app-sidebar {
+    left: -280px;
+    transition: left 0.3s ease;
+  }
+
+  .sidebar-enable .app-sidebar {
+    left: 0;
+  }
+
+  .page-content {
+    margin-left: 0 !important;
+  }
+
+  .app-topbar {
+    padding-left: 0 !important;
+  }
+}
+
 @media (max-width: 992px) {
   .page-content {
     padding: 16px;
@@ -1245,6 +1306,52 @@ body {
 
   .welcome-banner h4 {
     font-size: 18px;
+  }
+
+  .app-topbar .navbar-header {
+    padding: 0 16px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .page-content {
+    padding: 16px;
+  }
+
+  .welcome-banner {
+    border-radius: var(--radius-lg);
+    padding: 20px;
+  }
+
+  .welcome-banner h4 {
+    font-size: 18px;
+  }
+
+  .metric-card {
+    padding: 20px 18px;
+  }
+
+  .page-title-box {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+
+  .page-title-box h4 {
+    font-size: 20px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  /* Mobile notification dropdown */
+  .dropdown-menu {
+    max-width: calc(100vw - 32px);
   }
 }
 
@@ -1285,6 +1392,31 @@ body {
 
   .table-responsive {
     font-size: 13px;
+  }
+
+  /* Mobile topbar */
+  .app-topbar .navbar-header {
+    padding: 0 12px;
+  }
+
+  .topbar-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    font-size: 13px;
+  }
+
+  /* Mobile dropdown menus */
+  .topbar-item .dropdown-menu {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    transform: none !important;
   }
 }
 
