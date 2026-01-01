@@ -159,6 +159,9 @@ if ($reportType === 'overview') {
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Custom Dashboard css (mobile fixes) -->
+     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
      <script src="assets/js/config.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
      <!-- Iconify -->

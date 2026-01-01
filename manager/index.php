@@ -33,7 +33,8 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
      <!-- Google Font Family link -->
      <link rel="preconnect" href="https://fonts.googleapis.com/index.html">
      <link rel="preconnect" href="https://fonts.gstatic.com/index.html" crossorigin>
-     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2c4ad.css?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap"
+          rel="stylesheet">
 
      <!-- Vendor css -->
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
@@ -43,6 +44,9 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
 
      <!-- App css -->
      <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Custom Dashboard css (mobile fixes) -->
+     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
 
      <!-- Theme Config js -->
      <script src="assets/js/config.js"></script>
@@ -83,7 +87,8 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
                               <div class="page-title-box">
                                    <h4 class="mb-0">Dashboard</h4>
                                    <ol class="breadcrumb mb-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">ApplyBoard Africa Ltd</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">ApplyBoard Africa
+                                                  Ltd</a></li>
                                         <li class="breadcrumb-item active">Dashboard</li>
                                    </ol>
                               </div>
@@ -107,7 +112,8 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
                                              <div class="col-6 text-end">
                                                   <p class="text-muted mb-0 text-truncate">Agents</p>
                                                   <h3 class="text-dark mt-2 mb-0"><?= $getAgents->num_rows; ?></h3>
-                                                  <small class="text-danger"><?= $getPendingAgents->num_rows ?> Pending</small>
+                                                  <small class="text-danger"><?= $getPendingAgents->num_rows ?>
+                                                       Pending</small>
                                              </div>
                                         </div>
                                    </div>
@@ -129,7 +135,8 @@ $getNewInquiries = mysqli_query($conn, "SELECT * FROM `inquiries` WHERE `status`
                                              <div class="col-6 text-end">
                                                   <p class="text-muted mb-0 text-truncate">Inquiries</p>
                                                   <h3 class="text-dark mt-2 mb-0"><?= $getInquiries->num_rows; ?></h3>
-                                                  <small class="text-danger"><?= $getNewInquiries->num_rows ?> New</small>
+                                                  <small class="text-danger"><?= $getNewInquiries->num_rows ?>
+                                                       New</small>
                                              </div>
                                         </div>
                                    </div>

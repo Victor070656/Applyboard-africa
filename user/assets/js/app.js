@@ -9,6 +9,10 @@ class Components {
       [...document.querySelectorAll(".offcanvas")].map(
         (e) => new bootstrap.Offcanvas(e)
       );
+
+    // Note: Bootstrap dropdowns with data-bs-toggle="dropdown" are auto-initialized
+    // No manual initialization needed - it can cause conflicts
+
     var e = document.getElementById("toastPlacement");
     e &&
       document
@@ -261,6 +265,9 @@ class ThemeLayout {
   showBackdrop() {
     const t = document.createElement("div");
     (t.classList = "offcanvas-backdrop fade show"),
+      // Position backdrop below topbar on mobile
+      (t.style.top = window.innerWidth <= 767 ? "64px" : "0"),
+      (t.style.zIndex = "1035"),
       document.body.appendChild(t),
       (document.body.style.overflow = "hidden"),
       1040 < window.innerWidth && (document.body.style.paddingRight = "15px");

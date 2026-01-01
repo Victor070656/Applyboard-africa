@@ -40,6 +40,9 @@ include '../config/config.php';
     <!-- App css -->
     <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
 
+     <!-- Custom Dashboard css (mobile fixes) -->
+     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
+
     <!-- Theme Config js -->
     <script src="assets/js/config.js"></script>
 

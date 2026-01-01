@@ -57,6 +57,9 @@ if ($view) {
      <link href="assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
      <link href="assets/css/style.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Custom Dashboard css (mobile fixes) -->
+     <link href="assets/css/dashboard.css" rel="stylesheet" type="text/css" />
      <script src="assets/js/config.js"></script>
      <script src="https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js"></script>
 </head>
