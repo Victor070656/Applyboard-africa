@@ -32,20 +32,21 @@ smile-dove/
 
 ### Database Tables
 
-| Table               | Purpose                                        |
-| ------------------- | ---------------------------------------------- |
-| `admin`             | Administrator accounts                         |
-| `agents`            | Agent profiles and verification status         |
-| `users`             | Client/Student accounts                        |
-| `inquiries`         | Contact form submissions                       |
-| `cases`             | Application cases (study abroad, visa, travel) |
-| `commissions`       | Agent commission records                       |
-| `notifications`     | System notifications                           |
-| `activity_logs`     | Audit trail for all actions                    |
-| `documents`         | Uploaded documents                             |
-| `case_documents`    | Documents linked to cases                      |
-| `case_stages`       | Case stage history                             |
-| `agent_performance` | Agent ratings and metrics                      |
+| Table                 | Purpose                                        |
+| --------------------- | ---------------------------------------------- |
+| `admin`               | Administrator accounts                         |
+| `agents`              | Agent profiles and verification status         |
+| `users`               | Client/Student accounts                        |
+| `inquiries`           | Contact form submissions                       |
+| `cases`               | Application cases (study abroad, visa, travel) |
+| `commissions`         | Agent commission records                       |
+| `notifications`       | System notifications                           |
+| `activity_logs`       | Audit trail for all actions                    |
+| `documents`           | Uploaded documents linked to cases             |
+| `case_stages_history` | Case stage transition history                  |
+| `agent_performance`   | Agent ratings and metrics                      |
+| `payments`            | Payment records and transactions               |
+| `settings`            | System configuration settings                  |
 
 ---
 
