@@ -146,8 +146,9 @@ $pendingCases = countCases(['agent_id' => $agent['id'], 'stage' => 'assessment']
                                         </div>
                                         <div class="col-md-6">
                                             <label class="fw-bold">Your Commission:</label>
-                                            <p>₦<?= number_format($case['commission_amount'], 2) ?> <span
-                                                    class="badge bg-<?= $case['commission_paid'] == 'paid' ? 'success' : 'warning' ?>"><?= ucfirst($case['commission_paid']) ?></span>
+                                            <p>₦<?= number_format($case['commission_amount'], 2) ?>
+                                                <!-- <span
+                                                    class="badge bg-<?= $case['commission_paid'] == 'paid' ? 'success' : 'warning' ?>"><?= ucfirst($case['commission_paid']) ?></span> -->
                                             </p>
                                         </div>
                                     </div>
@@ -258,7 +259,7 @@ $pendingCases = countCases(['agent_id' => $agent['id'], 'stage' => 'assessment']
                                 </div>
                             </div>
 
-                            <div class="card mt-3">
+                            <!-- <div class="card mt-3">
                                 <div class="card-header">
                                     <h5 class="mb-0">Quick Actions</h5>
                                 </div>
@@ -269,7 +270,7 @@ $pendingCases = countCases(['agent_id' => $agent['id'], 'stage' => 'assessment']
                                         <a href="../contact.php" class="btn btn-outline-secondary">Contact Support</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
 
@@ -378,7 +379,8 @@ $pendingCases = countCases(['agent_id' => $agent['id'], 'stage' => 'assessment']
                                                             <td>
                                                                 <strong><?= htmlspecialchars($row['case_number']) ?></strong>
                                                                 <div class="small text-muted">
-                                                                    <?= htmlspecialchars(substr($row['title'], 0, 30)) ?></div>
+                                                                    <?= htmlspecialchars(substr($row['title'], 0, 30)) ?>
+                                                                </div>
                                                             </td>
                                                             <td><?= htmlspecialchars($row['client_name']) ?></td>
                                                             <td><span

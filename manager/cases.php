@@ -276,46 +276,6 @@ if (isset($_GET['convert']) && isset($_GET['inquiry_id'])) {
                                         <p><?= nl2br(htmlspecialchars($case['description'] ?: 'No description')) ?></p>
                                     </div>
 
-                                    <!-- Editable Amount and Commission Section -->
-                                    <div class="card bg-light mb-3">
-                                        <div class="card-header py-2">
-                                            <h6 class="mb-0"><iconify-icon icon="solar:wallet-money-outline"
-                                                    class="me-1"></iconify-icon> Financial Details</h6>
-                                        </div>
-                                        <div class="card-body">
-                                            <form method="POST" class="row g-3">
-                                                <input type="hidden" name="case_id" value="<?= $case['id'] ?>">
-                                                <div class="col-md-4">
-                                                    <label class="form-label fw-bold">Case Amount (₦)</label>
-                                                    <input type="number" step="0.01" name="amount" class="form-control"
-                                                        value="<?= $case['amount'] ?>" placeholder="0.00">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label fw-bold">Commission Amount (₦)</label>
-                                                    <input type="number" step="0.01" name="commission_amount"
-                                                        class="form-control" value="<?= $case['commission_amount'] ?>"
-                                                        placeholder="0.00">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <label class="form-label fw-bold">Commission Status</label>
-                                                    <select name="commission_paid" class="form-select">
-                                                        <option value="pending" <?= $case['commission_paid'] == 'pending' ? 'selected' : '' ?>>Pending</option>
-                                                        <option value="partial" <?= $case['commission_paid'] == 'partial' ? 'selected' : '' ?>>Partial</option>
-                                                        <option value="paid" <?= $case['commission_paid'] == 'paid' ? 'selected' : '' ?>>Paid</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <button type="submit" name="update_amounts" class="btn btn-primary">
-                                                        <iconify-icon icon="solar:diskette-outline"></iconify-icon> Update
-                                                        Amounts
-                                                    </button>
-                                                    <small class="text-muted ms-2">Note: Marking commission as "Paid" will
-                                                        add the amount to agent's wallet.</small>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
                                     <div class="mb-3">
                                         <label class="fw-bold">Notes:</label>
                                         <p><?= nl2br(htmlspecialchars($case['notes'] ?: 'No notes')) ?></p>

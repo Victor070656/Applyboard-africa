@@ -4,13 +4,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 <div class="app-sidebar">
     <!-- Sidebar Logo -->
     <div class="logo-box">
-        <a href="./" class="logo-dark">
-            <img src="../images/favicon.png" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" class="logo-lg" alt="logo dark">
-        </a>
-        <a href="./" class="logo-light">
-            <img src="../images/favicon.png" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" class="logo-lg" alt="logo light">
+        <a href="./" class="logo-link d-flex align-items-center gap-2">
+            <img src="../images/favicon.png" class="logo-sm" style="height: 32px; border-radius: 8px;"
+                alt="ApplyBoard Africa">
+            <div class="logo-text d-flex flex-column">
+                <span class="text-white fw-semibold">ApplyBoard Africa</span>
+                <small class="text-white-50">Client Portal</small>
+            </div>
         </a>
     </div>
 
@@ -29,7 +29,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </li>
 
             <li class="nav-item <?= $currentPage === 'new_application.php' ? 'active' : '' ?>">
-                <a class="nav-link <?= $currentPage === 'new_application.php' ? 'active' : '' ?>" href="new_application.php">
+                <a class="nav-link <?= $currentPage === 'new_application.php' ? 'active' : '' ?>"
+                    href="new_application.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:add-circle-outline"></iconify-icon>
                     </span>
@@ -67,13 +68,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </li>
 
             <li class="nav-item <?= $currentPage === 'notifications.php' ? 'active' : '' ?>">
-                <a class="nav-link <?= $currentPage === 'notifications.php' ? 'active' : '' ?>" href="notifications.php">
+                <a class="nav-link <?= $currentPage === 'notifications.php' ? 'active' : '' ?>"
+                    href="notifications.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:bell-outline"></iconify-icon>
                     </span>
                     <span class="nav-text">Notifications</span>
                     <?php if (isset($unreadCount) && $unreadCount > 0): ?>
-                    <span class="badge bg-danger rounded-pill ms-auto"><?= $unreadCount ?></span>
+                        <span class="badge bg-danger rounded-pill ms-auto"><?= $unreadCount ?></span>
                     <?php endif; ?>
                 </a>
             </li>

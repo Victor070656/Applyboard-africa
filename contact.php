@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "Contact Us";
-$pageDescription = "Get in touch with SD Travels for visa processing, study abroad consultation, and immigration services. We're here to help.";
+$pageDescription = "Get in touch with ApplyBoard Africa Ltd for study abroad consulting, visa assistance, and travel planning services. We're here to help.";
 include_once "config/config.php";
 
 $successMessage = '';
@@ -46,13 +46,13 @@ include_once "partials/header.php";
 <!-- Page Hero -->
 <section class="page-hero">
   <div class="hero-bg">
-    <img src="images/main-slider/3.jpg" alt="Contact SD Travels" />
+    <img src="images/main-slider/3.jpg" alt="Contact ApplyBoard Africa" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-subtitle">Get In Touch</p>
     <h1>Contact Us</h1>
-    <p>Have questions? We're here to help you with all your travel and immigration needs.</p>
+    <p>Have questions? We're here to help you with all your education and travel needs.</p>
     <div class="breadcrumb">
       <a href="./">Home</a>
       <span>/</span>
@@ -70,7 +70,7 @@ include_once "partials/header.php";
           <i class="fas fa-map-marker-alt"></i>
         </div>
         <h4>Visit Our Office</h4>
-        <p>123 Business District<br>Lagos, Nigeria</p>
+        <p>13 Akinwunmi Street<br>Egbe, Lagos</p>
       </div>
 
       <div class="contact-info-card">
@@ -78,7 +78,7 @@ include_once "partials/header.php";
           <i class="fas fa-phone-alt"></i>
         </div>
         <h4>Call Us</h4>
-        <p>+234 801 234 5678<br>+234 901 234 5678</p>
+        <p>+234 706 345 9820</p>
       </div>
 
       <div class="contact-info-card">
@@ -86,7 +86,7 @@ include_once "partials/header.php";
           <i class="fas fa-envelope"></i>
         </div>
         <h4>Email Us</h4>
-        <p>info@sdtravels.com<br>support@sdtravels.com</p>
+        <p>applyboardafrica@gmail.com<br>info@applyboardafrica.com</p>
       </div>
 
       <div class="contact-info-card">
@@ -180,7 +180,7 @@ include_once "partials/header.php";
         <div class="sidebar-card">
           <h4><i class="fas fa-headset"></i> Need Immediate Help?</h4>
           <p>Our customer support team is available to assist you with urgent inquiries.</p>
-          <a href="tel:+2348012345678" class="btn btn-gold btn-block">
+          <a href="tel:+2347063459820" class="btn btn-gold btn-block">
             <i class="fas fa-phone"></i> Call Now
           </a>
         </div>
@@ -188,7 +188,7 @@ include_once "partials/header.php";
         <div class="sidebar-card">
           <h4><i class="fab fa-whatsapp"></i> Chat on WhatsApp</h4>
           <p>Get instant responses to your questions via WhatsApp.</p>
-          <a href="https://wa.me/2348012345678" target="_blank" class="btn btn-success btn-block">
+          <a href="https://wa.me/2347063459820" target="_blank" class="btn btn-success btn-block">
             <i class="fab fa-whatsapp"></i> Start Chat
           </a>
         </div>
@@ -212,7 +212,7 @@ include_once "partials/header.php";
 <section class="map-section">
   <div class="map-container">
     <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d253682.63451968866!2d3.1191421!3d6.5483!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos%2C%20Nigeria!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.8!2d3.3!3d6.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8c!2sEgbe%2C%20Lagos!5e0!3m2!1sen!2sng!4v1699999999999!5m2!1sen!2sng"
       width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
       referrerpolicy="no-referrer-when-downgrade">
     </iframe>

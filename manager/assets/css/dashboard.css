@@ -407,6 +407,32 @@ body {
 .app-sidebar .logo-box {
   padding: var(--spacing-md);
   border-bottom: 1px solid var(--admin-gray-200);
+  overflow: hidden;
+}
+
+.app-sidebar .logo-box .logo-text {
+  transition: opacity 0.3s ease, width 0.3s ease;
+}
+
+/* Hide logo text when sidebar is condensed/minimized */
+html[data-sidebar-size="condensed"] .app-sidebar .logo-box .logo-text,
+html[data-sidebar-size="sm"] .app-sidebar .logo-box .logo-text,
+html[data-sidebar-size="sm-hover"]
+  .app-sidebar:not(:hover)
+  .logo-box
+  .logo-text {
+  display: none !important;
+}
+
+html[data-sidebar-size="condensed"] .app-sidebar .logo-box,
+html[data-sidebar-size="sm"] .app-sidebar .logo-box {
+  padding: var(--spacing-sm);
+  text-align: center;
+}
+
+html[data-sidebar-size="condensed"] .app-sidebar .logo-box .logo-link,
+html[data-sidebar-size="sm"] .app-sidebar .logo-box .logo-link {
+  justify-content: center;
 }
 
 .app-sidebar .navbar-nav .nav-link {

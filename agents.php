@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "Become an Agent";
-$pageDescription = "Join SD Travels as a certified travel agent. Earn commissions, get training, and grow your career in the travel industry.";
+$pageDescription = "Join ApplyBoard Africa Ltd as a certified agent. Earn commissions through student recruitment, referrals, and grow your career in education and travel consulting.";
 include_once "config/config.php";
 include_once "partials/header.php";
 ?>
@@ -8,13 +8,13 @@ include_once "partials/header.php";
 <!-- Page Hero -->
 <section class="page-hero">
   <div class="hero-bg">
-    <img src="images/main-slider/1.jpg" alt="Become an SD Travels Agent" />
+    <img src="images/main-slider/1.jpg" alt="Become an ApplyBoard Africa Agent" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <p class="hero-subtitle">Partner With Us</p>
     <h1>Become an Agent</h1>
-    <p>Join our network of successful travel agents and build a rewarding career in the travel industry.</p>
+    <p>Join our network of successful agents and build a rewarding career in education and travel consulting.</p>
     <div class="breadcrumb">
       <a href="./">Home</a>
       <span>/</span>
@@ -28,12 +28,11 @@ include_once "partials/header.php";
   <div class="container">
     <div class="intro-split">
       <div class="intro-content">
-        <p class="section-subtitle">Why Join SD Travels?</p>
-        <h2 class="section-title">Build Your Dream Career in Travel</h2>
+        <p class="section-subtitle">Why Join ApplyBoard Africa?</p>
+        <h2 class="section-title">Build Your Dream Career in Education & Travel</h2>
         <p>
-          As an SD Travels agent, you'll have the opportunity to help people achieve their travel dreams while earning
-          competitive commissions. Our agent program provides you with all the tools, training, and support you need to
-          succeed.
+          As an ApplyBoard Africa agent, you'll have the opportunity to help students and travelers access international
+          opportunities while earning competitive commissions through referrals and student recruitment.
         </p>
         <p>
           Whether you're looking for a full-time career or a rewarding side hustle, our flexible program allows you to
@@ -137,7 +136,7 @@ include_once "partials/header.php";
       <p class="section-subtitle">Getting Started</p>
       <h2 class="section-title">How It Works</h2>
       <p class="section-description">
-        Becoming an SD Travels agent is simple. Follow these steps to start earning.
+        Becoming an ApplyBoard Africa agent is simple. Follow these steps to start earning.
       </p>
     </div>
 

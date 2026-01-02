@@ -1,14 +1,13 @@
 <div class="app-sidebar">
     <!-- Sidebar Logo -->
     <div class="logo-box">
-        <a href="./" class="logo-dark">
-            <img src="../images/favicon.png" style="height: 30px; border-radius: 7px;" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" style="height: 40px; border-radius: 7px;" class="logo-lg" alt="logo dark">
-        </a>
-
-        <a href="./" class="logo-light">
-            <img src="../images/favicon.png" style="height: 30px; border-radius: 7px;" class="logo-sm" alt="logo sm">
-            <img src="../images/logo-2.png" style="height: 40px; border-radius: 7px;" class="logo-lg" alt="logo light">
+        <a href="./" class="logo-link d-flex align-items-center gap-2" style="text-decoration: none;">
+            <img src="../images/favicon.png" class="logo-sm" style="height: 32px; border-radius: 8px;"
+                alt="ApplyBoard Africa">
+            <div class="logo-text d-flex flex-column">
+                <span class="fw-semibold" style="color: var(--admin-primary);">ApplyBoard Africa</span>
+                <small class="text-muted">Manager Portal</small>
+            </div>
         </a>
     </div>
 

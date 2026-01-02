@@ -29,8 +29,8 @@ include_once "partials/header.php";
       </h1>
 
       <p class="hero-description">
-        Expert guidance for visa processing, study abroad programs, pilgrimage tours, and immigration services. We turn
-        your international dreams into reality.
+        Expert guidance for study abroad programs, visa assistance, travel planning, and student recruitment. We connect
+        you to global education and travel opportunities with clarity and support.
       </p>
 
       <div class="hero-actions">
@@ -73,9 +73,9 @@ include_once "partials/header.php";
         <i class="fas fa-briefcase"></i>
         What We Offer
       </span>
-      <h2 class="section-title">Comprehensive Immigration & Travel Services</h2>
+      <h2 class="section-title">Comprehensive Education & Travel Services</h2>
       <p class="section-description">
-        From study abroad programs to pilgrimage tours, we provide end-to-end solutions tailored to your unique needs.
+        From study abroad programs to travel planning, we provide end-to-end solutions tailored to your unique needs.
       </p>
     </div>
 
@@ -91,8 +91,8 @@ include_once "partials/header.php";
           </div>
           <h3 class="service-card-title">Study Abroad</h3>
           <p class="service-card-description">
-            Pursue world-class education in top universities across Canada, UK, USA, Australia, and Europe with our
-            comprehensive admission support.
+            Access world-class education in top universities across Canada, UK, USA, Australia, and Europe with our
+            comprehensive admissions support and guidance.
           </p>
           <a href="services.php#study-abroad" class="service-card-link">
             Learn More <i class="fas fa-arrow-right"></i>
@@ -109,10 +109,10 @@ include_once "partials/header.php";
           <div class="service-card-icon">
             <i class="fas fa-passport"></i>
           </div>
-          <h3 class="service-card-title">Visa Processing</h3>
+          <h3 class="service-card-title">Visa Assistance</h3>
           <p class="service-card-description">
-            Expert assistance for student, tourist, work, and family visas. We handle documentation, applications, and
-            interview preparation.
+            Expert assistance for tourist and student visa applications. We handle documentation, applications, and
+            provide interview preparation support.
           </p>
           <a href="services.php#visa-processing" class="service-card-link">
             Learn More <i class="fas fa-arrow-right"></i>
@@ -149,10 +149,10 @@ include_once "partials/header.php";
           <div class="service-card-icon">
             <i class="fas fa-plane-departure"></i>
           </div>
-          <h3 class="service-card-title">Travel Booking</h3>
+          <h3 class="service-card-title">Travel Planning</h3>
           <p class="service-card-description">
-            Competitive flight bookings, hotel reservations, and complete travel packages to destinations worldwide at
-            unbeatable prices.
+            Complete travel planning including flight reservations, hotel bookings, and relocation guidance
+            to destinations worldwide.
           </p>
           <a href="services.php#travel-booking" class="service-card-link">
             Learn More <i class="fas fa-arrow-right"></i>

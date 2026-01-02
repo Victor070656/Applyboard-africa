@@ -1,6 +1,6 @@
 <?php
 $pageTitle = "Get Started";
-$pageDescription = "Start your journey with SD Travels. Choose your service and begin your visa, study abroad, or travel application today.";
+$pageDescription = "Start your journey with ApplyBoard Africa. Choose your service and begin your study abroad, visa, or travel application today.";
 include_once "config/config.php";
 include_once "partials/header.php";
 
@@ -12,7 +12,7 @@ $userType = $_SESSION['user_type'] ?? null;
 <!-- Page Hero -->
 <section class="page-hero page-hero-short">
   <div class="hero-bg">
-    <img src="images/main-slider/3.jpg" alt="Get Started with SD Travels" />
+    <img src="images/main-slider/3.jpg" alt="Get Started with ApplyBoard Africa" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">

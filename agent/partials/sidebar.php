@@ -15,8 +15,9 @@ if (!function_exists('isAgentNavActive')) {
 <div class="app-sidebar">
     <div class="logo-box">
         <a href="./" class="logo-link d-flex align-items-center gap-2">
-            <img src="../images/favicon.png" class="logo-sm" alt="ApplyBoard Africa">
-            <div class="d-flex flex-column">
+            <img src="../images/favicon.png" class="logo-sm" style="height: 32px; border-radius: 8px;"
+                alt="ApplyBoard Africa">
+            <div class="logo-text d-flex flex-column">
                 <span class="text-white fw-semibold">ApplyBoard Africa</span>
                 <small class="text-white-50">Agent Workspace</small>
             </div>
@@ -112,15 +113,5 @@ if (!function_exists('isAgentNavActive')) {
                 </a>
             </li>
         </ul>
-    </div>
-
-    <div class="sidebar-footer">
-        <div class="text-white-50 small mb-2">Signed in as</div>
-        <div class="text-white fw-semibold mb-3"><?= htmlspecialchars($agentName); ?></div>
-        <a href="../" target="_blank"
-            class="btn btn-light btn-sm w-100 d-flex align-items-center justify-content-center gap-2">
-            <iconify-icon icon="solar:global-outline"></iconify-icon>
-            Visit Website
-        </a>
     </div>
 </div>

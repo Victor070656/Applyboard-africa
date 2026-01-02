@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 01, 2026 at 11:12 PM
+-- Generation Time: Jan 02, 2026 at 10:00 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -60,7 +60,13 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `user_type`, `action`, `entity_typ
 (13, 1, 'admin', 'case_stage_updated', 'case', 6, 'Case CS-2025-A87274 moved from completed to travel', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-31 11:43:36'),
 (14, 1, 'admin', 'case_stage_updated', 'case', 6, 'Case CS-2025-A87274 moved from travel to completed', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-31 11:43:41'),
 (15, 1, 'admin', 'update', 'settings', NULL, 'Updated case type pricing', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2025-12-31 13:45:13'),
-(16, 1, 'admin', 'case_created', 'case', 7, 'Case CS-2026-A3D5DB created', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-01 23:06:50');
+(16, 1, 'admin', 'case_created', 'case', 7, 'Case CS-2026-A3D5DB created', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-01 23:06:50'),
+(17, 1, 'admin', 'case_stage_updated', 'case', 5, 'Case CS-2025-285CB4 moved from assessment to documents', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:36:16'),
+(18, 1, 'admin', 'case_stage_updated', 'case', 5, 'Case CS-2025-285CB4 moved from documents to submission', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:36:41'),
+(19, 1, 'admin', 'case_stage_updated', 'case', 5, 'Case CS-2025-285CB4 moved from submission to decision', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:36:55'),
+(20, 1, 'admin', 'case_stage_updated', 'case', 5, 'Case CS-2025-285CB4 moved from decision to completed', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:37:04'),
+(21, 1, 'admin', 'case_stage_updated', 'case', 5, 'Case CS-2025-285CB4 moved from completed to closed', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:37:28'),
+(22, 1, 'admin', 'document_verified', 'document', 2, 'Document marked as verified', '::1', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36', '2026-01-02 09:37:38');
 
 -- --------------------------------------------------------
 
@@ -116,7 +122,7 @@ CREATE TABLE `agents` (
 --
 
 INSERT INTO `agents` (`id`, `agent_code`, `fullname`, `email`, `password`, `phone`, `status`, `commission_rate`, `documents`, `created_at`, `slug`, `wallet_balance`, `total_earned`, `referral_count`, `performance_id`, `address`, `city`, `country`, `bank_name`, `account_number`, `account_name`) VALUES
-(1, 'AGT-7F0E1A', 'Dominique Conrad', 'savyjug@example.com', '00000000', '+1 (117) 797-2941', 'verified', 0.00, NULL, '2025-12-20 01:07:28', NULL, 0.00, 4000.00, 1, NULL, '', '', '', 'kuda', '2014205473', 'Vic Ike');
+(1, 'AGT-7F0E1A', 'Dominique Conrad', 'savyjug@example.com', '00000000', '+1 (117) 797-2941', 'verified', 0.00, NULL, '2025-12-20 01:07:28', NULL, 1.70, 4000.00, 1, NULL, '', '', '', 'kuda', '2014205473', 'Vic Ike');
 
 -- --------------------------------------------------------
 
@@ -146,7 +152,7 @@ CREATE TABLE `agent_performance` (
 --
 
 INSERT INTO `agent_performance` (`id`, `agent_id`, `total_referrals`, `active_cases`, `completed_cases`, `total_earnings`, `rating_activity`, `rating_quality`, `rating_outcomes`, `rating_overall`, `tier`, `last_calculated_at`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 2, 1, 4000.00, 1.10, 1.50, 5.00, 2.53, 'silver', '2026-01-01 18:45:23', '2025-12-30 13:52:09', '2026-01-01 18:45:23');
+(1, 1, 1, 2, 2, 4000.00, 1.10, 2.00, 5.00, 2.70, 'silver', '2026-01-02 09:42:27', '2025-12-30 13:52:09', '2026-01-02 09:42:27');
 
 -- --------------------------------------------------------
 
@@ -160,7 +166,7 @@ CREATE TABLE `cases` (
   `client_id` int(11) NOT NULL,
   `agent_id` int(11) DEFAULT NULL,
   `case_type` enum('study_abroad','visa_student','visa_tourist','visa_family','travel_booking','pilgrimage','other') NOT NULL,
-  `stage` enum('assessment','options','application','submission','offer','visa','travel','booking','completed','closed') NOT NULL DEFAULT 'assessment',
+  `stage` enum('assessment','options','application','submission','offer','visa','travel','booking','completed','closed','documents','decision','requirements','processing') NOT NULL DEFAULT 'assessment',
   `status` enum('active','on_hold','cancelled','completed') NOT NULL DEFAULT 'active',
   `title` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
@@ -186,7 +192,7 @@ INSERT INTO `cases` (`id`, `case_number`, `client_id`, `agent_id`, `case_type`, 
 (2, 'CS-2025-741A0D', 3, 0, 'study_abroad', 'assessment', 'active', 'Quibusdam ullam volu', 'Non dolores sit eiu', 'Germany', 'Ea qui molestiae sin', 'Deserunt nobis est d', 'January 2026', 81.00, 0.00, 'pending', NULL, '', '2025-12-26 00:06:15', '2025-12-26 00:06:15'),
 (3, 'CS-2025-50A05F', 3, 0, 'study_abroad', 'assessment', 'active', 'Quibusdam ullam volu', 'Non dolores sit eiu', 'Germany', 'Ea qui molestiae sin', 'Deserunt nobis est d', 'January 2026', 81.00, 0.00, 'pending', NULL, '', '2025-12-26 00:07:01', '2025-12-26 00:07:01'),
 (4, 'CS-2025-C5C623', 3, 0, 'visa_tourist', 'assessment', 'active', 'Deserunt sapiente al', 'Rem qui earum numqua', 'Dubai (UAE)', 'Id optio voluptatum', 'Irure aliquam ipsum ', 'September 2025', 3.00, 0.00, 'pending', NULL, '', '2025-12-26 00:10:20', '2025-12-26 00:10:20'),
-(5, 'CS-2025-285CB4', 4, 1, 'visa_student', 'assessment', 'active', 'Nesciunt molestiae ', 'Eos at Nam voluptas', 'United Kingdom', 'Magni duis commodi a', 'Consequatur ut vel ', 'September 2026', 17.00, 1.70, 'pending', NULL, '', '2025-12-31 10:00:34', '2025-12-31 10:00:34'),
+(5, 'CS-2025-285CB4', 4, 1, 'visa_student', 'closed', 'active', 'Nesciunt molestiae ', 'Eos at Nam voluptas', 'United Kingdom', 'Magni duis commodi a', 'Consequatur ut vel ', 'September 2026', 17.00, 1.70, 'pending', NULL, '', '2025-12-31 10:00:34', '2026-01-02 09:37:28'),
 (6, 'CS-2025-A87274', 4, 1, 'study_abroad', 'completed', 'active', 'At laborum in vel ut', 'Dolorem dolore nesci', 'Germany', 'Ut soluta aut ad eos', 'Similique aut simili', 'September 2025', 40000.00, 4000.00, 'pending', NULL, '', '2025-12-31 11:14:34', '2025-12-31 11:43:41'),
 (7, 'CS-2026-A3D5DB', 5, NULL, 'travel_booking', 'assessment', 'active', 'Case from Inquiry - Charles Benjamin', 'Quis et rem et ipsam', '', '', '', '', 0.00, 0.00, 'pending', NULL, '', '2026-01-01 23:06:50', '2026-01-01 23:06:50');
 
@@ -222,7 +228,12 @@ INSERT INTO `case_stages_history` (`id`, `case_id`, `from_stage`, `to_stage`, `c
 (8, 6, 'offer', 'completed', 1, 'admin', '', '2025-12-31 11:35:49'),
 (9, 6, 'completed', 'travel', 1, 'admin', '', '2025-12-31 11:43:36'),
 (10, 6, 'travel', 'completed', 1, 'admin', '', '2025-12-31 11:43:41'),
-(11, 7, NULL, 'assessment', 1, 'admin', 'Initial stage', '2026-01-01 23:06:50');
+(11, 7, NULL, 'assessment', 1, 'admin', 'Initial stage', '2026-01-01 23:06:50'),
+(12, 5, 'assessment', 'documents', 1, 'admin', '', '2026-01-02 09:36:16'),
+(13, 5, 'documents', 'submission', 1, 'admin', '', '2026-01-02 09:36:41'),
+(14, 5, 'submission', 'decision', 1, 'admin', '', '2026-01-02 09:36:55'),
+(15, 5, 'decision', 'completed', 1, 'admin', '', '2026-01-02 09:37:04'),
+(16, 5, 'completed', 'closed', 1, 'admin', '', '2026-01-02 09:37:28');
 
 -- --------------------------------------------------------
 
@@ -254,7 +265,8 @@ CREATE TABLE `commissions` (
 --
 
 INSERT INTO `commissions` (`id`, `agent_id`, `case_id`, `client_id`, `commission_type`, `amount`, `rate_percentage`, `case_amount`, `status`, `payment_method`, `payment_reference`, `paid_date`, `approved_by`, `approved_at`, `notes`, `created_at`) VALUES
-(1, 1, 6, 4, 'case_completion', 4000.00, 10.00, 40000.00, 'paid', NULL, NULL, '2025-12-31 11:47:17', 1, '2025-12-31 11:47:17', NULL, '2025-12-31 11:43:41');
+(1, 1, 6, 4, 'case_completion', 4000.00, 10.00, 40000.00, 'paid', NULL, NULL, '2025-12-31 11:47:17', 1, '2025-12-31 11:47:17', NULL, '2025-12-31 11:43:41'),
+(2, 1, 5, 4, 'case_completion', 1.70, 10.00, 17.00, 'pending', NULL, NULL, NULL, NULL, NULL, NULL, '2026-01-02 09:37:04');
 
 -- --------------------------------------------------------
 
@@ -283,7 +295,7 @@ CREATE TABLE `documents` (
 
 INSERT INTO `documents` (`id`, `case_id`, `client_id`, `document_type`, `file_path`, `file_name`, `file_size`, `uploaded_by`, `status`, `expiry_date`, `notes`, `created_at`) VALUES
 (1, 4, 3, 'recommendation', '../uploads/documents/1766704220_testFile.png', '1766704220_testFile.png', 150, 'client', 'pending', NULL, NULL, '2025-12-26 00:10:20'),
-(2, 5, 4, 'certificate', '../uploads/documents/1767171634_University Assembly Flyer.jpeg', '1767171634_University Assembly Flyer.jpeg', 84910, 'client', 'pending', NULL, NULL, '2025-12-31 10:00:34');
+(2, 5, 4, 'certificate', '../uploads/documents/1767171634_University Assembly Flyer.jpeg', '1767171634_University Assembly Flyer.jpeg', 84910, 'client', 'verified', NULL, '', '2025-12-31 10:00:34');
 
 -- --------------------------------------------------------
 
@@ -336,16 +348,27 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `user_type`, `title`, `message`, `type`, `link`, `is_read`, `created_at`) VALUES
-(1, 1, 'agent', 'Agent Alert', 'Please check your dashboard for important updates.', 'info', '', 0, '2025-12-30 16:16:22'),
-(2, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Offer Received', 'success', '/agent/cases.php?view=6', 0, '2025-12-31 11:35:41'),
+(1, 1, 'agent', 'Agent Alert', 'Please check your dashboard for important updates.', 'info', '', 1, '2025-12-30 16:16:22'),
+(2, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Offer Received', 'success', '/agent/cases.php?view=6', 1, '2025-12-31 11:35:41'),
 (3, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-A87274 has been updated to: Offer Received', 'success', '/user/cases.php?view=6', 0, '2025-12-31 11:35:41'),
-(4, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Completed', 'success', '/agent/cases.php?view=6', 0, '2025-12-31 11:35:49'),
+(4, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Completed', 'success', '/agent/cases.php?view=6', 1, '2025-12-31 11:35:49'),
 (5, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-A87274 has been updated to: Completed', 'success', '/user/cases.php?view=6', 0, '2025-12-31 11:35:49'),
-(6, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Travel Arrangements', 'success', '/agent/cases.php?view=6', 0, '2025-12-31 11:43:36'),
+(6, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Travel Arrangements', 'success', '/agent/cases.php?view=6', 1, '2025-12-31 11:43:36'),
 (7, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-A87274 has been updated to: Travel Arrangements', 'success', '/user/cases.php?view=6', 0, '2025-12-31 11:43:36'),
-(8, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Completed', 'success', '/agent/cases.php?view=6', 0, '2025-12-31 11:43:41'),
+(8, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-A87274 has been moved to Completed', 'success', '/agent/cases.php?view=6', 1, '2025-12-31 11:43:41'),
 (9, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-A87274 has been updated to: Completed', 'success', '/user/cases.php?view=6', 0, '2025-12-31 11:43:41'),
-(10, 1, 'agent', 'Commission Earned', 'You earned a commission of ₦4,000.00 for case #CS-2025-A87274', 'success', 'commissions.php', 0, '2025-12-31 11:43:41');
+(10, 1, 'agent', 'Commission Earned', 'You earned a commission of ₦4,000.00 for case #CS-2025-A87274', 'success', 'commissions.php', 1, '2025-12-31 11:43:41'),
+(11, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-285CB4 has been moved to documents', 'success', '/agent/cases.php?view=5', 1, '2026-01-02 09:36:16'),
+(12, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-285CB4 has been updated to: documents', 'success', '/user/cases.php?view=5', 0, '2026-01-02 09:36:16'),
+(13, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-285CB4 has been moved to Submission Complete', 'success', '/agent/cases.php?view=5', 1, '2026-01-02 09:36:41'),
+(14, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-285CB4 has been updated to: Submission Complete', 'success', '/user/cases.php?view=5', 0, '2026-01-02 09:36:41'),
+(15, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-285CB4 has been moved to Decision Pending', 'success', '/agent/cases.php?view=5', 1, '2026-01-02 09:36:55'),
+(16, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-285CB4 has been updated to: Decision Pending', 'success', '/user/cases.php?view=5', 0, '2026-01-02 09:36:55'),
+(17, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-285CB4 has been moved to Completed', 'success', '/agent/cases.php?view=5', 1, '2026-01-02 09:37:04'),
+(18, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-285CB4 has been updated to: Completed', 'success', '/user/cases.php?view=5', 0, '2026-01-02 09:37:04'),
+(19, 1, 'agent', 'Commission Earned', 'You earned a commission of ₦1.70 for case #CS-2025-285CB4', 'success', 'commissions.php', 1, '2026-01-02 09:37:04'),
+(20, 1, 'agent', 'Case Stage Updated', 'Case CS-2025-285CB4 has been moved to Closed', 'success', '/agent/cases.php?view=5', 1, '2026-01-02 09:37:28'),
+(21, 4, 'client', 'Your Case Status Updated', 'Your case CS-2025-285CB4 has been updated to: Closed', 'success', '/user/cases.php?view=5', 0, '2026-01-02 09:37:28');
 
 -- --------------------------------------------------------
 
@@ -582,7 +605,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -612,13 +635,13 @@ ALTER TABLE `cases`
 -- AUTO_INCREMENT for table `case_stages_history`
 --
 ALTER TABLE `case_stages_history`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `commissions`
 --
 ALTER TABLE `commissions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `documents`
@@ -636,7 +659,7 @@ ALTER TABLE `inquiries`
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `payments`
