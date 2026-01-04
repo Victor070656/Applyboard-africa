@@ -464,22 +464,27 @@ include_once "partials/header.php";
       style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--space-12);">
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
+        <img src="images/partners/saudi.png" alt="" style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">Saudi Airlines</span>
       </div>
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
+        <img src="images/partners/emirates.png" alt="" style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">Emirates</span>
       </div>
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
+        <img src="images/partners/british.png" alt="" style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">British Council</span>
       </div>
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
+        <img src="images/partners/idp.png" alt="" class="text-center" style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">IDP IELTS</span>
       </div>
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
+        <img src="images/partners/bookings.jpeg" alt="" style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">Booking.com</span>
       </div>
     </div>
