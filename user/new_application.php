@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['proceed_to_payment'])
                                 VALUES ('$userId', '$reference', '$amount', '$caseType', '" . mysqli_real_escape_string($conn, $metadata) . "', 'pending')");
 
             // Redirect to Paystack - amount in Naira (Paystack library handles conversion)
-            $callbackUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/smile-dove/user/verify_payment.php";
+            $callbackUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/user/verify_payment.php";
             makePayment($user['email'], $amount, $callbackUrl, $reference);
             exit;
         }
@@ -389,12 +389,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['proceed_to_payment'])
                                                 <label class="form-label">Intake/Semester</label>
                                                 <select class="form-select" name="intake">
                                                     <option value="">Select Intake</option>
-                                                    <option value="January 2025">January 2025</option>
-                                                    <option value="May 2025">May 2025</option>
-                                                    <option value="September 2025">September 2025</option>
-                                                    <option value="January 2026">January 2026</option>
-                                                    <option value="May 2026">May 2026</option>
-                                                    <option value="September 2026">September 2026</option>
+                                                    <option value="January">January</option>
+                                                    <option value="May">May</option>
+                                                    <option value="September">September</option>
                                                     <option value="Other">Other</option>
                                                 </select>
                                             </div>
