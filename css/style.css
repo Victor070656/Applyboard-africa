@@ -43,10 +43,11 @@ License: copyright commercial
 :root {
   /* ApplyBoard Africa Ltd Brand Colors */
   /* Sky Blue: #87CEEB, Dark Yellow: #FFB300, White, Black */
+  /* Sky Blue: #206fb3, Dark Yellow: #FFB300, White, Black */
   --theme-color111: #fefefe;
   --theme-color1: #1a1a1a;          /* Black/Dark - primary */
   --theme-color2: #FFB300;          /* Dark Yellow/Gold - accent */
-  --theme-color3: #87CEEB;          /* Sky Blue - secondary */
+  --theme-color3: #206fb3;          /* Sky Blue - secondary */
   --theme-color4: #ecf0f4;          /* Light Gray - background */
   --bg-theme-color111: var(--theme-color111);
   --bg-theme-color1: var(--theme-color1);

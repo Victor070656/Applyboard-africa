@@ -80,7 +80,7 @@ include_once "partials/header.php";
       </div>
 
       <div style="position: relative;">
-        <img src="images/resource/about-1.jpg" alt="Our Story"
+        <img src="images/travel/05.jpg" alt="Our Story"
           style="border-radius: var(--radius-2xl); box-shadow: var(--shadow-2xl);" />
         <div
           style="position: absolute; bottom: -30px; left: -30px; background: var(--white); padding: var(--space-6) var(--space-8); border-radius: var(--radius-2xl); box-shadow: var(--shadow-xl);">

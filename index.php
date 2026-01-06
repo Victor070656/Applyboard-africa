@@ -13,7 +13,7 @@ include_once "partials/header.php";
 <!-- Hero Section -->
 <section class="hero">
   <div class="hero-background">
-    <img src="images/main-slider/2.jpg" alt="Global Opportunities" />
+    <img src="images/travel/25.jpg" alt="Global Opportunities" />
   </div>
   <div class="hero-overlay"></div>
 
@@ -83,7 +83,7 @@ include_once "partials/header.php";
       <!-- Study Abroad -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/01.jpeg" alt="Study Abroad" />
+          <img src="images/travel/10.jpg" alt="Study Abroad" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -103,7 +103,7 @@ include_once "partials/header.php";
       <!-- Visa Processing -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/02.jpeg" alt="Visa Processing" />
+          <img src="images/travel/01.webp" alt="Visa Processing" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -123,7 +123,7 @@ include_once "partials/header.php";
       <!-- Pilgrimage Tours -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/03.jpeg" alt="Pilgrimage Tours" />
+          <img src="images/travel/25.jpg" alt="Pilgrimage Tours" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -143,7 +143,7 @@ include_once "partials/header.php";
       <!-- Travel Booking -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/others/flight1.jpeg" alt="Travel Booking" />
+          <img src="images/travel/20.jpg" alt="Travel Booking" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -163,7 +163,7 @@ include_once "partials/header.php";
       <!-- IELTS Preparation -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/04.jpeg" alt="IELTS Preparation" />
+          <img src="images/travel/24.jpg" alt="IELTS Preparation" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -183,7 +183,7 @@ include_once "partials/header.php";
       <!-- Immigration Consulting -->
       <div class="service-card">
         <div class="service-card-image">
-          <img src="images/travel/new/05.jpeg" alt="Immigration Consulting" />
+          <img src="images/travel/21.jpg" alt="Immigration Consulting" />
         </div>
         <div class="service-card-body">
           <div class="service-card-icon">
@@ -259,7 +259,7 @@ include_once "partials/header.php";
       </div>
 
       <div style="position: relative;">
-        <img src="images/resource/about-1.jpg" alt="Why Choose Us"
+        <img src="images/travel/15.png" alt="Why Choose Us"
           style="border-radius: var(--radius-2xl); box-shadow: var(--shadow-2xl);" />
         <div
           style="position: absolute; bottom: -30px; left: -30px; background: var(--white); padding: var(--space-6) var(--space-8); border-radius: var(--radius-2xl); box-shadow: var(--shadow-xl);">

@@ -79,8 +79,8 @@ if (!isset($pageDescription)) {
               <span>Dashboard</span>
             </a>
           <?php else: ?>
-            <a href="user/login.php" class="btn btn-ghost">Sign In</a>
-            <a href="platform.php" class="btn btn-primary">Get Started</a>
+            <a href="user/login.php" class="btn btn-primary">Sign In</a>
+            <!-- <a href="platform.php" class="btn btn-primary">Get Started</a> -->
           <?php endif; ?>
 
           <!-- Mobile Toggle -->
