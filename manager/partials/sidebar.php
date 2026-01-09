@@ -83,6 +83,15 @@
             </li>
 
             <li class="nav-item">
+                <a class="nav-link" href="student_loans.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:wallet-money-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text"> Student Loans </span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a class="nav-link" href="reports.php">
                     <span class="nav-icon">
                         <iconify-icon icon="solar:chart-outline"></iconify-icon>

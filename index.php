@@ -479,7 +479,8 @@ include_once "partials/header.php";
       </div>
       <div class="partner-item"
         style="padding: 1.5rem 2.5rem; background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--neutral-200);">
-        <img src="images/partners/idp.png" alt="" class="text-center" style="display: block; margin: auto; height: 70px;"><br>
+        <img src="images/partners/idp.png" alt="" class="text-center"
+          style="display: block; margin: auto; height: 70px;"><br>
         <span style="font-weight: 700; font-size: 1.25rem; color: var(--primary-700);">IDP IELTS</span>
       </div>
       <div class="partner-item"
@@ -490,5 +491,14 @@ include_once "partials/header.php";
     </div>
   </div>
 </section>
+
+<div id="ab-embedded-search" data-host="https://www.applyboard.com" data-rp-ref="75142" data-orientation="vertical"
+  data-default-countries=""></div>
+<script type="text/javascript" src="https://www.applyboard.com/assets/embedded_search.js"></script>
+
+
+<iframe id="ab-student-intake-form" src="https://www.applyboard.com/partners/2065808/intake-form" style="border: none;"
+  width="100%" height="700px"></iframe>
+<script>var iframe = document.getElementById("ab-student-intake-form"); window.addEventListener("message", (e) => { let message = e.data; iframe.style.height = (message.height * 1.12) + "px"; }, false);</script>
 
 <?php include_once "partials/footer.php"; ?>

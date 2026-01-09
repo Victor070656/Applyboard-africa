@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 02, 2026 at 10:00 AM
+-- Generation Time: Jan 09, 2026 at 02:14 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -165,7 +165,7 @@ CREATE TABLE `cases` (
   `case_number` varchar(50) NOT NULL,
   `client_id` int(11) NOT NULL,
   `agent_id` int(11) DEFAULT NULL,
-  `case_type` enum('study_abroad','visa_student','visa_tourist','visa_family','travel_booking','pilgrimage','other') NOT NULL,
+  `case_type` enum('study_abroad','visa_student','visa_tourist','visa_family','travel_booking','pilgrimage','student_loan','other') NOT NULL,
   `stage` enum('assessment','options','application','submission','offer','visa','travel','booking','completed','closed','documents','decision','requirements','processing') NOT NULL DEFAULT 'assessment',
   `status` enum('active','on_hold','cancelled','completed') NOT NULL DEFAULT 'active',
   `title` varchar(255) NOT NULL,
@@ -278,7 +278,7 @@ CREATE TABLE `documents` (
   `id` int(11) NOT NULL,
   `case_id` int(11) DEFAULT NULL,
   `client_id` int(11) NOT NULL,
-  `document_type` enum('passport','transcript','certificate','statement_of_purpose','cv','recommendation','financial_proof','visa','offer_letter','other') NOT NULL,
+  `document_type` enum('passport','transcript','certificate','statement_of_purpose','cv','recommendation','financial_proof','visa','offer_letter','identity_proof','income_proof','admission_letter','fee_schedule','bank_statement','guarantor_form','collateral_document','other') NOT NULL,
   `file_path` varchar(500) NOT NULL,
   `file_name` varchar(255) NOT NULL,
   `file_size` bigint(20) DEFAULT NULL,
@@ -324,6 +324,51 @@ CREATE TABLE `inquiries` (
 
 INSERT INTO `inquiries` (`id`, `name`, `email`, `phone`, `message`, `agent_id`, `status`, `created_at`, `service_type`, `source`, `converted_to_case`, `case_id`) VALUES
 (1, 'Charles Benjamin', 'bebefuw@example.com', '+1 (775) 793-7684', 'Quis et rem et ipsam', NULL, 'new', '2025-12-31 19:32:34', 'travel_booking', 'website', 1, 7);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loan_documents`
+--
+
+CREATE TABLE `loan_documents` (
+  `id` int(11) NOT NULL,
+  `loan_id` int(11) NOT NULL,
+  `document_type` enum('identity_proof','income_proof','admission_letter','fee_schedule','bank_statement','guarantor_form','collateral_document','other') NOT NULL,
+  `file_path` varchar(500) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_size` bigint(20) DEFAULT NULL,
+  `status` enum('pending','verified','rejected') NOT NULL DEFAULT 'pending',
+  `verification_notes` text DEFAULT NULL,
+  `uploaded_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `loan_documents`
+--
+
+INSERT INTO `loan_documents` (`id`, `loan_id`, `document_type`, `file_path`, `file_name`, `file_size`, `status`, `verification_notes`, `uploaded_at`) VALUES
+(1, 1, 'admission_letter', '../uploads/loan_documents/1767952119_2149156402.jpg', '1767952119_2149156402.jpg', 590674, 'pending', NULL, '2026-01-09 10:48:39'),
+(2, 3, 'income_proof', '../uploads/loan_documents/1767962359_2149156402.jpg', '1767962359_2149156402.jpg', 590674, 'pending', NULL, '2026-01-09 13:39:19');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `loan_repayments`
+--
+
+CREATE TABLE `loan_repayments` (
+  `id` int(11) NOT NULL,
+  `loan_id` int(11) NOT NULL,
+  `payment_reference` varchar(100) NOT NULL,
+  `amount` decimal(12,2) NOT NULL,
+  `payment_method` varchar(50) DEFAULT 'paystack',
+  `payment_date` datetime NOT NULL,
+  `status` enum('pending','success','failed','reversed') NOT NULL DEFAULT 'success',
+  `transaction_id` varchar(255) DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -413,35 +458,126 @@ CREATE TABLE `settings` (
   `setting_value` text DEFAULT NULL,
   `setting_group` varchar(50) DEFAULT 'general',
   `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `updated_by` int(11) DEFAULT NULL
+  `updated_by` int(11) DEFAULT NULL,
+  `description` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `setting_group`, `updated_at`, `updated_by`) VALUES
-(1, 'case_amount_study_abroad', '40000', 'case_pricing', '2025-12-31 13:45:13', 1),
-(2, 'case_commission_study_abroad', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(3, 'case_commission_percent_study_abroad', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(4, 'case_amount_visa_student', '30000', 'case_pricing', '2025-12-31 13:45:13', 1),
-(5, 'case_commission_visa_student', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(6, 'case_commission_percent_visa_student', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(7, 'case_amount_visa_tourist', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(8, 'case_commission_visa_tourist', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(9, 'case_commission_percent_visa_tourist', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(10, 'case_amount_visa_family', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(11, 'case_commission_visa_family', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(12, 'case_commission_percent_visa_family', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(13, 'case_amount_travel_booking', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(14, 'case_commission_travel_booking', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(15, 'case_commission_percent_travel_booking', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(16, 'case_amount_pilgrimage', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(17, 'case_commission_pilgrimage', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(18, 'case_commission_percent_pilgrimage', '10', 'case_pricing', '2025-12-31 13:45:13', 1),
-(19, 'case_amount_other', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(20, 'case_commission_other', '0', 'case_pricing', '2025-12-31 13:45:13', 1),
-(21, 'case_commission_percent_other', '10', 'case_pricing', '2025-12-31 13:45:13', 1);
+INSERT INTO `settings` (`id`, `setting_key`, `setting_value`, `setting_group`, `updated_at`, `updated_by`, `description`) VALUES
+(1, 'case_amount_study_abroad', '40000', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(2, 'case_commission_study_abroad', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(3, 'case_commission_percent_study_abroad', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(4, 'case_amount_visa_student', '30000', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(5, 'case_commission_visa_student', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(6, 'case_commission_percent_visa_student', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(7, 'case_amount_visa_tourist', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(8, 'case_commission_visa_tourist', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(9, 'case_commission_percent_visa_tourist', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(10, 'case_amount_visa_family', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(11, 'case_commission_visa_family', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(12, 'case_commission_percent_visa_family', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(13, 'case_amount_travel_booking', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(14, 'case_commission_travel_booking', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(15, 'case_commission_percent_travel_booking', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(16, 'case_amount_pilgrimage', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(17, 'case_commission_pilgrimage', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(18, 'case_commission_percent_pilgrimage', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(19, 'case_amount_other', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(20, 'case_commission_other', '0', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(21, 'case_commission_percent_other', '10', 'case_pricing', '2025-12-31 13:45:13', 1, NULL),
+(43, 'loan_min_amount', '100000', 'general', '2026-01-09 10:26:56', NULL, 'Minimum loan amount in NGN'),
+(44, 'loan_max_amount', '5000000', 'general', '2026-01-09 10:26:56', NULL, 'Maximum loan amount in NGN'),
+(45, 'loan_default_interest_rate', '15', 'general', '2026-01-09 10:26:56', NULL, 'Default annual interest rate for loans (%)'),
+(46, 'loan_max_duration', '36', 'general', '2026-01-09 10:26:56', NULL, 'Maximum loan duration in months'),
+(47, 'loan_processing_fee', '5000', 'general', '2026-01-09 10:26:56', NULL, 'Loan application processing fee in NGN'),
+(48, 'loan_case_amount_student_loan', '2500', 'general', '2026-01-09 10:26:56', NULL, 'Case amount for student loan applications'),
+(49, 'loan_case_commission_student_loan', '500', 'general', '2026-01-09 10:26:56', NULL, 'Fixed commission for student loan applications'),
+(50, 'loan_case_commission_percent_student_loan', '10', 'general', '2026-01-09 10:26:56', NULL, 'Commission percentage for student loans');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student_loans`
+--
+
+CREATE TABLE `student_loans` (
+  `id` int(11) NOT NULL,
+  `loan_number` varchar(50) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `case_id` int(11) DEFAULT NULL COMMENT 'Linked case if applicable',
+  `loan_type` enum('tuition','living_expenses','full_program','travel','other') NOT NULL DEFAULT 'tuition',
+  `loan_amount_requested` decimal(12,2) NOT NULL,
+  `loan_amount_approved` decimal(12,2) DEFAULT NULL,
+  `currency` varchar(10) NOT NULL DEFAULT 'NGN',
+  `purpose` text DEFAULT NULL COMMENT 'Purpose of the loan',
+  `program_name` varchar(255) DEFAULT NULL COMMENT 'Program being funded',
+  `institution_name` varchar(255) DEFAULT NULL COMMENT 'Institution/University',
+  `course_duration` int(11) DEFAULT NULL COMMENT 'Duration in months',
+  `program_start_date` date DEFAULT NULL,
+  `program_end_date` date DEFAULT NULL,
+  `full_name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `nationality` varchar(100) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `country` varchar(100) DEFAULT NULL,
+  `employment_status` enum('employed','self_employed','unemployed','student','other') NOT NULL DEFAULT 'student',
+  `employer_name` varchar(255) DEFAULT NULL,
+  `monthly_income` decimal(12,2) DEFAULT NULL,
+  `income_source` varchar(255) DEFAULT NULL,
+  `has_collateral` tinyint(1) DEFAULT 0,
+  `collateral_type` varchar(255) DEFAULT NULL,
+  `collateral_value` decimal(12,2) DEFAULT NULL,
+  `has_guarantor` tinyint(1) DEFAULT 0,
+  `guarantor_name` varchar(255) DEFAULT NULL,
+  `guarantor_email` varchar(255) DEFAULT NULL,
+  `guarantor_phone` varchar(50) DEFAULT NULL,
+  `guarantor_relationship` varchar(100) DEFAULT NULL,
+  `guarantor_address` text DEFAULT NULL,
+  `repayment_period` int(11) DEFAULT NULL COMMENT 'Repayment period in months',
+  `interest_rate` decimal(5,2) DEFAULT NULL COMMENT 'Annual interest rate',
+  `monthly_repayment` decimal(12,2) DEFAULT NULL,
+  `grace_period` int(11) DEFAULT 6 COMMENT 'Grace period in months before repayment starts',
+  `status` enum('draft','pending','under_review','approved','rejected','disbursed','repaying','completed','defaulted') NOT NULL DEFAULT 'pending',
+  `submission_date` datetime DEFAULT NULL,
+  `review_date` datetime DEFAULT NULL,
+  `approval_date` datetime DEFAULT NULL,
+  `disbursement_date` datetime DEFAULT NULL,
+  `disbursement_method` varchar(100) DEFAULT NULL,
+  `disbursement_reference` varchar(255) DEFAULT NULL,
+  `total_repaid` decimal(12,2) DEFAULT 0.00,
+  `remaining_balance` decimal(12,2) DEFAULT NULL,
+  `next_payment_due` date DEFAULT NULL,
+  `last_payment_date` date DEFAULT NULL,
+  `review_notes` text DEFAULT NULL,
+  `rejection_reason` text DEFAULT NULL,
+  `admin_notes` text DEFAULT NULL,
+  `reviewed_by` int(11) DEFAULT NULL,
+  `approved_by` int(11) DEFAULT NULL,
+  `documents_submitted` text DEFAULT NULL COMMENT 'JSON array of submitted document types',
+  `documents_verified` tinyint(1) DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `bank_name` varchar(255) DEFAULT NULL,
+  `account_number` varchar(20) DEFAULT NULL,
+  `account_name` varchar(255) DEFAULT NULL,
+  `account_type` enum('savings','current') DEFAULT 'savings'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `student_loans`
+--
+
+INSERT INTO `student_loans` (`id`, `loan_number`, `user_id`, `case_id`, `loan_type`, `loan_amount_requested`, `loan_amount_approved`, `currency`, `purpose`, `program_name`, `institution_name`, `course_duration`, `program_start_date`, `program_end_date`, `full_name`, `email`, `phone`, `date_of_birth`, `nationality`, `address`, `city`, `state`, `country`, `employment_status`, `employer_name`, `monthly_income`, `income_source`, `has_collateral`, `collateral_type`, `collateral_value`, `has_guarantor`, `guarantor_name`, `guarantor_email`, `guarantor_phone`, `guarantor_relationship`, `guarantor_address`, `repayment_period`, `interest_rate`, `monthly_repayment`, `grace_period`, `status`, `submission_date`, `review_date`, `approval_date`, `disbursement_date`, `disbursement_method`, `disbursement_reference`, `total_repaid`, `remaining_balance`, `next_payment_due`, `last_payment_date`, `review_notes`, `rejection_reason`, `admin_notes`, `reviewed_by`, `approved_by`, `documents_submitted`, `documents_verified`, `created_at`, `updated_at`, `bank_name`, `account_number`, `account_name`, `account_type`) VALUES
+(1, 'ABA-L-1767952089279', 4, NULL, 'travel', 200000.00, NULL, 'NGN', 'Ex cupiditate ducimu', 'Illana Gray', 'Ezekiel Doyle', 2, '2003-06-11', '2000-11-13', 'Zorita Osborn', 'junyhe@example.com', NULL, NULL, 'Nigeria', '', '', '', 'Nigeria', 'student', NULL, 10000.00, 'parents', 0, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 6, 'pending', '2026-01-09 10:48:09', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2026-01-09 10:48:09', '2026-01-09 10:48:09', NULL, NULL, NULL, 'savings'),
+(2, 'ABA-L-1767958165510', 4, NULL, 'living_expenses', 390.38, NULL, 'USD', 'Minim veniam aliqui', 'Maryam Le', 'Melodie Weaver', 2, '1999-10-12', '2024-01-14', 'Zorita Osborn', 'junyhe@example.com', NULL, NULL, 'Nigeria', NULL, NULL, NULL, 'Nigeria', 'self_employed', 'Mallory Henry', 345.44, '91', 1, 'Ea dolorem sequi id', 5.89, 1, 'Maile Bruce', 'dequkufiz@example.com', '+1 (621) 171-2196', 'Quasi est rerum ame', '921 Oak Extension', NULL, NULL, NULL, 6, 'pending', '2026-01-09 12:29:25', NULL, NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2026-01-09 12:29:25', '2026-01-09 12:29:41', 'Guaranty Trust Bank (GTB)', '2044664647', 'Priscilla Clayton', 'current'),
+(3, 'ABA-L-1767962339699', 4, NULL, 'travel', 629000.00, NULL, 'CAD', 'Fugiat laborum maior', 'Mechelle Melton', 'Renee White', 2, '2000-01-21', '2022-09-10', 'Zorita Osborn', 'junyhe@example.com', NULL, NULL, 'Nigeria', NULL, NULL, NULL, 'Nigeria', 'other', 'Charissa Forbes', 139.93, '553', 1, 'Quod laboriosam omn', 5.27, 0, NULL, NULL, NULL, NULL, NULL, 6, 15.00, NULL, 6, 'under_review', '2026-01-09 13:38:59', '2026-01-09 13:47:10', NULL, NULL, NULL, NULL, 0.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2026-01-09 13:38:59', '2026-01-09 13:47:10', 'First Bank of Nigeria', '8057557577', 'Neil Edwards', 'current');
 
 -- --------------------------------------------------------
 
@@ -562,6 +698,26 @@ ALTER TABLE `inquiries`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `loan_documents`
+--
+ALTER TABLE `loan_documents`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_loan_id` (`loan_id`),
+  ADD KEY `idx_document_type` (`document_type`),
+  ADD KEY `idx_status` (`status`);
+
+--
+-- Indexes for table `loan_repayments`
+--
+ALTER TABLE `loan_repayments`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `payment_reference` (`payment_reference`),
+  ADD KEY `idx_loan_id` (`loan_id`),
+  ADD KEY `idx_payment_reference` (`payment_reference`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_payment_date` (`payment_date`);
+
+--
 -- Indexes for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -590,6 +746,19 @@ ALTER TABLE `settings`
   ADD UNIQUE KEY `setting_key` (`setting_key`),
   ADD KEY `idx_setting_group` (`setting_group`),
   ADD KEY `idx_setting_key` (`setting_key`);
+
+--
+-- Indexes for table `student_loans`
+--
+ALTER TABLE `student_loans`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `loan_number` (`loan_number`),
+  ADD UNIQUE KEY `loan_number_2` (`loan_number`),
+  ADD KEY `idx_user_id` (`user_id`),
+  ADD KEY `idx_case_id` (`case_id`),
+  ADD KEY `idx_status` (`status`),
+  ADD KEY `idx_submission_date` (`submission_date`),
+  ADD KEY `idx_created_at` (`created_at`);
 
 --
 -- Indexes for table `users`
@@ -656,6 +825,18 @@ ALTER TABLE `inquiries`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `loan_documents`
+--
+ALTER TABLE `loan_documents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `loan_repayments`
+--
+ALTER TABLE `loan_repayments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
@@ -671,7 +852,13 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `settings`
 --
 ALTER TABLE `settings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT for table `student_loans`
+--
+ALTER TABLE `student_loans`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`

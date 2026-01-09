@@ -5,7 +5,7 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-$sql = file_get_contents('Sprint0_Schema.sql');
+$sql = file_get_contents('student_loans_migration.sql');
 
 if (mysqli_multi_query($conn, $sql)) {
     do {

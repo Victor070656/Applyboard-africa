@@ -67,6 +67,15 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 </a>
             </li>
 
+            <li class="nav-item <?= $currentPage === 'student_loans.php' ? 'active' : '' ?>">
+                <a class="nav-link <?= $currentPage === 'student_loans.php' ? 'active' : '' ?>" href="student_loans.php">
+                    <span class="nav-icon">
+                        <iconify-icon icon="solar:notebook-outline"></iconify-icon>
+                    </span>
+                    <span class="nav-text">Student Loans</span>
+                </a>
+            </li>
+
             <li class="nav-item <?= $currentPage === 'notifications.php' ? 'active' : '' ?>">
                 <a class="nav-link <?= $currentPage === 'notifications.php' ? 'active' : '' ?>"
                     href="notifications.php">

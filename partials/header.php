@@ -27,6 +27,7 @@ if (!isset($pageDescription)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><?= htmlspecialchars($pageTitle) ?> | ApplyBoard Africa Ltd</title>
   <meta name="description" content="<?= htmlspecialchars($pageDescription) ?>" />
+  <!-- <script src="https://cdn.pressone.africa/widget.js"></script> -->
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
@@ -52,6 +53,8 @@ if (!isset($pageDescription)) {
   <div class="preloader" id="preloader">
     <div class="preloader-spinner"></div>
   </div>
+
+
 
   <!-- Header -->
   <header class="site-header" id="siteHeader">

@@ -61,6 +61,16 @@ function getCaseStages($caseType = null)
             'completed' => 'Completed',
             'closed' => 'Closed'
         ],
+        'student_loan' => [
+            'assessment' => 'Assessment',
+            'documents' => 'Document Collection',
+            'review' => 'Under Review',
+            'approval' => 'Approval Pending',
+            'disbursement' => 'Disbursement',
+            'repayment' => 'Repayment',
+            'completed' => 'Completed',
+            'closed' => 'Closed'
+        ],
         'other' => [
             'assessment' => 'Assessment',
             'processing' => 'Processing',
@@ -133,7 +143,11 @@ function getStageBadge($stage)
         'requirements' => 'bg-primary',
         'processing' => 'bg-info',
         'decision' => 'bg-warning',
-        'documents' => 'bg-info'
+        'documents' => 'bg-info',
+        'review' => 'bg-info',
+        'approval' => 'bg-warning',
+        'disbursement' => 'bg-primary',
+        'repayment' => 'bg-success'
     ];
     return isset($badges[$stage]) ? $badges[$stage] : 'bg-secondary';
 }
@@ -150,6 +164,7 @@ function getCaseTypeLabel($type)
         'visa_family' => 'Family Visa',
         'travel_booking' => 'Travel Booking',
         'pilgrimage' => 'Pilgrimage',
+        'student_loan' => 'Student Loan',
         'other' => 'Other'
     ];
     return isset($labels[$type]) ? $labels[$type] : ucfirst(str_replace('_', ' ', $type));
@@ -368,7 +383,12 @@ function getStageLabelFromStage($stage)
         'processing' => 'Processing',
         'decision' => 'Decision Pending',
         'completed' => 'Completed',
-        'closed' => 'Closed'
+        'closed' => 'Closed',
+        'documents' => 'Document Collection',
+        'review' => 'Under Review',
+        'approval' => 'Approval Pending',
+        'disbursement' => 'Disbursement',
+        'repayment' => 'Repayment'
     ];
     return isset($labels[$stage]) ? $labels[$stage] : $stage;
 }

@@ -93,7 +93,25 @@
   <i class="fas fa-chevron-up"></i>
 </button>
 
+<a href="tel:+2342013306393" class="pressone-call-btn">
+  <img src="images/phone.png" alt="">
+</a>
+
 <style>
+  .pressone-call-btn {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    z-index: 100;
+  }
+
+  .pressone-call-btn img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  }
+
   .scroll-to-top {
     position: fixed;
     bottom: 30px;
